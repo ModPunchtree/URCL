@@ -13,7 +13,7 @@ This means that, all URCL projects should specify the exact version of URCL they
 If there are any errors or contradictions between this documentation and any other documentation for URCL, the offical version found here should be defined as the correct version.
 
 ## How to edit/contribute
-1) Create a fork of this repository
+1) Create a fork or clone of this repository
 2) Use Microsoft Word to edit the **.docx** files located in the `Source` folder
 3) Export the changed documentation as a **.pdf**
 
