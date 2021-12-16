@@ -7,7 +7,7 @@ The **.pdf** files marked with a specific URCL version number should never be up
 This means that, all URCL projects should specify the exact version of URCL they use.
 
 ## Errors or Contradictions
-If there are any errors or contradictions between this documentaion and any other documentation for URCL, the offical version found here should be defined as the correct version.
+If there are any errors or contradictions between this documentation and any other documentation for URCL, the offical version found here should be defined as the correct version.
 
 ## How to edit/contribute
 1) Create a fork of this repository
