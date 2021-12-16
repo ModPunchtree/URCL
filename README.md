@@ -1,5 +1,5 @@
 # URCL
-URCL Official Documentation
+The official URCL documentation can be found in the `Release` folder, these are **.pdf** files.
 
 ## Documentation Releases
 The **.pdf** files marked with a specific URCL version number should never be updated but files marked as `"Unnamed"` are subject to future updates.
@@ -8,7 +8,7 @@ This means that, all URCL projects should specify the exact version of URCL they
 
 ## How to edit/contribute
 1) Create a fork of this repository
-2) Use Microsoft Word to edit the **.docx** files located in the source folder
+2) Use Microsoft Word to edit the **.docx** files located in the `Source` folder
 3) Export the changed documentation as a **.pdf**
 
 ## Links
