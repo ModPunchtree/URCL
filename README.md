@@ -1,5 +1,8 @@
 # URCL
-The official URCL documentation can be found in the `Release` folder, these are **.pdf** files.
+All official URCL documentation can be found in the `Release` folder, these are **.pdf** files.
+
+## Information
+URCL is a simple universal intermediate language. It is designed to be as similar as possible to common RISC assembly in order to make it as easy as possible to translate to any specific assembly language.
 
 ## Documentation Releases
 The **.pdf** files marked with a specific URCL version number should never be updated but files marked as `"Unnamed"` are subject to future updates.
