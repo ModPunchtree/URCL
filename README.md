@@ -1,2 +1,16 @@
 # URCL
 URCL Official Documentation
+
+## Documentation Releases
+The **.pdf** files marked with a specific URCL version number should never be updated but files marked as `"Unnamed"` are subject to future updates.
+
+This means that, all URCL projects should specify the exact version of URCL they use.
+
+## How to edit/contribute
+1) Create a fork of this repository
+2) Use Microsoft Word to edit the **.docx** files located in the source folder
+3) Export the changed documentation as a **.pdf**
+
+## Links
+* [URCL Discord](https://discord.gg/Nv8jzWg5j8)
+* [Google Sheet Documentation](https://docs.google.com/spreadsheets/d/1YUCj-J1KTTxho59_RsKWj9JZa96_mLqB-j_kK2pjqM8/edit?usp=sharing)
