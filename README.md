@@ -19,7 +19,7 @@ If there are any errors or contradictions between this documentation and any oth
 2) Use Microsoft Word to edit the **.docx** files located in the `Source` folder
 3) Export the changed documentation as a **.pdf**
 
-Alternatively you can create an issue and someone else can fix it at a later date.
+Alternatively you can create an issue on the Github site and someone else can fix it at a later date.
 
 ## Links
 * [URCL Discord](https://discord.gg/Nv8jzWg5j8)
