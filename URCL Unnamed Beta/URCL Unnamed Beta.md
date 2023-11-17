@@ -2576,7 +2576,7 @@ This section covers the translations for each instruction.
 | :-: | :-: |
 |\<B\> is the same as \<C\>|<pre>MOV \<A\> R0</pre>|
 |\<A\> is different to \<B\>|<pre>NOT \<A\> \<C\><br>ADD \<A\> \<A\> \<B\><br>INC \<A\> \<A\></pre>|
-|\<A\> is different to \<C\>and\<C\> is a register|<pre>NOT \<C\> \<C\><br>ADD \<A\> \<B\> \<C\><br>INC \<A\> \<A\><br>NOT \<C\> \<C\></pre>|
+|\<A\> is different to \<C\><br>and<br>\<C\> is a register|<pre>NOT \<C\> \<C\><br>ADD \<A\> \<B\> \<C\><br>INC \<A\> \<A\><br>NOT \<C\> \<C\></pre>|
 |\<A\> is not R1|<pre>PSH R1<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R1</pre>|
 |\<A\> is not R2|<pre>PSH R2<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R2</pre>|
 ### <a name="_toc112787925"></a>***JMP***
@@ -2777,18 +2777,18 @@ This section covers the translations for each instruction.
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to R1and\<A\> is different to R2|Shift and Add|<pre>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R2<br>ADD \<A\> \<A\> R1<br>RSH R2 R2<br>LSH R1 R1<br>BNZ ~-4 R2<br>POP R2<br>POP R1</pre>|
-|\<A\> is different to R3 and\<A\> is different to R4|Shift and Add|<pre>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R4<br>ADD \<A\> \<A\> R3<br>RSH R4 R4<br>LSH R3 R3<br>BNZ ~-4 R4<br>POP R4<br>POP R3</pre>|
-|\<A\> is different to R1 and\<A\> is different to R2|Repeated Addition|<pre>PSH R1<br>PSH R2<br>MOV R1 \<C\><br>MOV R2 \<B\><br>MOV \<A\> R0<br>BRZ ~+4 \<C\><br>DEC R1 R1<br>ADD \<A\> \<A\> R2<br>BNZ ~-2 R1<br>POP R2<br>POP R1</pre>|
-|\<A\> is different to R3and\<A\> is different to R4|Repeated Addition|<pre>PSH R3<br>PSH R4<br>MOV R3 \<C\><br>MOV R4 \<B\><br>MOV \<A\> R0 <br>BRZ ~+4 \<C\><br>DEC R3 R3<br>ADD \<A\> \<A\> R4<br>BNZ ~-2 R3<br>POP R4<br>POP R3</pre>|
+|\<A\> is different to R1<br>and<br>\<A\> is different to R2|Shift and Add|<pre>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R2<br>ADD \<A\> \<A\> R1<br>RSH R2 R2<br>LSH R1 R1<br>BNZ ~-4 R2<br>POP R2<br>POP R1</pre>|
+|\<A\> is different to R3 <br>and<br>\<A\> is different to R4|Shift and Add|<pre>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R4<br>ADD \<A\> \<A\> R3<br>RSH R4 R4<br>LSH R3 R3<br>BNZ ~-4 R4<br>POP R4<br>POP R3</pre>|
+|\<A\> is different to R1 <br>and<br>\<A\> is different to R2|Repeated Addition|<pre>PSH R1<br>PSH R2<br>MOV R1 \<C\><br>MOV R2 \<B\><br>MOV \<A\> R0<br>BRZ ~+4 \<C\><br>DEC R1 R1<br>ADD \<A\> \<A\> R2<br>BNZ ~-2 R1<br>POP R2<br>POP R1</pre>|
+|\<A\> is different to R3<br>and<br>\<A\> is different to R4|Repeated Addition|<pre>PSH R3<br>PSH R4<br>MOV R3 \<C\><br>MOV R4 \<B\><br>MOV \<A\> R0 <br>BRZ ~+4 \<C\><br>DEC R3 R3<br>ADD \<A\> \<A\> R4<br>BNZ ~-2 R3<br>POP R4<br>POP R3</pre>|
 ### <a name="_toc112787960"></a>***DIV***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to R1and\<A\> is different to \<C\>|Repeated Subtraction|<pre>BRL ~+9 \<B\> \<C\><br>PSH R1<br>MOV R1 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 \<C\><br>BGE ~-2 R1 \<C\><br>POP R1<br>JMP ~+2<br>MOV \<A\> R0</pre>|
-|\<A\> is different to R2and\<A\> is different to \<C\>|Repeated Subtraction|<pre>BRL ~+9 \<B\> \<C\><br>PSH R2<br>MOV R2 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R2 R2 \<C\><br>BGE ~-2 R2 \<C\><br>POP R2<br>JMP ~+2<br>MOV \<A\> R0</pre>|
-|\<A\> is different to R1and\<A\> is different to R2|Repeated Subtraction|<pre>BRL ~+13 \<B\> \<C\><br>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 R2<br>BGE ~-2 R1 R2<br>POP R2<br>POP R1<br>JMP ~+2<br>MOV \<A\> R0</pre>|
-|\<A\> is different to R3and\<A\> is different to R4|Repeated Subtraction|<pre>BRL ~+13 \<B\> \<C\><br>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R3 R3 R4<br>BGE ~-2 R3 R4<br>POP R4<br>POP R3<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R1<br>and<br>\<A\> is different to \<C\>|Repeated Subtraction|<pre>BRL ~+9 \<B\> \<C\><br>PSH R1<br>MOV R1 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 \<C\><br>BGE ~-2 R1 \<C\><br>POP R1<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R2<br>and<br>\<A\> is different to \<C\>|Repeated Subtraction|<pre>BRL ~+9 \<B\> \<C\><br>PSH R2<br>MOV R2 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R2 R2 \<C\><br>BGE ~-2 R2 \<C\><br>POP R2<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R1<br>and<br>\<A\> is different to R2|Repeated Subtraction|<pre>BRL ~+13 \<B\> \<C\><br>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 R2<br>BGE ~-2 R1 R2<br>POP R2<br>POP R1<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R3<br>and<br>\<A\> is different to R4|Repeated Subtraction|<pre>BRL ~+13 \<B\> \<C\><br>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R3 R3 R4<br>BGE ~-2 R3 R4<br>POP R4<br>POP R3<br>JMP ~+2<br>MOV \<A\> R0</pre>|
 ### <a name="_toc112787961"></a>***MOD***
 
 |**Condition**|**Extra Information**|**Translation**|
