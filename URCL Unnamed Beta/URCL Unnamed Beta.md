@@ -224,7 +224,6 @@ URCL is a simple universal intermediate language. It is designed to be as simila
 * [Acknowledgements](#_toc112788008)
     * [Biggest Contributors](#_toc112788009)
 
-
 # <a name="_toc112787802"></a>**INTRODUCTION**
 URCL first started with Minecraft CPUs and has also been called Universal Redstone Computer Language. However, applications for URCL are not limited to only Minecraft, as it can be applied to a wide range of CPUs with any ISA (Instruction Set Architecture).
 
@@ -248,13 +247,6 @@ CPUs which are compatible with URCL can make use of the tools built for URCL. Th
 |![Tip icon]|*This is a URCL emulator that runs directly in the browser.*|
 | - | - |
 
-**URCL Google Sheet Documentation (OUTDATED):**
-
-<https://docs.google.com/spreadsheets/d/1YUCj-J1KTTxho59_RsKWj9JZa96_mLqB-j_kK2pjqM8/edit?usp=sharing>
-
-**URCL Ports Google Sheet Documentation:**
-
-<https://docs.google.com/spreadsheets/d/1_ztRKWEm2LjHLb3Bxw0JOyZjJ9Drsj-hyOE-TFpwtS4/edit?usp=sharing>
 # <a name="_toc112787804"></a>**OVERVIEW**
 ## <a name="_toc112787805"></a>**Source Files**
 ### <a name="_toc112787806"></a>***URCL Source Files***
@@ -262,7 +254,10 @@ All URCL code should be contained in “.urcl” files. These are plain text fil
 
 |![Tip icon]|*To edit URCL code it is recommended that VSCode is used along with the “URCL & B Syntax Highlighter” extension by RedCMD on the VSCode marketplace.*|
 | - | - |
-|![Tip icon]|<p>*To directly emulate URCL code it is recommended that the URCX Emulator by Bram is used.*</p><p>*URCX can be found here: [https://github.com/BramOtte/urcl-explorer*](https://github.com/BramOtte/urcl-explorer)*</p><p>*Or it can be accessed using the URCX discord bot in the #urcl-bot channel in the URCL Discord server.*</p>|
+
+|![Tip icon]|*To directly emulate URCL code it is recommended that the URCX Emulator by Bram is used.*<br>*URCX can be found here: [https://github.com/BramOtte/urcl-explorer](https://github.com/BramOtte/urcl-explorer)*<br>*Or it can be accessed using the URCX discord bot in the #urcl-bot channel in the URCL Discord server.*|
+| - | - |
+
 ## <a name="_toc112787807"></a>**General Syntax**
 ### <a name="_toc112787808"></a>***General Layout***
 All URCL instructions contain an Identifier as well as Sources and a Destination. The Identifier is simply the name of the instruction. Sources specify where data should be fetched from, and the Destination specifies where the result of the instruction should be written to.
@@ -290,8 +285,9 @@ URCL instructions are designed to be translated one at a time into the target CP
 
 This means that any URCL program can be translated easily, provided each instruction has an equivalent translation on the target CPU.
 
-|![Tip icon]|<p>*URCL uses a load-store architecture.*</p><p>*Which means that values must be loaded from the RAM into the registers in order to be used. Then the results may be stored back into the RAM.*</p>|
+|![Tip icon]|*URCL uses a load-store architecture.*<br>*Which means that values must be loaded from the RAM into the registers in order to be used. Then the results may be stored back into the RAM.*|
 | - | - |
+
 ### <a name="_toc112787809"></a>***Prefixes***
 There are prefixes for general purpose registers, memory, labels, relative numbers, and ports.
 #### *Registers*
@@ -305,7 +301,10 @@ M0 or #0 refer to memory location 0.
 
 |![Tip icon]|*Note that “memory” here does not refer to the entire RAM space, it only refers to the Heap which is later described in the Memory Map section.*|
 | - | - |
+
 |![Tip icon]|*If memory locations are used in an instruction which is not LOD, STR, LLOD or LSTR then it gets translated to an immediate value which points to that memory location.*|
+| - | - |
+
 #### *Labels*
 Labels are prefixed with .. For example:
 
@@ -337,6 +336,7 @@ All macros are prepended with @. For example:
 
 |![Tip icon]|*Individual macros are not defined in URCL as they are completely up to the particular URCL interpreter to define. This is to enable different interpreters to define macros to suit their own needs.*|
 | - | - |
+
 ### <a name="_toc112787812"></a>***Numbers***
 Numbers that have no prefix are in base 10, such as a number used as an immediate value. For example:
 
@@ -355,6 +355,7 @@ Base 8 numbers are prefixed with 0o. Numbers that are prefixed with 0 will be tr
 
 |![Tip icon]|*Base 8 numbers are rarely used.*|
 | - | - |
+
 ### <a name="_toc112787813"></a>***Relative Numbers***
 Relative numbers are used to specify the address of an instruction, relative to the current instruction. These are values are prefixed with a ~+ or a ~-. For example:
 
@@ -362,7 +363,10 @@ JMP ~+5 the ~+5 refers to the URCL instruction 5 ahead of the current instructio
 
 |![Tip icon]|*A relative value of ~+0 or ~-0 refers to the address of the current instruction.*|
 | - | - |
+
 |![Tip icon]|*Relative values must be converted into labels before being translated.*|
+| - | - |
+
 ### <a name="_toc112787814"></a>***Defined Immediate Values***
 Defined immediate values are values which are directly translated into an immediate value before translating the URCL code into the target assembly. All defined immediate values are prepended with a @.
 
@@ -374,7 +378,7 @@ The following table contains all the defined immediate values:
 |@MINREG|Minimum registers|Equal to the value of the MINREG header|
 |@MINHEAP|Minimum heap|Equal to the value of the MINHEAP header|
 |@MINSTACK|Minimum stack|Equal to the value of the MINSTACK header|
-|@HEAP|Heap|<p>Equal to the maximum size of the heap (where the stack is empty, and the heap occupies all available space in the RAM)</p><p>Note this is specific to the target CPU instead of the URCL program</p>|
+|@HEAP|Heap|Equal to the maximum size of the heap (where the stack is empty, and the heap occupies all available space in the RAM)Note this is specific to the target CPU instead of the URCL program|
 |@MSB|Most significant bit|Equal to a binary value with only the most significant bit active (128 in an 8 bit program)|
 |@SMSB|Signed most significant bit|Equal to a binary value with only the second most significant bit active (64 in an 8 bit program)|
 |@MAX|Maximum|Equal to a binary value with all bits active (255 in an 8 bit program)|
@@ -382,9 +386,9 @@ The following table contains all the defined immediate values:
 |@UHALF|Upper half|Equal to a binary value with all bits greater than or equal to 2BITS2 active (240 in an 8 bit program)|
 |@LHALF|Lower half|Equal to a binary value with all bits less than 2BITS2 active (15 in an 8 bit program)|
 
-
 |![Tip icon]|*For odd number bit widths, the Lower half will contain the middle bit and the Upper half will not.*|
 | - | - |
+
 ### <a name="_toc112787815"></a>***ASCII Characters***
 ASCII Characters In the code must enclosed using '. These characters are directly translated into an immediate value (based on 7 bit ASCII) before being translated from URCL code into the target assembly.
 
@@ -404,6 +408,7 @@ However, newlines are important as these mark where one instruction ends and the
 
 |![Tip icon]|*The whitespace should be used to make the code as legible as possible.*|
 | - | - |
+
 ## <a name="_toc112787817"></a>**Zero Register**
 The zero register is a register that cannot be overwritten and always reads 0. The zero register is referred to in the same way as any other general purpose register. So, R0 and $0 both refer to register zero.
 
@@ -413,6 +418,7 @@ If the zero register is specified as the destination operand in an instruction, 
 
 |![Tip icon]|*In most circumstances it is advisable that the zero register is never used as a destination as this is the same as doing nothing in most instructions.*|
 | - | - |
+
 ## <a name="_toc112787818"></a>**Program Counter**
 The program counter is a register that points to the beginning of the current instruction. The program counter in URCL can be read from in the exact same way that any other general purpose register is read.
 
@@ -422,6 +428,7 @@ PSH PC this pushes the value currently in the program counter onto the stack.
 
 |![Tip icon]|*Reading or writing to the program counter directly should be avoided, if possible, as some target CPUs may struggle to translate this code if the program counter cannot be accessed directly.* |
 | - | - |
+
 ## <a name="_toc112787819"></a>**Headers**
 Headers contain information which tells the URCL interpreter the required specific parameters for running a program. The headers can also allow you to see if a program is compatible with a target CPU.
 ### <a name="_toc112787820"></a>***CPU Word Length***
@@ -437,8 +444,13 @@ BITS <= 8 this specifies that the word length can be 8 or fewer bits.
 
 |![Tip icon]|*Most programs will only run at a single word length, so >= and <= are rarely used outside of libraries.*|
 | - | - |
+
 |![Tip icon]|*If the BITS header is missing, then the program should be assumed to be 8 bit.*|
-|![Tip icon]|<p>*If the BITS header is missing the “==” or “>=” or “<=” then it is assumed to be “==”.*</p><p>*So “BITS 8” is the same as “BITS == 8”.*</p>|
+| - | - |
+
+|![Tip icon]|*If the BITS header is missing the “==” or “>=” or “<=” then it is assumed to be “==”.*<br>*So “BITS 8” is the same as “BITS == 8”.*|
+| - | - |
+
 ### <a name="_toc112787821"></a>***Minimum Number of Registers***
 The number of registers that can be used in URCL is fixed and each program needs to specify the minimum number of general purpose registers it requires. This is done using the MINREG header. For example:
 
@@ -446,6 +458,7 @@ MINREG 4 this specifies that this program requires a minimum of 4 general purpos
 
 |![Tip icon]|*If the MINREG header is missing, then the assumed value is 8.*|
 | - | - |
+
 ### <a name="_toc112787822"></a>***Minimum Heap Space***
 The minimum number of words of heap space a program needs is specified using the MINHEAP header. For example:
 
@@ -453,7 +466,10 @@ MINHEAP 16 this specifies that this program needs 16 words of heap space to run.
 
 |![Tip icon]|*Note that the Heap does not refer to the entire RAM space. The Heap is described in more detail in the Memory Map section.*|
 | - | - |
+
 |![Tip icon]|*If the MINHEAP header is missing, then the assumed value is 16.*|
+| - | - |
+
 ### <a name="_toc112787823"></a>***Instruction Storage Architecture***
 There are two ways that instructions can be stored on a target CPU. The instructions can be stored in the same RAM space that the program runs in (for example von Neumann architecture) or the instructions can be stored in a separate space which cannot be accessed while the program is running (for example Harvard architecture).
 
@@ -465,6 +481,7 @@ RUN ROM specifies that the instructions are not stored in the same space the pro
 
 |![Tip icon]|*If the RUN header is missing, then the assumed value is RUN ROM.*|
 | - | - |
+
 ### <a name="_toc112787824"></a>***Minimum Stack Size***
 Programs can specify the minimum number of words that the stack must be able to hold in order to run a program. This is done using the MINSTACK header. For example:
 
@@ -472,11 +489,13 @@ MINSTACK 32 specifies that the stack must be able to hold at least 32 values to 
 
 |![Tip icon]|*If the MINSTACK header is missing, then the assumed value is 8.*|
 | - | - |
-|![Tip icon]|*The stack is explained further in the Memory Map section.*|
 
+|![Tip icon]|*The stack is explained further in the Memory Map section.*|
+| - | - |
 
 |![Tip icon]|*Headers can be located anywhere within a program, but they should be at the very top to make it clearer to anyone reading the code.*|
 | - | - |
+
 ## <a name="_toc112787825"></a>**Define Words**
 Define words are predefined values that exist inside of the RAM/ROM space where the URCL program is stored. In both RUN RAM and RUN ROM programs these values can freely be read and written to in the same way as any other value in the heap.
 
@@ -508,7 +527,10 @@ Where each value inside of the array is a single, separate defined value.
 
 |![Tip icon]|*Note that the order the values in the array are defined, starts with the first item in the array. The order must not be changed.*|
 | - | - |
+
 |![Tip icon]|*Defined values that are in series (such as an array) must be stored in adjacent RAM address values in the target CPU. This is so that any value in the array can be accessed by adding its index to the address of the first value.*|
+| - | - |
+
 ### <a name="_toc112787827"></a>***Define Word Usage***
 Defined words can be pointed to using relative values or labels. For example:
 
@@ -552,19 +574,23 @@ This defines the label “test2”, and this points to the defined value “0x45
 
 |![Tip icon]|*DW means “Define Word” and it is used to put one word of data into the instructions.*|
 | - | - |
-|![Tip icon]|<p>*Since DW values are located in the instructions there is a risk of executing these as instructions. This should be avoided as this can cause undefined behaviour in the target CPU.*</p><p>*This particular fault is defined as “Non-Instruction Execution”.*</p>|
+
+|![Tip icon]|*Since DW values are located in the instructions there is a risk of executing these as instructions. This should be avoided as this can cause undefined behaviour in the target CPU.*<br>*This particular fault is defined as “Non-Instruction Execution”.*|
+| - | - |
+
 ### <a name="_toc112787830"></a>***Label Usage***
 Once defined, labels can be used in the code as source operands. They act the same as immediate values as a label is simply an immediate value which points to the address it was defined at. For example:
 
 JMP .test which branches to the location of the label “test”.
 
-|![Tip icon]|<p>*Labels are converted to immediate values after being translated to the target CPUs assembly code.*</p><p>*This means that they can be translated in the exact same way as an immediate value would.*</p>|
+|![Tip icon]|*Labels are converted to immediate values after being translated to the target CPUs assembly code.*<br>*This means that they can be translated in the exact same way as an immediate value would.*|
 | - | - |
 
 ADD R1 .test 1 which adds 1 to the location of the label “test”.
 
-|![Tip icon]|<p>*Since the size of the instructions on the target CPU can be bigger than one word, adding 1 to a label which points at an instruction does not make that label point to the next instruction.*</p><p>*Labels can only be added to or subtracted from if that label points to DW values as these are guaranteed to occupy 1 word per value, regardless of the target CPU.*</p>|
+|![Tip icon]|*Since the size of the instructions on the target CPU can be bigger than one word, adding 1 to a label which points at an instruction does not make that label point to the next instruction.*<br>*Labels can only be added to or subtracted from if that label points to DW values as these are guaranteed to occupy 1 word per value, regardless of the target CPU.*|
 | - | - |
+
 ## <a name="_toc112787831"></a>**Memory Map**
 ![URCL memory map for the working RAM.](Aspose.Words.5ebee7e7-a737-4c78-8154-76c760e3d5e0.004.png)
 
@@ -587,12 +613,16 @@ The literal RAM address of M or # prepended values in a RUN RAM program requires
 
 |![Tip icon]|*Knowing the location of M0 is important when translating URCL to the target CPU’s assembly.*|
 | - | - |
+
 ### <a name="_toc112787833"></a>***Stack***
 The stack always starts at the top of the RAM (the highest address value) and expands downwards. This is a LIFO stack.
 
 |![Tip icon]|*There is no limit to the size of the Stack, other than the total size of the RAM.*|
 | - | - |
-|![Tip icon]|<p>*While the Heap and Stack can be any size, they must **never** cross over each other. If they crossed over each other, they would overwrite each other.*</p><p>*This particular fault is defined as “Stack Overflow”.*</p>|
+
+|![Tip icon]|*While the Heap and Stack can be any size, they must **never** cross over each other. If they crossed over each other, they would overwrite each other.*<br>*This particular fault is defined as “Stack Overflow”.*|
+| - | - |
+
 ### <a name="_toc112787834"></a>***Stack Pointer***
 The stack pointer points to the final item on the stack, rather than the next available space. When an item is added to the stack the stack pointer is decremented by 1, and when an item is removed from the stack the stack pointer is incremented by 1.
 
@@ -602,6 +632,7 @@ MOV R1 SP this instruction reads from the stack pointer register.
 
 |![Tip icon]|*Modifying the stack pointer directly is potentially dangerous as it can become out of sync to the stack. So, avoid doing this if it is not necessary.*|
 | - | - |
+
 # <a name="_toc112787835"></a>**INSTRUCTIONS**
 
 |![Tip icon]|*This section will define all the instructions within URCL*|
@@ -626,6 +657,7 @@ The ADD instruction adds two values together, then it stores the result in a reg
 
 |![Tip icon]|*The input values must be registers in the core instructions.*|
 | - | - |
+
 #### *Operands*
 ADD requires 3 operands.
 
@@ -644,8 +676,13 @@ The RSH instruction does a bitwise right shift of a value, then it stores the re
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
-|![Tip icon]|<p>*The lowest bit is shifted out and is lost in this instruction.*</p><p>*So, if the lowest bit is important, then save it before right shifting.*</p>|
+
+|![Tip icon]|*The lowest bit is shifted out and is lost in this instruction.*<br>*So, if the lowest bit is important, then save it before right shifting.*|
+| - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
+
 #### *Operands*
 RSH requires 2 operands.
 
@@ -694,6 +731,7 @@ The BGE instruction branches to a specified address if one value is greater than
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
+
 #### *Operands*
 BGE requires 3 operands.
 
@@ -744,6 +782,7 @@ The ADD instruction adds two values together, then it stores the result in a reg
 
 |![Tip icon]|*The input values can be either registers or immediate values.*|
 | - | - |
+
 #### *Operands*
 ADD requires 3 operands.
 
@@ -769,8 +808,13 @@ The RSH instruction does a bitwise right shift of a value, then it stores the re
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
-|![Tip icon]|<p>*The lowest bit is shifted out and is lost in this instruction.*</p><p>*So, if the lowest bit is important, then save it before right shifting.*</p>|
+
+|![Tip icon]|*The lowest bit is shifted out and is lost in this instruction.*<br>*So, if the lowest bit is important, then save it before right shifting.*|
+| - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
+
 #### *Operands*
 RSH requires 2 operands.
 
@@ -805,6 +849,7 @@ LOD requires 2 operands.
 
 |![Tip icon]|*Loading directly into the program counter should be avoided if possible. This is because it may be hard to translate to some target CPUs which cannot access their program counter directly.*|
 | - | - |
+
 #### *Code Examples*
 LOD R3 3
 
@@ -845,6 +890,7 @@ The BGE instruction branches to a specified address if one value is greater than
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
+
 #### *Operands*
 BGE requires 3 operands.
 
@@ -951,16 +997,18 @@ MOV R3 M5
 
 This instruction copies the address of memory location 5 (as an immediate value) and stores it into register 3.
 
-|![Tip icon]|<p>*Note that if a memory address is used in a location where an immediate would normally go, it is converted into an immediate value which points to the address of that memory location.*</p><p>*So, the M5 here is converted to the literal RAM address of memory location 5 in the Heap.*</p>|
+|![Tip icon]|*Note that if a memory address is used in a location where an immediate would normally go, it is converted into an immediate value which points to the address of that memory location.*<br>*So, the M5 here is converted to the literal RAM address of memory location 5 in the Heap.*|
 | - | - |
+
 ### <a name="_toc112787854"></a>***NOP***
 #### *Full Name*
 No operation
 #### *Description*
 The NOP instruction does nothing.
 
-|![Tip icon]|<p>*NOP should never be used in the majority of URCL programs since there is no point to making the target CPU do nothing if every instruction is atomic.*</p><p>*Note that there are no read before write hazards in URCL and branching occurs instantly.*</p>|
+|![Tip icon]|*NOP should never be used in the majority of URCL programs since there is no point to making the target CPU do nothing if every instruction is atomic.*<br>*Note that there are no read before write hazards in URCL and branching occurs instantly.*|
 | - | - |
+
 #### *Operands*
 NOP requires 0 operands.
 #### *Code Examples*
@@ -983,17 +1031,21 @@ IMM R3 5
 
 This instruction copies the immediate value 5 and stores it into register 3.
 
-|![Tip icon]|<p>*Since MOV also accepts immediates, MOV can always be used in place of IMM.*</p><p>*But using IMM when loading immediates is preferred as it makes the code clearer to the reader.*</p><p>*MOV allows immediates because this makes compiling to URCL a little easier.*</p>|
+|![Tip icon]|*Since MOV also accepts immediates, MOV can always be used in place of IMM.*<br>*But using IMM when loading immediates is preferred as it makes the code clearer to the reader.*<br>*MOV allows immediates because this makes compiling to URCL a little easier.*|
 | - | - |
+
 ### <a name="_toc112787856"></a>***LSH***
 #### *Full Name*
 Left shift
 #### *Description*
 The LSH instruction does a bitwise left shift of a value, then it stores the result in a register.
 
-|![Tip icon]|<p>*The uppermost bit is shifted out and is lost in this instruction.*</p><p>*So, if the uppermost bit is important then save it before left shifting.*</p>|
+|![Tip icon]|*The uppermost bit is shifted out and is lost in this instruction.*<br>*So, if the uppermost bit is important then save it before left shifting.*|
 | - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
+
 #### *Operands*
 LSH requires 2 operands.
 
@@ -1030,8 +1082,9 @@ INC R3 .foo
 
 This instruction adds 1 to the address of the label “foo” and stores it into register 3.
 
-|![Tip icon]|<p>*Since the size of the instructions on the target CPU can be bigger than one word, adding 1 to a label which points at an instruction does not make that label point to the next instruction.*</p><p>*Labels should only be added to or subtracted from if that label points to DW values as these are guaranteed to occupy 1 word per value regardless of the target CPU.*</p>|
+|![Tip icon]|*Since the size of the instructions on the target CPU can be bigger than one word, adding 1 to a label which points at an instruction does not make that label point to the next instruction.*<br>*Labels should only be added to or subtracted from if that label points to DW values as these are guaranteed to occupy 1 word per value regardless of the target CPU.*|
 | - | - |
+
 ### <a name="_toc112787858"></a>***DEC***
 #### *Full Name*
 Decrement
@@ -1137,6 +1190,7 @@ This instruction does a bitwise NOT of the immediate value of 3 and stores the r
 
 |![Tip icon]|*On an 8 bit CPU the result of NOT of 3 would be 252.*|
 | - | - |
+
 ### <a name="_toc112787863"></a>***XNOR***
 #### *Full Name*
 Bitwise XNOR
@@ -1208,6 +1262,7 @@ The BRL instruction branches to a specified address if one value is less than an
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
+
 #### *Operands*
 BRL requires 3 operands.
 
@@ -1235,6 +1290,7 @@ The BRG instruction branches to a specified address if one value is less than an
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
+
 #### *Operands*
 BRG requires 3 operands.
 
@@ -1310,6 +1366,7 @@ The BOD instruction branches to a specified address if a value is odd.
 
 |![Tip icon]|*A value is odd if the lowest bit is active.*|
 | - | - |
+
 #### *Operands*
 BOD requires 2 operands.
 
@@ -1333,6 +1390,7 @@ The BEV instruction branches to a specified address if a value is even.
 
 |![Tip icon]|*A value is even if the lowest bit is not active.*|
 | - | - |
+
 #### *Operands*
 BEV requires 2 operands.
 
@@ -1356,6 +1414,7 @@ The BLE instruction branches to a specified address if one value is less than or
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
+
 #### *Operands*
 BLE requires 3 operands.
 
@@ -1423,7 +1482,10 @@ The BRN instruction branches to a specified address if a value is negative.
 
 |![Tip icon]|*This is signed.*|
 | - | - |
+
 |![Tip icon]|*A value is negative if the highest bit is active. (2’s complement)*|
+| - | - |
+
 #### *Operands*
 BRN requires 2 operands.
 
@@ -1447,7 +1509,10 @@ The BRP instruction branches to a specified address if a value is positive or ze
 
 |![Tip icon]|*This is signed.*|
 | - | - |
+
 |![Tip icon]|*A value is positive if the highest bit is not active. (2’s complement)*|
+| - | - |
+
 #### *Operands*
 BRP requires 2 operands.
 
@@ -1471,6 +1536,7 @@ The PSH instruction pushes a value onto the stack.
 
 |![Tip icon]|*Since the stack pointer points to the topmost filled value in the stack, the stack pointer is first decremented before writing to the location it points to. This happens automatically in the PSH instruction.*|
 | - | - |
+
 #### *Operands*
 PSH requires 1 operand.
 
@@ -1494,6 +1560,7 @@ The POP instruction pops a value from the stack into a register.
 
 |![Tip icon]|*Since the stack pointer points to the topmost filled value in the stack, the value at the location where the stack pointer points is first read before incrementing the stack pointer. This happens automatically in the POP instruction.*|
 | - | - |
+
 #### *Operands*
 POP requires 1 operand.
 
@@ -1512,7 +1579,10 @@ The CAL instruction pushes the address of the next instruction onto the stack th
 
 |![Tip icon]|*This is used to branch to subroutines.*|
 | - | - |
+
 |![Tip icon]|*The address pushed onto the stack is the return address.*|
+| - | - |
+
 #### *Operands*
 CAL requires 1 operand.
 
@@ -1534,8 +1604,9 @@ Return
 #### *Description*
 The RET instruction pops a value from the stack then it branches to that value.
 
-|![Tip icon]|<p>*The value at the top of the stack must be a valid address of an instruction for RET to work.*</p><p>*Otherwise, a “Non-Instruction Execution” fault may occur.*</p>|
+|![Tip icon]|*The value at the top of the stack must be a valid address of an instruction for RET to work.*<br>*Otherwise, a “Non-Instruction Execution” fault may occur.*|
 | - | - |
+
 #### *Operands*
 RET requires 0 operands.
 #### *Code Examples*
@@ -1550,7 +1621,10 @@ The HLT instruction halts execution.
 
 |![Tip icon]|*This marks the end of a program.*|
 | - | - |
+
 |![Tip icon]|*Once halted, the target CPU will need to be manually reset to run again.*|
+| - | - |
+
 #### *Operands*
 HLT requires 0 operands.
 #### *Code Examples*
@@ -1577,8 +1651,9 @@ CPY requires 2 operands.
 |Register|RAM Address (Literal)|CPY R1 1|
 |Register|Register (Pointer)|CPY R1 R2|
 
-|![Tip icon]|<p>*This instruction should be used when moving values around in the RAM.*</p><p>*This instruction allows for potentially shorter or faster translations than that of the equivalent LOD followed by a STR instruction.*</p>|
+|![Tip icon]|*This instruction should be used when moving values around in the RAM.*<br>*This instruction allows for potentially shorter or faster translations than that of the equivalent LOD followed by a STR instruction.*|
 | - | - |
+
 #### *Code Examples*
 CPY M3 3
 
@@ -1595,6 +1670,7 @@ The BRC instruction branches to a specified address if one value added to anothe
 
 |![Tip icon]|*Note that the results of the addition in this instruction are not kept.*|
 | - | - |
+
 #### *Operands*
 BRC requires 3 operands.
 
@@ -1622,6 +1698,7 @@ The BNC instruction branches to a specified address if one value added to anothe
 
 |![Tip icon]|*Note that the results of the addition in this instruction are not kept.*|
 | - | - |
+
 #### *Operands*
 BNC requires 3 operands.
 
@@ -1674,7 +1751,10 @@ The DIV instruction divides one value by another, then it stores the result in a
 
 |![Tip icon]|*This is integer division. So, the result is rounded down (towards zero) to the nearest integer.*|
 | - | - |
+
 |![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
 #### *Operands*
 DIV requires 3 operands.
 
@@ -1699,7 +1779,10 @@ The MOD instruction calculates the remainder left after one value is divided by 
 
 |![Tip icon]|*This uses integer division. So, the dividend is rounded down (towards zero) to the nearest integer, leaving the remainder as the result.*|
 | - | - |
+
 |![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
 #### *Operands*
 MOD requires 3 operands.
 
@@ -1724,8 +1807,13 @@ The BSR instruction does a specific number of bitwise right shifts of a value, t
 
 |![Tip icon]|*Note that this is unsigned.*|
 | - | - |
-|![Tip icon]|<p>*The bits that are shifted out in this instruction are lost.*</p><p>*So, if those bits are important, save them before shifting.*</p>|
+
+|![Tip icon]|*The bits that are shifted out in this instruction are lost.*<br>*So, if those bits are important, save them before shifting.*|
+| - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
+
 #### *Operands*
 BSR requires 3 operands.
 
@@ -1748,9 +1836,12 @@ Barrel shift left
 #### *Description*
 The BSL instruction does a specific number of bitwise left shifts of a value, then it stores the result in a register.
 
-|![Tip icon]|<p>*The bits that are shifted out in this instruction are lost.*</p><p>*So, if those bits are important, save them before shifting.*</p>|
+|![Tip icon]|*The bits that are shifted out in this instruction are lost.*<br>*So, if those bits are important, save them before shifting.*|
 | - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
+
 #### *Operands*
 BSL requires 3 operands.
 
@@ -1775,9 +1866,15 @@ The SRS instruction does a signed right shift of a value, then it stores the res
 
 |![Tip icon]|*Note that this is signed.*|
 | - | - |
-|![Tip icon]|<p>*The lowest bit is shifted out and is lost in this instruction.*</p><p>*So, if the lowest bit is important, then save it before right shifting.*</p>|
+
+|![Tip icon]|*The lowest bit is shifted out and is lost in this instruction.*<br>*So, if the lowest bit is important, then save it before right shifting.*|
+| - | - |
+
 |![Tip icon]|*The sign bit (uppermost bit) is extended in this instruction.*|
+| - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
 #### *Operands*
 SRS requires 2 operands.
 
@@ -1801,8 +1898,13 @@ The BSS instruction does a specific number of signed right shifts of a value, th
 
 |![Tip icon]|*Note that this is signed.*|
 | - | - |
-|![Tip icon]|<p>*The bits that are shifted out in this instruction are lost.*</p><p>*So, if those bits are important, save them before shifting.*</p>|
+
+|![Tip icon]|*The bits that are shifted out in this instruction are lost.*<br>*So, if those bits are important, save them before shifting.*|
+| - | - |
+
 |![Tip icon]|*Note that this is non-cyclic.*|
+| - | - |
+
 #### *Operands*
 BSS requires 3 operands.
 
@@ -1827,6 +1929,7 @@ The SETE instruction sets a register to all 1’s in binary if one value is equa
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 #### *Operands*
 SETE requires 3 operands.
 
@@ -1851,6 +1954,7 @@ The SETNE instruction sets a register to all 1’s in binary if one value is not
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 #### *Operands*
 SETNE requires 3 operands.
 
@@ -1875,7 +1979,10 @@ The SETG instruction sets a register to all 1’s in binary if one value is grea
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 |![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
 #### *Operands*
 SETG requires 3 operands.
 
@@ -1900,7 +2007,10 @@ The SETL instruction sets a register to all 1’s in binary if one value is less
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 |![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
 #### *Operands*
 SETL requires 3 operands.
 
@@ -1925,7 +2035,10 @@ The SETGE instruction sets a register to all 1’s in binary if one value is gre
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 |![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
 #### *Operands*
 SETGE requires 3 operands.
 
@@ -1950,7 +2063,10 @@ The SETLE instruction sets a register to all 1’s in binary if one value is gre
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 |![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
 #### *Operands*
 SETLE requires 3 operands.
 
@@ -1975,7 +2091,10 @@ The SETC instruction sets a register to all 1’s in binary if one value added t
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 |![Tip icon]|*Note that the result of the addition is not kept.*|
+| - | - |
+
 #### *Operands*
 SETC requires 3 operands.
 
@@ -2000,7 +2119,10 @@ The SETNC instruction sets a register to all 1’s in binary if one value added 
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 |![Tip icon]|*Note that the result of the addition is not kept.*|
+| - | - |
+
 #### *Operands*
 SETNC requires 3 operands.
 
@@ -2073,6 +2195,7 @@ The SDIV instruction divides one signed value by another, then it stores the sig
 
 |![Tip icon]|*This is integer division. So, the result is rounded towards zero (down if result is positive, up if the result is negative) to the nearest integer.*|
 | - | - |
+
 #### *Operands*
 SDIV requires 3 operands.
 
@@ -2193,6 +2316,7 @@ The SSETL instruction sets a register to all 1’s in binary if one signed value
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 #### *Operands*
 SSETL requires 3 operands.
 
@@ -2217,6 +2341,7 @@ The SSETG instruction sets a register to all 1’s in binary if one signed value
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 #### *Operands*
 SSETG requires 3 operands.
 
@@ -2241,6 +2366,7 @@ The SSETLE instruction sets a register to all 1’s in binary if one signed valu
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 #### *Operands*
 SSETLE requires 3 operands.
 
@@ -2265,6 +2391,7 @@ The SSETGE instruction sets a register to all 1’s in binary if one value is gr
 
 |![Tip icon]|*All 1’s in binary on an 8 bit CPU is 255.*|
 | - | - |
+
 #### *Operands*
 SSETGE requires 3 operands.
 
@@ -2313,7 +2440,10 @@ The IN instruction reads the value on a particular port and writes it into a reg
 
 |![Tip icon]|*Specific ports are defined in the Ports section.*|
 | - | - |
-|![Tip icon]|<p>*Note that ports can also be made up and do not have to follow the official documentation.*</p><p>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine.*</p>|
+
+|![Tip icon]|*Note that ports can also be made up and do not have to follow the official documentation.*<br>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine.*|
+| - | - |
+
 #### *Operands*
 IN requires 2 operands.
 
@@ -2336,7 +2466,10 @@ The OUT instruction reads a value and outputs the result into a specific port.
 
 |![Tip icon]|*Specific ports are defined in the Ports section.*|
 | - | - |
-|![Tip icon]|<p>*Note that ports can also be made up and do not have to follow the official documentation.*</p><p>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine.*</p>|
+
+|![Tip icon]|*Note that ports can also be made up and do not have to follow the official documentation.*<br>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine.*|
+| - | - |
+
 #### *Operands*
 OUT requires 2 operands.
 
@@ -2359,9 +2492,16 @@ This section covers the translations for each instruction.
 
 |![Tip icon]|*In this section “\<A\>” refers to the first operand, “\<B\>” refers to the second operand and “\<C\>” refers to the third operand.*|
 | - | - |
-|![Tip icon]|<p>*There are multiple translations for different operands. Each with specific conditions where that translation is valid.*</p><p>*So, of the translations where the conditions are met, the shortest translation should be used.*</p>|
-|![Tip icon]|<p>*All relative values must be converted into labels before translating.*</p><p>*This is to prevent relative values from being broken as the translations are usually longer than one instruction.*</p>|
-|![Tip icon]|<p>*Beware that most of the Basic translations require temporary registers.*</p><p>*Ensure the target CPU has enough temporary registers available before converting.*</p>|
+
+|![Tip icon]|*There are multiple translations for different operands. Each with specific conditions where that translation is valid.*<br>*So, of the translations where the conditions are met, the shortest translation should be used.*|
+| - | - |
+
+|![Tip icon]|*All relative values must be converted into labels before translating.*<br>*This is to prevent relative values from being broken as the translations are usually longer than one instruction.*|
+| - | - |
+
+|![Tip icon]|*Beware that most of the Basic translations require temporary registers.*<br>*Ensure the target CPU has enough temporary registers available before converting.*|
+| - | - |
+
 ## <a name="_toc112787917"></a>**Basic Instruction Translations**
 ### <a name="_toc112787918"></a>***ADD***
 
@@ -2415,12 +2555,11 @@ This section covers the translations for each instruction.
 |![Tip icon]|*If the Operand types are not specified, then the translation applies to all possible combinations of operand types.*|
 | - | - |
 
-
 |**Condition**|**Translation**|
 | :-: | :-: |
 |\<B\> is the same as \<C\>|MOV \<A\> R0|
 |\<A\> is different to \<B\>|NOT \<A\> \<C\><br>ADD \<A\> \<A\> \<B\><br>INC \<A\> \<A\>|
-|<p>\<A\> is different to \<C\></p><p>and</p><p>\<C\> is a register</p>|NOT \<C\> \<C\><br>ADD \<A\> \<B\> \<C\><br>INC \<A\> \<A\><br>NOT \<C\> \<C\>|
+|\<A\> is different to \<C\>and\<C\> is a register|NOT \<C\> \<C\><br>ADD \<A\> \<B\> \<C\><br>INC \<A\> \<A\><br>NOT \<C\> \<C\>|
 |\<A\> is not R1|PSH R1<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R1|
 |\<A\> is not R2|PSH R2<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R2|
 ### <a name="_toc112787925"></a>***JMP***
@@ -2459,9 +2598,9 @@ This section covers the translations for each instruction.
 | :-: | :-: |
 |X is equal to an immediate value which has all its bits active. (255 in 8 bit)|ADD \<A\> \<B\> X|
 
-
-|![Tip icon]|<p>*Some of the translations include instructions that are in the same category as the original instruction.*</p><p>*If this is the case, then the code will need further translation if the goal is to lower the tier of instructions.*</p>|
+|![Tip icon]|*Some of the translations include instructions that are in the same category as the original instruction.*<br>*If this is the case, then the code will need further translation if the goal is to lower the tier of instructions.*|
 | - | - |
+
 ### <a name="_toc112787932"></a>***NEG***
 
 |**Condition**|**Translation**|
@@ -2621,18 +2760,18 @@ This section covers the translations for each instruction.
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|<p>\<A\> is different to R1</p><p>and</p><p>\<A\> is different to R2</p>|Shift and Add|PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R2<br>ADD \<A\> \<A\> R1<br>RSH R2 R2<br>LSH R1 R1<br>BNZ ~-4 R2<br>POP R2<br>POP R1|
-|<p>\<A\> is different to R3 </p><p>and</p><p>\<A\> is different to R4</p>|Shift and Add|PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R4<br>ADD \<A\> \<A\> R3<br>RSH R4 R4<br>LSH R3 R3<br>BNZ ~-4 R4<br>POP R4<br>POP R3|
-|<p>\<A\> is different to R1 </p><p>and</p><p>\<A\> is different to R2</p>|Repeated Addition|PSH R1<br>PSH R2<br>MOV R1 \<C\><br>MOV R2 \<B\><br>MOV \<A\> R0<br>BRZ ~+4 \<C\><br>DEC R1 R1<br>ADD \<A\> \<A\> R2<br>BNZ ~-2 R1<br>POP R2<br>POP R1|
-|<p>\<A\> is different to R3</p><p>and</p><p>\<A\> is different to R4</p>|Repeated Addition|PSH R3<br>PSH R4<br>MOV R3 \<C\><br>MOV R4 \<B\><br>MOV \<A\> R0 <br>BRZ ~+4 \<C\><br>DEC R3 R3<br>ADD \<A\> \<A\> R4<br>BNZ ~-2 R3<br>POP R4<br>POP R3|
+|\<A\> is different to R1and\<A\> is different to R2|Shift and Add|PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R2<br>ADD \<A\> \<A\> R1<br>RSH R2 R2<br>LSH R1 R1<br>BNZ ~-4 R2<br>POP R2<br>POP R1|
+|\<A\> is different to R3 and\<A\> is different to R4|Shift and Add|PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R4<br>ADD \<A\> \<A\> R3<br>RSH R4 R4<br>LSH R3 R3<br>BNZ ~-4 R4<br>POP R4<br>POP R3|
+|\<A\> is different to R1 and\<A\> is different to R2|Repeated Addition|PSH R1<br>PSH R2<br>MOV R1 \<C\><br>MOV R2 \<B\><br>MOV \<A\> R0<br>BRZ ~+4 \<C\><br>DEC R1 R1<br>ADD \<A\> \<A\> R2<br>BNZ ~-2 R1<br>POP R2<br>POP R1|
+|\<A\> is different to R3and\<A\> is different to R4|Repeated Addition|PSH R3<br>PSH R4<br>MOV R3 \<C\><br>MOV R4 \<B\><br>MOV \<A\> R0 <br>BRZ ~+4 \<C\><br>DEC R3 R3<br>ADD \<A\> \<A\> R4<br>BNZ ~-2 R3<br>POP R4<br>POP R3|
 ### <a name="_toc112787960"></a>***DIV***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|<p>\<A\> is different to R1</p><p>and</p><p>\<A\> is different to \<C\></p>|Repeated Subtraction|BRL ~+9 \<B\> \<C\><br>PSH R1<br>MOV R1 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 \<C\><br>BGE ~-2 R1 \<C\><br>POP R1<br>JMP ~+2<br>MOV \<A\> R0|
-|<p>\<A\> is different to R2</p><p>and</p><p>\<A\> is different to \<C\></p>|Repeated Subtraction|BRL ~+9 \<B\> \<C\><br>PSH R2<br>MOV R2 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R2 R2 \<C\><br>BGE ~-2 R2 \<C\><br>POP R2<br>JMP ~+2<br>MOV \<A\> R0|
-|<p>\<A\> is different to R1</p><p>and</p><p>\<A\> is different to R2</p>|Repeated Subtraction|BRL ~+13 \<B\> \<C\><br>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 R2<br>BGE ~-2 R1 R2<br>POP R2<br>POP R1<br>JMP ~+2<br>MOV \<A\> R0|
-|<p>\<A\> is different to R3</p><p>and</p><p>\<A\> is different to R4</p>|Repeated Subtraction|BRL ~+13 \<B\> \<C\><br>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R3 R3 R4<br>BGE ~-2 R3 R4<br>POP R4<br>POP R3<br>JMP ~+2<br>MOV \<A\> R0|
+|\<A\> is different to R1and\<A\> is different to \<C\>|Repeated Subtraction|BRL ~+9 \<B\> \<C\><br>PSH R1<br>MOV R1 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 \<C\><br>BGE ~-2 R1 \<C\><br>POP R1<br>JMP ~+2<br>MOV \<A\> R0|
+|\<A\> is different to R2and\<A\> is different to \<C\>|Repeated Subtraction|BRL ~+9 \<B\> \<C\><br>PSH R2<br>MOV R2 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R2 R2 \<C\><br>BGE ~-2 R2 \<C\><br>POP R2<br>JMP ~+2<br>MOV \<A\> R0|
+|\<A\> is different to R1and\<A\> is different to R2|Repeated Subtraction|BRL ~+13 \<B\> \<C\><br>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 R2<br>BGE ~-2 R1 R2<br>POP R2<br>POP R1<br>JMP ~+2<br>MOV \<A\> R0|
+|\<A\> is different to R3and\<A\> is different to R4|Repeated Subtraction|BRL ~+13 \<B\> \<C\><br>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R3 R3 R4<br>BGE ~-2 R3 R4<br>POP R4<br>POP R3<br>JMP ~+2<br>MOV \<A\> R0|
 ### <a name="_toc112787961"></a>***MOD***
 
 |**Condition**|**Extra Information**|**Translation**|
@@ -2787,8 +2926,9 @@ Ports can be written to or read from using the I/O instructions as appropriate.
 
 |![Tip icon]|*Official ports can be used in URCL programs without having to be defined. They use the definition given here.*|
 | - | - |
-|![Tip icon]|<p>*Note that the programmer can make up any ports and these do not have to follow the official documentation.*</p><p>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine if it is not too complex.*</p>|
 
+|![Tip icon]|*Note that the programmer can make up any ports and these do not have to follow the official documentation.*<br>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine if it is not too complex.*|
+| - | - |
 
 <table><tr><th colspan="1" valign="bottom">\<B\>Type</b></th><th colspan="1" valign="bottom">\<B\>Port Number</b></th><th colspan="1" valign="bottom">\<B\>Alias (Port Name)</b></th><th colspan="1" valign="bottom">\<B\>Full Name</b></th><th colspan="1" valign="bottom">\<B\>Input Notes/Usage</b></th><th colspan="1" valign="bottom">\<B\>Output Notes/Usage</b></th><th colspan="1" valign="bottom">\<B\>Valid Inputs</b></th></tr>
 <tr><td colspan="1" rowspan="8">General</td><td colspan="1">0</td><td colspan="1">%CPUBUS</td><td colspan="1">CPU Bus</td><td colspan="1"></td><td colspan="1"></td><td colspan="1">Number</td></tr>
@@ -2802,10 +2942,10 @@ Ports can be written to or read from using the I/O instructions as appropriate.
 <tr><td colspan="1" rowspan="8">Graphics</td><td colspan="1">8</td><td colspan="1">%X</td><td colspan="1">Display X</td><td colspan="1">Tells display width</td><td colspan="1">Sets X Vertex</td><td colspan="1">Number</td></tr>
 <tr><td colspan="1">9</td><td colspan="1">%Y</td><td colspan="1">Display Y</td><td colspan="1">Tells display height</td><td colspan="1">Sets Y Vertex</td><td colspan="1">Number</td></tr>
 <tr><td colspan="1">10</td><td colspan="1">%COLOR or %COLOUR</td><td colspan="1">Colour</td><td colspan="1">Reads colour at %X, %Y into a register (from the currently writable part of the screen)</td><td colspan="1">Draws a pixel of the specified colour at %X, %Y (on the currently writable part of the screen)</td><td colspan="1">Colour</td></tr>
-<tr><td colspan="1">11</td><td colspan="1">%BUFFER</td><td colspan="1">Display Buffer</td><td colspan="1">Reads buffer state</td><td colspan="1"><p>0 copies buffer to display, and disables it,</p><p>1 enables writing to the buffer and locks the screen from being updated</p><p>2 disables, then reenables the buffer which updates the screen to the buffer, but the buffer remains enabled</p></td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">12</td><td colspan="1">%FREEZE</td><td colspan="1">Freeze</td><td colspan="1">Freezes screen</td><td colspan="1"><p>Freezes the visible part of the screen.</p><p>Reading and writing to the screen still works but does not visually update the screen.</p></td><td colspan="1">Any</td></tr>
-<tr><td colspan="1">13</td><td colspan="1">%UNFREEZE</td><td colspan="1">Unfreeze</td><td colspan="1">Unfreezes screen</td><td colspan="1"><p>Unfreezes the visible part of the screen.</p><p>The visual screen now shows what the screen contains.</p></td><td colspan="1">Any</td></tr>
-<tr><td colspan="1">14</td><td colspan="1">%CLEAR</td><td colspan="1">Clear</td><td colspan="1">Clears screen</td><td colspan="1"><p>Clears the screen.</p><p>This does not unfreeze the screen if it is frozen.</p><p></p></td><td colspan="1">Any</td></tr>
+<tr><td colspan="1">11</td><td colspan="1">%BUFFER</td><td colspan="1">Display Buffer</td><td colspan="1">Reads buffer state</td><td colspan="1">0 copies buffer to display, and disables it,1 enables writing to the buffer and locks the screen from being updated2 disables, then reenables the buffer which updates the screen to the buffer, but the buffer remains enabled</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">12</td><td colspan="1">%FREEZE</td><td colspan="1">Freeze</td><td colspan="1">Freezes screen</td><td colspan="1">Freezes the visible part of the screen.Reading and writing to the screen still works but does not visually update the screen.</td><td colspan="1">Any</td></tr>
+<tr><td colspan="1">13</td><td colspan="1">%UNFREEZE</td><td colspan="1">Unfreeze</td><td colspan="1">Unfreezes screen</td><td colspan="1">Unfreezes the visible part of the screen.The visual screen now shows what the screen contains.</td><td colspan="1">Any</td></tr>
+<tr><td colspan="1">14</td><td colspan="1">%CLEAR</td><td colspan="1">Clear</td><td colspan="1">Clears screen</td><td colspan="1">Clears the screen.This does not unfreeze the screen if it is frozen.</td><td colspan="1">Any</td></tr>
 <tr><td colspan="1">15</td><td colspan="1">%GSPECIAL</td><td colspan="1">Graphics Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
 <tr><td colspan="1" rowspan="8">Text</td><td colspan="1">16</td><td colspan="1">%ASCII8</td><td colspan="1">8-Bit ASCII</td><td colspan="1">Takes in an 8-Bit Ascii character</td><td colspan="1">Displays an 8-bit ascii character</td><td colspan="1">Number, Character</td></tr>
 <tr><td colspan="1">17</td><td colspan="1">%CHAR5</td><td colspan="1">5-Bit Char</td><td colspan="1">Takes in a 5-bit character</td><td colspan="1">Displays a 5 bit character</td><td colspan="1">Number, Character</td></tr>
@@ -2869,6 +3009,7 @@ These are faults which can be detected before running the code.
 
 |![Tip icon]|*These faults can be detected by static analysis before execution, such as part of a generic URCL code optimiser.*|
 | - | - |
+
 ### <a name="_toc112787989"></a>***Invalid Number of Operands***
 
 |**Potential Cause**|**Potential Fix**|
@@ -2968,12 +3109,11 @@ On an 8 bit CPU this could look like:
 
 |**8 Bit (All instructions + Separate Types)**|**Bitwise Representation**|**Key**|
 | :-: | :-: | :-: |
-|First Word|AAAAAA XX|<p>A = Instruction</p><p>X = Unused</p>|
-|Second Word|BCD XXXXX|<p>B = First operand type</p><p>C = Second operand type</p><p>D = Third operand type</p>|
+|First Word|AAAAAA XX|A = InstructionX = Unused|
+|Second Word|BCD XXXXX|B = First operand typeC = Second operand typeD = Third operand type|
 |Third Word|EEEEEEEE|E = First Operand|
 |Fourth Word|FFFFFFFF|F = Second Operand|
 |Fifth Word|GGGGGGGG|G = Third Operand|
-
 
 |![Tip icon]|*Each letter represents 1 bit within each word.*|
 | - | - |
@@ -2982,7 +3122,7 @@ A 4 Byte version can be done with 8 bits which has fewer unused bits, but only i
 
 |**8 Bit (Cut down to 4 Bytes + Separate Types)**|**Bitwise Representation**|**Key**|
 | :-: | :-: | :-: |
-|First Word|AAAAA BCD|<p>A = Instruction</p><p>B = First operand type</p><p>C = Second operand type</p><p>D = Third operand type</p>|
+|First Word|AAAAA BCD|A = InstructionB = First operand typeC = Second operand typeD = Third operand type|
 |Second Word|EEEEEEEE|E = First Operand|
 |Third Word|FFFFFFFF|F = Second Operand|
 |Fourth Word|GGGGGGGG|G = Third Operand|
@@ -3002,7 +3142,7 @@ On a 16 bit CPU it could look like:
 
 |**16 Bit (All instructions)**|**Bitwise Representation**|**Key**|
 | :-: | :-: | :-: |
-|First Word|AAAAAA BCD XXXXXXX|<p>A = Instruction</p><p>B = First operand type</p><p>C = Second operand type</p><p>D = Third operand type</p><p>X = Unused</p>|
+|First Word|AAAAAA BCD XXXXXXX|A = InstructionB = First operand typeC = Second operand typeD = Third operand typeX = Unused|
 |Second Word|EEEEEEEEEEEEEEEE|E = First Operand|
 |Third Word|FFFFFFFFFFFFFFFF|F = Second Operand|
 |Fourth Word|GGGGGGGGGGGGGGGG|G = Third Operand|
@@ -3012,7 +3152,7 @@ Lastly, on a 4 bit CPU if the only the Core and a couple of the Basic instructio
 |**4 Bit (Cut down to 4 bits)**|**Bitwise Representation**|**Key**|
 | :-: | :-: | :-: |
 |First Word|AAAA|A = Instruction|
-|Second Word|BCD X|<p>B = First operand type</p><p>C = Second operand type</p><p>D = Third operand type</p><p>X = Unused</p>|
+|Second Word|BCD X|B = First operand typeC = Second operand typeD = Third operand typeX = Unused|
 |Third Word|EEEE|E = First Operand|
 |Fourth Word|FFFF|F = Second Operand|
 |Fifth Word|GGGG|G = Third Operand|
@@ -3043,7 +3183,10 @@ IMM R2 1
 
 |![Tip icon]|*This program has no escape condition so it will keep going forever.*|
 | - | - |
+
 |![Tip icon]|*This program does not output the answers.*|
+| - | - |
+
 ## <a name="_toc112788006"></a>**FizzBuzz**
 BITS == 8
 
@@ -3119,7 +3262,10 @@ RUN ROM
 
 |![Tip icon]|*This program starts at 1 and it increments this value once per loop. It prints out “FIZZ” if the value is divisible by 3, “BUZZ” if the value is divisible by 5, “FIZZBUZZ” if the value is divisible by both 3 and 5 or the original value if not divisible by 3 or 5.*|
 | - | - |
+
 |![Tip icon]|*This program has no escape condition so it will keep going forever.*|
+| - | - |
+
 ## <a name="_toc112788007"></a>**Bubble Sort**
 BITS == 8
 
@@ -3213,18 +3359,18 @@ URCL would not have been possible without all of the URCL community contributing
 
 |**Name (If they wish to give it)**|**Discord Username / Minecraft Username**|**Contributions**|
 | :-: | :-: | :-: |
-|Ben Aitken|Mod Punchtree / ModPunchtree|<p>- One of the original founders of URCL</p><p>- Created the Flagless fork of URCL</p><p>- Managed the Google Sheet documentation for both Main URCL and Flagless</p><p>- Ran URCL on both the MPU6 and MPU7</p><p>- Hosted polls</p><p>- Made several emulators</p><p>- Made a B to URCL compiler</p><p>- Made a generic URCL code optimiser</p><p>- Made a Discord bot so the emulator and compiler are more easily accessible</p><p>- Created and maintained this formal URCL documentation</p>|
-||Haku / |<p>- Created a tool to translate URCL into target CPU’s assembly</p><p>- Created a URCL emulator</p>|
-||Kuggo / Kuggo|<p>- One of the original founders of URCL</p><p>- Began working on math and string libraries</p><p>- Hosted a poll</p>|
-||Lucida Dragon / |<p>- Created FlapStacks and URCL.NET</p><p>- Created a URCL highlight extension for VSCode</p><p>- Created a Discord bot</p>|
-||Big Gay Lady / IAmLesbian|<p>- One of the original founders of URCL</p><p>- Managed the URCL discord</p><p>- Hosted polls</p><p>- Created the URCL logo</p>|
-||Verlio\_H / |<p>- One of the original founders of URCL</p><p>- Created URCL OS</p><p>- Made the current ports documentation</p><p>- Created the complex numbers library</p>|
-||Tuke / |<p>- Created URCL OS</p><p>- Made the current ports documentation</p><p>- Created a compiler</p>|
+|Ben Aitken|Mod Punchtree / ModPunchtree|- One of the original founders of URCL- Created the Flagless fork of URCL- Managed the Google Sheet documentation for both Main URCL and Flagless- Ran URCL on both the MPU6 and MPU7- Hosted polls- Made several emulators- Made a B to URCL compiler- Made a generic URCL code optimiser- Made a Discord bot so the emulator and compiler are more easily accessible- Created and maintained this formal URCL documentation|
+||Haku / |- Created a tool to translate URCL into target CPU’s assembly- Created a URCL emulator|
+||Kuggo / Kuggo|- One of the original founders of URCL- Began working on math and string libraries- Hosted a poll|
+||Lucida Dragon / |- Created FlapStacks and URCL.NET- Created a URCL highlight extension for VSCode- Created a Discord bot|
+||Big Gay Lady / IAmLesbian|- One of the original founders of URCL- Managed the URCL discord- Hosted polls- Created the URCL logo|
+||Verlio\_H / |- One of the original founders of URCL- Created URCL OS- Made the current ports documentation- Created the complex numbers library|
+||Tuke / |- Created URCL OS- Made the current ports documentation- Created a compiler|
 ||sammyuri / sammyuri|- Ran URCL on several of their CPUs|
 ||GLS / GamingLiamStudios|- Tried to make a C to URCL compiler|
 ||Qwerasd / |- Made a URCL emulator|
-||Tape / TapeDispenser69|<p>- Made a URCL emulator in scratch</p><p>- Tried to make an OS</p><p>- Whined about the existence of Flagless URCL</p>|
-||Bram / |<p>- Created URCX Emulator</p><p>- Created the URCX discord bot</p>|
+||Tape / TapeDispenser69|- Made a URCL emulator in scratch- Tried to make an OS- Whined about the existence of Flagless URCL|
+||Bram / |- Created URCX Emulator- Created the URCX discord bot|
 ||RedCMP / RedCMD|- Created a URCL highlight extension for VSCode|
 
 1
