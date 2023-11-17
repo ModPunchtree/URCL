@@ -236,12 +236,10 @@ CPUs which are compatible with URCL can make use of the tools built for URCL. Th
 |![Tip icon]|*Go here to find the most up to date version of the official URCL documentation.*|
 | - | - |
 
-**URCL Discord:**
-
+**URCL Discord:**  
 <https://discord.gg/Nv8jzWg5j8>
 
-**URCX Emulator:**
-
+**URCX Emulator:**  
 <https://github.com/BramOtte/urcl-explorer>
 
 |![Tip icon]|*This is a URCL emulator that runs directly in the browser.*|
@@ -266,11 +264,11 @@ URCL instructions generally follow a three operand format. This means that there
 
 In written form, the instructions take the format:
 
-Identifier Destination Source1 Source2
+    Identifier Destination Source1 Source2
 
 For example:
 
-ADD R1 R2 R3
+    ADD R1 R2 R3
 
 |![Tip icon]|*Add the contents of register 2 to the contents of register 3. Then write result into register 1.*|
 | - | - |
@@ -290,14 +288,18 @@ This means that any URCL program can be translated easily, provided each instruc
 
 ### <a name="_toc112787809"></a>***Prefixes***
 There are prefixes for general purpose registers, memory, labels, relative numbers, and ports.
+
 #### *Registers*
-Registers are prefixed with either R or $. For example:
+Registers are prefixed with either `R` or `$`.
 
-R1 or $1 refer to general purpose register 1
+For example:  
+`R1` or `$1` refer to general purpose register 1.
+
 #### *Memory*
-Memory locations are prefixed with either M or #. For example:
+Memory locations are prefixed with either `M` or `#`.
 
-M0 or #0 refer to memory location 0.
+For example:  
+`M0` or `#0` refer to memory location 0.
 
 |![Tip icon]|*Note that “memory” here does not refer to the entire RAM space, it only refers to the Heap which is later described in the Memory Map section.*|
 | - | - |
@@ -306,33 +308,41 @@ M0 or #0 refer to memory location 0.
 | - | - |
 
 #### *Labels*
-Labels are prefixed with .. For example:
+Labels are prefixed with **`.`**.
 
-.test refers to the label called “test”.
+For example:  
+`.test` refers to the label called “test”.
+
 #### *Relative Numbers*
-Relative Numbers are prefixed with ~+ or ~-. For example:
+Relative Numbers are prefixed with `~+` or `~-`.
 
-~+2 is a relative number that is positive 2.
+For example:  
+`~+2` is a relative number that is positive 2.
+
 #### *Ports*
-Ports are prefixed with %. For example:
+Ports are prefixed with `%`. For example:
 
-%TEXT refers to a port called “TEXT”
+`%TEXT` refers to a port called “TEXT”
+
 ### <a name="_toc112787810"></a>***Comments***
-Comments in URCL are the same as comments in C. Line comments are denoted using //. Multi-line comments are denoted using /\* and \*/. For example:
+Comments in URCL are the same as comments in C. Line comments are denoted using `//`. Multi-line comments are denoted using `/*` and `*/`.
 
-//comment is a line comment.
+For example:
 
-/\*
+    // this comment is a line comment.
 
-comment
+    /*
+    this comment
+    is a multi-line
+    comment.
+    */
 
-\*/
-
-is a multi-line comment.
 ### <a name="_toc112787811"></a>***Macros***
-All macros are prepended with @. For example:
+All macros are prepended with `@`.
 
-<a name="_hlk112785952"></a>@DEFINE TEST 2
+For example:
+
+    @DEFINE TEST 2
 
 |![Tip icon]|*Individual macros are not defined in URCL as they are completely up to the particular URCL interpreter to define. This is to enable different interpreters to define macros to suit their own needs.*|
 | - | - |
@@ -340,67 +350,65 @@ All macros are prepended with @. For example:
 ### <a name="_toc112787812"></a>***Numbers***
 Numbers that have no prefix are in base 10, such as a number used as an immediate value. For example:
 
-IMM R1 5 in this example the 5 is being used as an immediate value and it has no prefix so it will be interpreted as being in base 10.
+`IMM R1 5` in this example the `5` is being used as an immediate value and it has no prefix so it will be interpreted as being in base 10.
 
 Base 16 and base 2 numbers can also be used but they must be prepended with 0x and 0b respectively. For example:
 
-IMM R1 0x5 the 0x5 will be interpreted as a base 16 value.
+`IMM R1 0x5` the `0x5` will be interpreted as a base 16 value.
 
-IMM R1 0b101 the 0b101 will be interpreted as a base 2 value.
+`IMM R1 0b101` the `0b101` will be interpreted as a base 2 value.
 
 |![Tip icon]|*The example instruction in the previous 3 examples all load an immediate value of 5, into register 1.*|
 | - | - |
 
 Base 8 numbers are prefixed with 0o. Numbers that are prefixed with 0 will be treated as base 10 numbers.
 
-|![Tip icon]|*Base 8 numbers are rarely used.*|
+|![Tip icon]|*Base 8 numbers are rarely used, so check they are supported by the target before using them.*|
 | - | - |
 
 ### <a name="_toc112787813"></a>***Relative Numbers***
-Relative numbers are used to specify the address of an instruction, relative to the current instruction. These are values are prefixed with a ~+ or a ~-. For example:
+Relative numbers are used to specify the address of an instruction, relative to the current instruction. These are values are prefixed with a `~+` or a `~-`. For example:
 
-JMP ~+5 the ~+5 refers to the URCL instruction 5 ahead of the current instruction.
+`JMP ~+5` the `~+5` refers to the URCL instruction 5 ahead of the current instruction.
 
-|![Tip icon]|*A relative value of ~+0 or ~-0 refers to the address of the current instruction.*|
+|![Tip icon]|*A relative value of `~+0` or `~-0` refers to the address of the current instruction.*|
 | - | - |
 
 |![Tip icon]|*Relative values must be converted into labels before being translated.*|
 | - | - |
 
 ### <a name="_toc112787814"></a>***Defined Immediate Values***
-Defined immediate values are values which are directly translated into an immediate value before translating the URCL code into the target assembly. All defined immediate values are prepended with a @.
+Defined immediate values are values which are directly translated into an immediate value before translating the URCL code into the target assembly. All defined immediate values are prepended with a `@`.
 
 The following table contains all the defined immediate values:
 
 |**Defined Immediate Value**|**Full Name**|**Value**|
 | :-: | :-: | :-: |
-|@BITS|Bits|Equal to the value of the BITS header|
-|@MINREG|Minimum registers|Equal to the value of the MINREG header|
-|@MINHEAP|Minimum heap|Equal to the value of the MINHEAP header|
-|@MINSTACK|Minimum stack|Equal to the value of the MINSTACK header|
-|@HEAP|Heap|Equal to the maximum size of the heap (where the stack is empty, and the heap occupies all available space in the RAM)Note this is specific to the target CPU instead of the URCL program|
-|@MSB|Most significant bit|Equal to a binary value with only the most significant bit active (128 in an 8 bit program)|
-|@SMSB|Signed most significant bit|Equal to a binary value with only the second most significant bit active (64 in an 8 bit program)|
-|@MAX|Maximum|Equal to a binary value with all bits active (255 in an 8 bit program)|
-|@SMAX|Signed maximum|Equal to a binary value with all bits active except the most significant bit (127 in an 8 bit program)|
-|@UHALF|Upper half|Equal to a binary value with all bits greater than or equal to 2BITS2 active (240 in an 8 bit program)|
-|@LHALF|Lower half|Equal to a binary value with all bits less than 2BITS2 active (15 in an 8 bit program)|
+|`@BITS`|Bits|Equal to the value of the BITS header|
+|`@MINREG`|Minimum registers|Equal to the value of the MINREG header|
+|`@MINHEAP`|Minimum heap|Equal to the value of the MINHEAP header|
+|`@MINSTACK`|Minimum stack|Equal to the value of the MINSTACK header|
+|`@HEAP`|Heap|Equal to the maximum size of the heap (where the stack is empty, and the heap occupies all available space in the RAM)Note this is specific to the target CPU instead of the URCL program|
+|`@MSB`|Most significant bit|Equal to a binary value with only the most significant bit active (128 in an 8 bit program)|
+|`@SMSB`|Signed most significant bit|Equal to a binary value with only the second most significant bit active (64 in an 8 bit program)|
+|`@MAX`|Maximum|Equal to a binary value with all bits active (255 in an 8 bit program)|
+|`@SMAX`|Signed maximum|Equal to a binary value with all bits active except the most significant bit (127 in an 8 bit program)|
+|`@UHALF`|Upper half|Equal to a binary value with all bits greater than or equal to 2BITS2 active (240 in an 8 bit program)|
+|`@LHALF`|Lower half|Equal to a binary value with all bits less than 2BITS2 active (15 in an 8 bit program)|
 
 |![Tip icon]|*For odd number bit widths, the Lower half will contain the middle bit and the Upper half will not.*|
 | - | - |
 
 ### <a name="_toc112787815"></a>***ASCII Characters***
-ASCII Characters In the code must enclosed using '. These characters are directly translated into an immediate value (based on 7 bit ASCII) before being translated from URCL code into the target assembly.
+ASCII Characters In the code must enclosed using `'`. These characters are directly translated into an immediate value (based on 7 bit ASCII) before being translated from URCL code into the target assembly.
 
-For example:
+For example:  
+`'C'` would become an immediate value of 67.  
+`'5'` would become an immediate value of 53.
 
-'C' would become an immediate value of 67.
-
-'5' would become an immediate value of 53.
-
-When translating characters into immediate values, refer to:
-
+When translating characters into immediate values, refer to:  
 <https://montcs.bloomu.edu/Information/Encodings/ascii-7.html>
+
 ### <a name="_toc112787816"></a>***Whitespace***
 All groups of spaces in URCL are treated as a single space. This means that multiple spaces can be used, and code can be indented however much the programmer wants while still being valid.
 
@@ -410,7 +418,7 @@ However, newlines are important as these mark where one instruction ends and the
 | - | - |
 
 ## <a name="_toc112787817"></a>**Zero Register**
-The zero register is a register that cannot be overwritten and always reads 0. The zero register is referred to in the same way as any other general purpose register. So, R0 and $0 both refer to register zero.
+The zero register is a register that cannot be overwritten and always reads 0. The zero register is referred to in the same way as any other general purpose register. So, `R0` and `$0` both refer to register zero.
 
 If the zero register is specified as a source operand to in an instruction, then it is the same as using an immediate value of zero.
 
@@ -422,25 +430,26 @@ If the zero register is specified as the destination operand in an instruction, 
 ## <a name="_toc112787818"></a>**Program Counter**
 The program counter is a register that points to the beginning of the current instruction. The program counter in URCL can be read from in the exact same way that any other general purpose register is read.
 
-The program counter is referred to using PC. For example:
+The program counter is referred to using `PC`. For example:
 
-PSH PC this pushes the value currently in the program counter onto the stack.
+`PSH PC` this pushes the value currently in the program counter onto the stack.
 
 |![Tip icon]|*Reading or writing to the program counter directly should be avoided, if possible, as some target CPUs may struggle to translate this code if the program counter cannot be accessed directly.* |
 | - | - |
 
 ## <a name="_toc112787819"></a>**Headers**
 Headers contain information which tells the URCL interpreter the required specific parameters for running a program. The headers can also allow you to see if a program is compatible with a target CPU.
+
 ### <a name="_toc112787820"></a>***CPU Word Length***
 URCL assumes that the target CPU uses the same word length for everything. This means that an 8 bit CPU can have a maximum of 256 memory locations, 256 general purpose registers and any value larger than 8 bits in the code would be truncated to make it 8 bits.
 
-The word length is specified on a per-program basis, this means that every URCL program must specify the word length it runs at. This is done using the BITS header. For example:
+The word length is specified on a per-program basis, this means that every URCL program must specify the word length it runs at. This is done using the `BITS` header. For example:
 
-BITS == 8 this specifies that the word length must be exactly 8 bits for this program.
+`BITS == 8` this specifies that the word length must be exactly 8 bits for this program.
 
-BITS >= 8 this specifies that the word length can be 8 or more bits.
+`BITS >= 8` this specifies that the word length can be 8 or more bits.
 
-BITS <= 8 this specifies that the word length can be 8 or fewer bits.
+`BITS <= 8` this specifies that the word length can be 8 or fewer bits.
 
 |![Tip icon]|*Most programs will only run at a single word length, so >= and <= are rarely used outside of libraries.*|
 | - | - |
@@ -452,17 +461,19 @@ BITS <= 8 this specifies that the word length can be 8 or fewer bits.
 | - | - |
 
 ### <a name="_toc112787821"></a>***Minimum Number of Registers***
-The number of registers that can be used in URCL is fixed and each program needs to specify the minimum number of general purpose registers it requires. This is done using the MINREG header. For example:
+The number of registers that can be used in URCL is fixed and each program needs to specify the minimum number of general purpose registers it requires. This is done using the MINREG header. 
 
-MINREG 4 this specifies that this program requires a minimum of 4 general purpose registers which means that any CPU at least 4 general purpose registers can run the program (provided it meets all other requirements).
+For example:  
+`MINREG 4` this specifies that this program requires a minimum of 4 general purpose registers which means that any CPU at least 4 general purpose registers can run the program (provided it meets all other requirements).
 
 |![Tip icon]|*If the MINREG header is missing, then the assumed value is 8.*|
 | - | - |
 
 ### <a name="_toc112787822"></a>***Minimum Heap Space***
-The minimum number of words of heap space a program needs is specified using the MINHEAP header. For example:
+The minimum number of words of heap space a program needs is specified using the `MINHEAP` header.
 
-MINHEAP 16 this specifies that this program needs 16 words of heap space to run.
+For example:  
+`MINHEAP 16` this specifies that this program needs 16 words of heap space to run.
 
 |![Tip icon]|*Note that the Heap does not refer to the entire RAM space. The Heap is described in more detail in the Memory Map section.*|
 | - | - |
@@ -473,19 +484,19 @@ MINHEAP 16 this specifies that this program needs 16 words of heap space to run.
 ### <a name="_toc112787823"></a>***Instruction Storage Architecture***
 There are two ways that instructions can be stored on a target CPU. The instructions can be stored in the same RAM space that the program runs in (for example von Neumann architecture) or the instructions can be stored in a separate space which cannot be accessed while the program is running (for example Harvard architecture).
 
-URCL programs which store data inside of the instructions will only work if the instructions are stored in the same space that the program is running in. So, it is important that programs specify which storage architecture they require. This is done using the RUN header. For example:
+URCL programs which store data inside of the instructions will only work if the instructions are stored in the same space that the program is running in. So, it is important that programs specify which storage architecture they require. This is done using the `RUN` header.
 
-RUN RAM specifies that the instructions are stored in the same space the program runs in.
-
-RUN ROM specifies that the instructions are not stored in the same space the program runs in.
+For example:  
+`RUN RAM` specifies that the instructions are stored in the same space the program runs in.  
+`RUN ROM` specifies that the instructions are not stored in the same space the program runs in.
 
 |![Tip icon]|*If the RUN header is missing, then the assumed value is RUN ROM.*|
 | - | - |
 
 ### <a name="_toc112787824"></a>***Minimum Stack Size***
-Programs can specify the minimum number of words that the stack must be able to hold in order to run a program. This is done using the MINSTACK header. For example:
+Programs can specify the minimum number of words that the stack must be able to hold in order to run a program. This is done using the `MINSTACK` header. For example:
 
-MINSTACK 32 specifies that the stack must be able to hold at least 32 values to run this program.
+`MINSTACK 32` specifies that the stack must be able to hold at least 32 values to run this program.
 
 |![Tip icon]|*If the MINSTACK header is missing, then the assumed value is 8.*|
 | - | - |
@@ -500,75 +511,80 @@ MINSTACK 32 specifies that the stack must be able to hold at least 32 values to 
 Define words are predefined values that exist inside of the RAM/ROM space where the URCL program is stored. In both RUN RAM and RUN ROM programs these values can freely be read and written to in the same way as any other value in the heap.
 
 These are useful for storing predefined arrays, strings, or lookup tables within a URCL program.
-### <a name="_toc112787826"></a>***Define Word Definition***
-Defined words are created by writing DW followed by a value. The value must be able to fit in a single word (so, the value must be between 0 and 255 in an 8 bit program). For example:
 
-<a name="_hlk91618808"></a>DW 0x45
+### <a name="_toc112787826"></a>***Define Word Definition***
+Defined words are created by writing `DW` followed by a value. The value must be able to fit in a single word (so, the value must be between 0 and 255 in an 8 bit program).
+
+For example:
+
+    DW 0x45
 
 This defines a value of “0x45” directly inside of the URCL program.
 
-Arrays of values can also be defined by writing DW followed by an array of values enclosed with square braces [ and ]. For example:
+Arrays of values can also be defined by writing `DW` followed by an array of values enclosed with square braces `[` and `]`.
 
-DW [0 1 2 3]
+For example:
+
+    DW [0 1 2 3]
 
 This defines 4 sequential values. The first is 0, the second is 1, the third is 2 and the final value is 3.
 
 The above example is identical to:
 
-DW 0
-
-DW 1
-
-DW 2
-
-DW 3
+    DW 0
+    DW 1
+    DW 2
+    DW 3
 
 Where each value inside of the array is a single, separate defined value.
 
-|![Tip icon]|*Note that the order the values in the array are defined, starts with the first item in the array. The order must not be changed.*|
+|![Tip icon]|*Note that the order the values in the array are defined, starts with the first item in the array. The order must not be changed when translating to the target.*|
 | - | - |
 
 |![Tip icon]|*Defined values that are in series (such as an array) must be stored in adjacent RAM address values in the target CPU. This is so that any value in the array can be accessed by adding its index to the address of the first value.*|
 | - | - |
 
 ### <a name="_toc112787827"></a>***Define Word Usage***
-Defined words can be pointed to using relative values or labels. For example:
+Defined words can be pointed to using relative values or labels.
 
-.test2
+For example:
 
-`    `DW 0x45
+    .test2
+        DW 0x45
 
 The label “test2” points to the defined value of “0x45”.
 
-Values inside of an array can be accessed by adding the array index to the address value of the first item in the array. For example:
+Values inside of an array can be accessed by adding the array index to the address value of the first item in the array.
 
-.test3
+For example:
 
-`    `DW 0
-
-`    `DW 1
+    .test3
+        DW 0
+        DW 1
 
 The second defined value (1) can be accessed by adding 1 the “test3” label, then reading/writing to that address. So:
 
-LLOD R1 .test3 1
+    LLOD R1 .test3 1
 
 This will load the value located at the address value pointed to by “test3” plus one, into register one.
 ## <a name="_toc112787828"></a>**Labels**
 Labels point towards a particular memory or instruction location. Labels in URCL work similar to labels in most assembly languages.
 ### <a name="_toc112787829"></a>***Label Definition***
-Labels are defined by writing . followed by the name of the label on a line. That label then points to the instruction or data contained in the next line. The label name must be unique and can be made of string of letters, numbers and underscore. For example:
+Labels are defined by writing `.` followed by the name of the label on a line. That label then points to the instruction or data contained in the next line. The label name must be unique and can be made of string of letters, numbers and underscore.
 
-.test
+For example:
 
-`    `ADD R1 R2 R3
+    .test
+        ADD R1 R2 R3
 
-This defines the label “test”, and this label points to the instruction: ADD R1 R2 R3.
+This defines the label “test”, and this label points to the instruction: `ADD R1 R2 R3`.
 
-Labels can also point to data that is stored inside of the instructions as defined values. For example:
+Labels can also point to data that is stored inside of the instructions as defined values.
 
-.test2
+For example:
 
-`    `DW 0x45
+    .test2
+        DW 0x45
 
 This defines the label “test2”, and this points to the defined value “0x45” which is located inside of the instructions.
 
@@ -581,12 +597,12 @@ This defines the label “test2”, and this points to the defined value “0x45
 ### <a name="_toc112787830"></a>***Label Usage***
 Once defined, labels can be used in the code as source operands. They act the same as immediate values as a label is simply an immediate value which points to the address it was defined at. For example:
 
-JMP .test which branches to the location of the label “test”.
+`JMP .test` which branches to the location of the label “test”.
 
 |![Tip icon]|*Labels are converted to immediate values after being translated to the target CPUs assembly code.*<br>*This means that they can be translated in the exact same way as an immediate value would.*|
 | - | - |
 
-ADD R1 .test 1 which adds 1 to the location of the label “test”.
+`ADD R1 .test 1` which adds 1 to the location of the label “test”.
 
 |![Tip icon]|*Since the size of the instructions on the target CPU can be bigger than one word, adding 1 to a label which points at an instruction does not make that label point to the next instruction.*<br>*Labels can only be added to or subtracted from if that label points to DW values as these are guaranteed to occupy 1 word per value, regardless of the target CPU.*|
 | - | - |
@@ -594,10 +610,10 @@ ADD R1 .test 1 which adds 1 to the location of the label “test”.
 ## <a name="_toc112787831"></a>**Memory Map**
 ![URCL memory map for the working RAM.](Aspose.Words.5ebee7e7-a737-4c78-8154-76c760e3d5e0.004.png)
 
-- Normal memory values should be prepended with ‘M’ or ‘#’.
+- Normal memory values should be prepended with `M` or `#`.
 - Normal memory values do not use an absolute RAM address, instead they are relative to the start of the Heap.
 - M0 points to the start of the Heap.
-- If a memory address is specified without being prepended with ‘M’ or ‘#’ then it will be treated as an absolute address.
+- If a memory address is specified without being prepended with `M` or `#` then it will be treated as an absolute address.
 - The stack pointer must be stored in a dedicated general purpose register.
 
 The RAM layout depends on the instruction storage architecture specified using the RUN header.
@@ -626,9 +642,9 @@ The stack always starts at the top of the RAM (the highest address value) and ex
 ### <a name="_toc112787834"></a>***Stack Pointer***
 The stack pointer points to the final item on the stack, rather than the next available space. When an item is added to the stack the stack pointer is decremented by 1, and when an item is removed from the stack the stack pointer is incremented by 1.
 
-The stack pointer in URCL must be stored in a dedicated general purpose register. This means it can be read and written to in the same way as any other register. To specify the stack pointer register, SP is used. For example:
+The stack pointer in URCL must be stored in a dedicated general purpose register. This means it can be read and written to in the same way as any other register. To specify the stack pointer register, `SP` is used. For example:
 
-MOV R1 SP this instruction reads from the stack pointer register.
+`MOV R1 SP` this instruction reads from the stack pointer register.
 
 |![Tip icon]|*Modifying the stack pointer directly is potentially dangerous as it can become out of sync to the stack. So, avoid doing this if it is not necessary.*|
 | - | - |
@@ -663,11 +679,12 @@ ADD requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|ADD R1 R2 R3|
+|Register|Register|Register|<pre>ADD R1 R2 R3</pre>|
 #### *Code Examples*
-ADD R1 R1 R2
+    ADD R1 R1 R2
 
 This instruction adds the value in register 1 to the value in register 2, then it stores the result into register 1.
+
 ### <a name="_toc112787838"></a>***RSH***
 #### *Full Name*
 Right shift
@@ -688,9 +705,9 @@ RSH requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|RSH R1 R2|
+|Register|Register|<pre>RSH R1 R2</pre>|
 #### *Code Examples*
-RSH R1 R1
+    RSH R1 R1
 
 This instruction right shifts the value in register 1, then it stores the result into register 1.
 ### <a name="_toc112787839"></a>***LOD***
@@ -703,9 +720,9 @@ LOD requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register (Pointer)|LOD R1 R2|
+|Register|Register (Pointer)|<pre>LOD R1 R2</pre>|
 #### *Code Examples*
-LOD R1 R1
+    LOD R1 R1
 
 This instruction copies the RAM value addressed by the value in register 1, then it stores the result into register 1.
 ### <a name="_toc112787840"></a>***STR***
@@ -718,9 +735,9 @@ STR requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register (Pointer)|Register|STR R1 R2|
+|Register (Pointer)|Register|<pre>STR R1 R2</pre>|
 #### *Code Examples*
-STR R1 R1
+    STR R1 R1
 
 This instruction copies the value in register 1 into the RAM value addressed by the value in register 1.
 ### <a name="_toc112787841"></a>***BGE***
@@ -737,9 +754,9 @@ BGE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|BGE R1 R2 R3|
+|Register|Register|Register|<pre>BGE R1 R2 R3</pre>|
 #### *Code Examples*
-BGE R1 R3 R2
+    BGE R1 R3 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 3 is greater than or equal to the value in register 2.
 ### <a name="_toc112787842"></a>***NOR***
@@ -752,9 +769,9 @@ NOR requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|NOR R1 R2 R3|
+|Register|Register|Register|<pre>NOR R1 R2 R3</pre>|
 #### *Code Examples*
-NOR R1 R1 R2
+    NOR R1 R1 R2
 
 This instruction does a bitwise NOR of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787843"></a>***IMM***
@@ -767,9 +784,9 @@ IMM requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Immediate|IMM R1 6|
+|Register|Immediate|<pre>IMM R1 6</pre>|
 #### *Code Examples*
-IMM R3 5
+    IMM R3 5
 
 This instruction copies the immediate value 5 and stores it into register 3.
 ## <a name="_toc112787844"></a>**Basic Instructions**
@@ -788,16 +805,16 @@ ADD requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|ADD R1 R2 R3|
-|Register|Register|Immediate|ADD R1 R2 1|
-|Register|Immediate|Register|ADD R1 1 R3|
-|Register|Immediate|Immediate|ADD R1 1 2|
+|Register|Register|Register|<pre>ADD R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>ADD R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>ADD R1 1 R3</pre>|
+|Register|Immediate|Immediate|<pre>ADD R1 1 2</pre>|
 #### *Code Examples*
-ADD R3 3 5
+    ADD R3 3 5
 
 This instruction adds the immediate value of 3 to the immediate value of 5 and stores the result (8) into register 3.
 
-ADD R1 R1 R2
+    ADD R1 R1 R2
 
 This instruction adds the value in register 1 to the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787846"></a>***RSH***
@@ -820,14 +837,14 @@ RSH requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|RSH R1 R2|
-|Register|Immediate|RSH R1 1|
+|Register|Register|<pre>RSH R1 R2</pre>|
+|Register|Immediate|<pre>RSH R1 1</pre>|
 #### *Code Examples*
-RSH R3 3
+    RSH R3 3
 
 This instruction right shifts the immediate value of 3 and stores the result (1) into register 3.
 
-RSH R1 R1
+    RSH R1 R1
 
 This instruction right shifts the value in register 1, then it stores the result into register 1.
 ### <a name="_toc112787847"></a>***LOD***
@@ -840,22 +857,22 @@ LOD requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|RAM Address (Relative)|LOD R1 M2|
-|Register|RAM Address (Literal)|LOD R1 1|
-|Register|Register (Pointer)|LOD R1 R2|
-|Program Counter|RAM Address (Relative)|LOD PC M2|
-|Program Counter|RAM Address (Literal)|LOD PC 1|
-|Program Counter|Register (Pointer)|LOD PC R2|
+|Register|RAM Address (Relative)|<pre>LOD R1 M2</pre>|
+|Register|RAM Address (Literal)|<pre>LOD R1 1</pre>|
+|Register|Register (Pointer)|<pre>LOD R1 R2</pre>|
+|Program Counter|RAM Address (Relative)|<pre>LOD PC M2</pre>|
+|Program Counter|RAM Address (Literal)|<pre>LOD PC 1</pre>|
+|Program Counter|Register (Pointer)|<pre>LOD PC R2</pre>|
 
 |![Tip icon]|*Loading directly into the program counter should be avoided if possible. This is because it may be hard to translate to some target CPUs which cannot access their program counter directly.*|
 | - | - |
 
 #### *Code Examples*
-LOD R3 3
+    LOD R3 3
 
 This instruction copies the RAM value addressed by an immediate value of 3 and stores the result into register 3.
 
-LOD R1 R1
+    LOD R1 R1
 
 This instruction copies the RAM value addressed by the value in register 1, then it stores the result into register 1.
 ### <a name="_toc112787848"></a>***STR***
@@ -868,18 +885,18 @@ STR requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|RAM Address (Relative)|Register|STR M2 R1|
-|RAM Address (Literal)|Register|STR 1 R1|
-|Register (Pointer)|Register|STR R1 R2|
-|RAM Address (Relative)|Immediate|STR M2 5|
-|RAM Address (Literal)|Immediate|STR 1 5|
-|Register (Pointer)|Immediate|STR R1 5|
+|RAM Address (Relative)|Register|<pre>STR M2 R1</pre>|
+|RAM Address (Literal)|Register|<pre>STR 1 R1</pre>|
+|Register (Pointer)|Register|<pre>STR R1 R2</pre>|
+|RAM Address (Relative)|Immediate|<pre>STR M2 5</pre>|
+|RAM Address (Literal)|Immediate|<pre>STR 1 5</pre>|
+|Register (Pointer)|Immediate|<pre>STR R1 5</pre>|
 #### *Code Examples*
-STR 3 R3
+    STR 3 R3
 
 This instruction copies the value in register 3 into the RAM value addressed by an immediate value of 3.
 
-STR R1 R1
+    STR R1 R1
 
 This instruction copies the value in register 1 into the RAM value addressed by the value in register 1.
 ### <a name="_toc112787849"></a>***BGE***
@@ -896,18 +913,18 @@ BGE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BGE .foo R2 R3|
-|Immediate|Register|Immediate|BGE .foo R2 1|
-|Immediate|Immediate|Register|BGE .foo 1 R3|
-|Register|Register|Register|BGE R1 R2 R3|
-|Register|Register|Immediate|BGE R1 R2 1|
-|Register|Immediate|Register|BGE R1 1 R3|
+|Immediate|Register|Register|<pre>BGE .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BGE .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BGE .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BGE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BGE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BGE R1 1 R3</pre>|
 #### *Code Examples*
-BGE .foo R1 5
+    BGE .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is greater than or equal to the immediate value of 5.
 
-BGE R1 5 R2
+    BGE R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is greater than or equal to the value in register 2.
 ### <a name="_toc112787850"></a>***NOR***
@@ -920,15 +937,15 @@ NOR requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|NOR R1 R2 R3|
-|Register|Register|Immediate|NOR R1 R2 1|
-|Register|Immediate|Register|NOR R1 1 R3|
+|Register|Register|Register|<pre>NOR R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>NOR R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>NOR R1 1 R3</pre>|
 #### *Code Examples*
-NOR R3 3 R2
+    NOR R3 3 R2
 
 This instruction does a bitwise NOR of the immediate value of 3 and the value in register 2 and stores the result into register 3.
 
-NOR R1 R1 R2
+    NOR R1 R1 R2
 
 This instruction does a bitwise NOR of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787851"></a>***SUB***
@@ -941,19 +958,19 @@ SUB requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SUB R1 R2 R3|
-|Register|Register|Immediate|SUB R1 R2 1|
-|Register|Immediate|Register|SUB R1 1 R3|
-|Register|Immediate|Immediate|SUB R1 1 2|
+|Register|Register|Register|<pre>SUB R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SUB R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SUB R1 1 R3</pre>|
+|Register|Immediate|Immediate|<pre>SUB R1 1 2</pre>|
 #### *Code Examples*
-SUB R3 3 5
+    SUB R3 3 5
 
 This instruction subtracts the immediate value of 3 from the immediate value of 5 and stores the result (-2 in 2’s complement) into register 3.
 
 |![Tip icon]|*Negative numbers will use 2’s complement. So, -2 on an 8 bit CPU would be the equivalent of 254.*|
 | - | - |
 
-SUB R1 R1 R2
+    SUB R1 R1 R2
 
 This instruction subtracts the value in register 1 from the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787852"></a>***JMP***
@@ -966,14 +983,14 @@ JMP requires 1 operand.
 
 |**Destination**|**Example**|
 | :-: | :-: |
-|Immediate|JMP 5|
-|Register|JMP R1|
+|Immediate|<pre>JMP 5</pre>|
+|Register|<pre>JMP R1</pre>|
 #### *Code Examples*
-JMP .test
+    JMP .test
 
 This instruction jumps to the instruction addressed by the label “test”.
 
-JMP R1
+    JMP R1
 
 This instruction jumps to the instruction addressed by the value in register 1.
 ### <a name="_toc112787853"></a>***MOV***
@@ -986,14 +1003,14 @@ MOV requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|MOV R1 R2|
-|Register|Immediate|MOV R1 .foo|
+|Register|Register|<pre>MOV R1 R2</pre>|
+|Register|Immediate|<pre>MOV R1 .foo</pre>|
 #### *Code Examples*
-MOV R1 R2
+    MOV R1 R2
 
 This instruction copies the value in register 2, then it stores it into register 1.
 
-MOV R3 M5
+    MOV R3 M5
 
 This instruction copies the address of memory location 5 (as an immediate value) and stores it into register 3.
 
@@ -1012,7 +1029,7 @@ The NOP instruction does nothing.
 #### *Operands*
 NOP requires 0 operands.
 #### *Code Examples*
-NOP
+    NOP
 
 This instruction does nothing.
 ### <a name="_toc112787855"></a>***IMM***
@@ -1025,9 +1042,9 @@ IMM requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Immediate|IMM R1 6|
+|Register|Immediate|<pre>IMM R1 6</pre>|
 #### *Code Examples*
-IMM R3 5
+    IMM R3 5
 
 This instruction copies the immediate value 5 and stores it into register 3.
 
@@ -1051,14 +1068,14 @@ LSH requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|LSH R1 R2|
-|Register|Immediate|LSH R1 1|
+|Register|Register|<pre>LSH R1 R2</pre>|
+|Register|Immediate|<pre>LSH R1 1</pre>|
 #### *Code Examples*
-LSH R3 3
+    LSH R3 3
 
 This instruction left shifts the immediate value of 3 and stores the result (6) into register 3.
 
-LSH R1 R1
+    LSH R1 R1
 
 This instruction left shifts the value in register 1, then it stores the result into register 1.
 ### <a name="_toc112787857"></a>***INC***
@@ -1071,14 +1088,14 @@ INC requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|INC R1 R2|
-|Register|Immediate|INC R1 .foo|
+|Register|Register|<pre>INC R1 R2</pre>|
+|Register|Immediate|<pre>INC R1 .foo</pre>|
 #### *Code Examples*
-INC R1 R2
+    INC R1 R2
 
 This instruction adds 1 to the value in register 2, then it stores it into register 1.
 
-INC R3 .foo
+    INC R3 .foo
 
 This instruction adds 1 to the address of the label “foo” and stores it into register 3.
 
@@ -1095,14 +1112,14 @@ DEC requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|DEC R1 R2|
-|Register|Immediate|DEC R1 .foo|
+|Register|Register|<pre>DEC R1 R2</pre>|
+|Register|Immediate|<pre>DEC R1 .foo</pre>|
 #### *Code Examples*
-DEC R1 R2
+    DEC R1 R2
 
 This instruction subtracts 1 from the value in register 2, then it stores it into register 1.
 
-DEC R3 .foo
+    DEC R3 .foo
 
 This instruction subtracts 1 from the address of the label “foo” and stores it into register 3.
 ### <a name="_toc112787859"></a>***NEG***
@@ -1115,14 +1132,14 @@ NEG requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|NEG R1 R2|
-|Register|Immediate|NEG R1 5|
+|Register|Register|<pre>NEG R1 R2</pre>|
+|Register|Immediate|<pre>NEG R1 5</pre>|
 #### *Code Examples*
-NEG R1 R2
+    NEG R1 R2
 
 This instruction calculates the 2’s complement of the value in register 2 and stores the result into register 1.
 
-NEG R3 5
+    NEG R3 5
 
 This instruction calculates the 2’s complement of the immediate value 5 and stores the result (-5) into register 3.
 ### <a name="_toc112787860"></a>***AND***
@@ -1135,15 +1152,15 @@ AND requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|AND R1 R2 R3|
-|Register|Register|Immediate|AND R1 R2 1|
-|Register|Immediate|Register|AND R1 1 R3|
+|Register|Register|Register|<pre>AND R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>AND R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>AND R1 1 R3</pre>|
 #### *Code Examples*
-AND R3 3 R2
+    AND R3 3 R2
 
 This instruction does a bitwise AND of the immediate value of 3 and the value in register 2 and stores the result into register 3.
 
-AND R1 R1 R2
+    AND R1 R1 R2
 
 This instruction does a bitwise AND of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787861"></a>***OR***
@@ -1156,15 +1173,15 @@ OR requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|OR R1 R2 R3|
-|Register|Register|Immediate|OR R1 R2 1|
-|Register|Immediate|Register|OR R1 1 R3|
+|Register|Register|Register|<pre>OR R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>OR R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>OR R1 1 R3</pre>|
 #### *Code Examples*
-OR R3 3 R2
+    OR R3 3 R2
 
 This instruction does a bitwise OR of the immediate value of 3 and the value in register 2 and stores the result into register 3.
 
-OR R1 R1 R2
+    OR R1 R1 R2
 
 This instruction does a bitwise OR of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787862"></a>***NOT***
@@ -1177,14 +1194,14 @@ NOT requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|NOT R1 R2|
-|Register|Immediate|NOT R1 1|
+|Register|Register|<pre>NOT R1 R2</pre>|
+|Register|Immediate|<pre>NOT R1 1</pre>|
 #### *Code Examples*
-NOT R1 R1
+    NOT R1 R1
 
 This instruction does a bitwise NOT of the value in register 1, then it stores the result into register 1.
 
-NOT R3 3
+    NOT R3 3
 
 This instruction does a bitwise NOT of the immediate value of 3 and stores the result into register 3.
 
@@ -1201,15 +1218,15 @@ XNOR requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|XNOR R1 R2 R3|
-|Register|Register|Immediate|XNOR R1 R2 1|
-|Register|Immediate|Register|XNOR R1 1 R3|
+|Register|Register|Register|<pre>XNOR R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>XNOR R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>XNOR R1 1 R3</pre>|
 #### *Code Examples*
-XNOR R3 3 R2
+    XNOR R3 3 R2
 
 This instruction does a bitwise XNOR of the immediate value 3 and the value in register 2 and stores the result into register 3.
 
-XNOR R1 R1 R2
+    XNOR R1 R1 R2
 
 This instruction does a bitwise XNOR of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787864"></a>***XOR***
@@ -1222,15 +1239,15 @@ XOR requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|XOR R1 R2 R3|
-|Register|Register|Immediate|XOR R1 R2 1|
-|Register|Immediate|Register|XOR R1 1 R3|
+|Register|Register|Register|<pre>XOR R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>XOR R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>XOR R1 1 R3</pre>|
 #### *Code Examples*
-XOR R3 3 R2
+    XOR R3 3 R2
 
 This instruction does a bitwise XOR of the immediate value 3 and the value in register 2 and stores the result into register 3.
 
-XOR R1 R1 R2
+    XOR R1 R1 R2
 
 This instruction does a bitwise XOR of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787865"></a>***NAND***
@@ -1243,15 +1260,15 @@ NAND requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|NAND R1 R2 R3|
-|Register|Register|Immediate|NAND R1 R2 1|
-|Register|Immediate|Register|NAND R1 1 R3|
+|Register|Register|Register|<pre>NAND R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>NAND R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>NAND R1 1 R3</pre>|
 #### *Code Examples*
-NAND R3 3 R2
+    NAND R3 3 R2
 
 This instruction does a bitwise NAND of the immediate value of 3 and the value in register 2 and stores the result into register 3.
 
-NAND R1 R1 R2
+    NAND R1 R1 R2
 
 This instruction does a bitwise NAND of the value in register 1 and the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787866"></a>***BRL***
@@ -1268,18 +1285,18 @@ BRL requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BRL .foo R2 R3|
-|Immediate|Register|Immediate|BRL .foo R2 1|
-|Immediate|Immediate|Register|BRL .foo 1 R3|
-|Register|Register|Register|BRL R1 R2 R3|
-|Register|Register|Immediate|BRL R1 R2 1|
-|Register|Immediate|Register|BRL R1 1 R3|
+|Immediate|Register|Register|<pre>BRL .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BRL .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BRL .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BRL R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BRL R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BRL R1 1 R3</pre>|
 #### *Code Examples*
-BRL .foo R1 5
+    BRL .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is less than the immediate value of 5.
 
-BRL R1 5 R2
+    BRL R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is less than the value in register 2.
 ### <a name="_toc112787867"></a>***BRG***
@@ -1296,18 +1313,18 @@ BRG requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BRG .foo R2 R3|
-|Immediate|Register|Immediate|BRG .foo R2 1|
-|Immediate|Immediate|Register|BRG .foo 1 R3|
-|Register|Register|Register|BRG R1 R2 R3|
-|Register|Register|Immediate|BRG R1 R2 1|
-|Register|Immediate|Register|BRG R1 1 R3|
+|Immediate|Register|Register|<pre>BRG .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BRG .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BRG .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BRG R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BRG R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BRG R1 1 R3</pre>|
 #### *Code Examples*
-BRG .foo R1 5
+    BRG .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is greater than the immediate value of 5.
 
-BRG R1 5 R2
+    BRG R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is greater than the value in register 2.
 ### <a name="_toc112787868"></a>***BRE***
@@ -1320,18 +1337,18 @@ BRE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BRE .foo R2 R3|
-|Immediate|Register|Immediate|BRE .foo R2 1|
-|Immediate|Immediate|Register|BRE .foo 1 R3|
-|Register|Register|Register|BRE R1 R2 R3|
-|Register|Register|Immediate|BRE R1 R2 1|
-|Register|Immediate|Register|BRE R1 1 R3|
+|Immediate|Register|Register|<pre>BRE .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BRE .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BRE .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BRE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BRE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BRE R1 1 R3</pre>|
 #### *Code Examples*
-BRE .foo R1 5
+    BRE .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is equal to the immediate value of 5.
 
-BRE R1 5 R2
+    BRE R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is equal to the value in register 2.
 ### <a name="_toc112787869"></a>***BNE***
@@ -1344,18 +1361,18 @@ BNE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BNE .foo R2 R3|
-|Immediate|Register|Immediate|BNE .foo R2 1|
-|Immediate|Immediate|Register|BNE .foo 1 R3|
-|Register|Register|Register|BNE R1 R2 R3|
-|Register|Register|Immediate|BNE R1 R2 1|
-|Register|Immediate|Register|BNE R1 1 R3|
+|Immediate|Register|Register|<pre>BNE .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BNE .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BNE .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BNE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BNE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BNE R1 1 R3</pre>|
 #### *Code Examples*
-BNE .foo R1 5
+    BNE .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is not equal to the immediate value of 5.
 
-BNE R1 5 R2
+    BNE R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is not equal to the value in register 2.
 ### <a name="_toc112787870"></a>***BOD***
@@ -1372,14 +1389,14 @@ BOD requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Immediate|Register|BOD .foo R2|
-|Register|Register|BOD R1 R2|
+|Immediate|Register|<pre>BOD .foo R2</pre>|
+|Register|Register|<pre>BOD R1 R2</pre>|
 #### *Code Examples*
-BOD .foo R1
+    BOD .foo R1
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is odd.
 
-BOD R1 R2
+    BOD R1 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 2 is odd.
 ### <a name="_toc112787871"></a>***BEV***
@@ -1396,14 +1413,14 @@ BEV requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Immediate|Register|BEV .foo R2|
-|Register|Register|BEV R1 R2|
+|Immediate|Register|<pre>BEV .foo R2</pre>|
+|Register|Register|<pre>BEV R1 R2</pre>|
 #### *Code Examples*
-BEV .foo R1
+    BEV .foo R1
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is even.
 
-BEV R1 R2
+    BEV R1 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 2 is even.
 ### <a name="_toc112787872"></a>***BLE***
@@ -1420,18 +1437,18 @@ BLE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BLE .foo R2 R3|
-|Immediate|Register|Immediate|BLE .foo R2 1|
-|Immediate|Immediate|Register|BLE .foo 1 R3|
-|Register|Register|Register|BLE R1 R2 R3|
-|Register|Register|Immediate|BLE R1 R2 1|
-|Register|Immediate|Register|BLE R1 1 R3|
+|Immediate|Register|Register|<pre>BLE .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BLE .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BLE .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BLE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BLE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BLE R1 1 R3</pre>|
 #### *Code Examples*
-BLE .foo R1 5
+    BLE .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is less than or equal to the immediate value of 5.
 
-BLE R1 5 R2
+    BLE R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is less than or equal to the value in register 2.
 ### <a name="_toc112787873"></a>***BRZ***
@@ -1444,14 +1461,14 @@ BRZ requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Immediate|Register|BRZ .foo R2|
-|Register|Register|BRZ R1 R2|
+|Immediate|Register|<pre>BRZ .foo R2</pre>|
+|Register|Register|<pre>BRZ R1 R2</pre>|
 #### *Code Examples*
-BRZ .foo R1
+    BRZ .foo R1
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is equal to zero.
 
-BRZ R1 R2
+    BRZ R1 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 2 is equal to zero.
 ### <a name="_toc112787874"></a>***BNZ***
@@ -1464,14 +1481,14 @@ BNZ requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Immediate|Register|BNZ .foo R2|
-|Register|Register|BNZ R1 R2|
+|Immediate|Register|<pre>BNZ .foo R2</pre>|
+|Register|Register|<pre>BNZ R1 R2</pre>|
 #### *Code Examples*
-BNZ .foo R1
+    BNZ .foo R1
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is not equal to zero.
 
-BNZ R1 R2
+    BNZ R1 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 2 is not equal to zero.
 ### <a name="_toc112787875"></a>***BRN***
@@ -1491,14 +1508,14 @@ BRN requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Immediate|Register|BRN .foo R2|
-|Register|Register|BRN R1 R2|
+|Immediate|Register|<pre>BRN .foo R2</pre>|
+|Register|Register|<pre>BRN R1 R2</pre>|
 #### *Code Examples*
-BRN .foo R1
+    BRN .foo R1
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is negative.
 
-BRN R1 R2
+    BRN R1 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 2 is negative.
 ### <a name="_toc112787876"></a>***BRP***
@@ -1518,14 +1535,14 @@ BRP requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Immediate|Register|BRP .foo R2|
-|Register|Register|BRP R1 R2|
+|Immediate|Register|<pre>BRP .foo R2</pre>|
+|Register|Register|<pre>BRP R1 R2</pre>|
 #### *Code Examples*
-BRP .foo R1
+    BRP .foo R1
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is positive.
 
-BRP R1 R2
+    BRP R1 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the value in register 2 is positive.
 ### <a name="_toc112787877"></a>***PSH***
@@ -1542,14 +1559,14 @@ PSH requires 1 operand.
 
 |**Source1**|**Example**|
 | :-: | :-: |
-|Register|PSH R1|
-|Immediate|PSH 5|
+|Register|<pre>PSH R1</pre>|
+|Immediate|<pre>PSH 5</pre>|
 #### *Code Examples*
-PSH R1
+    PSH R1
 
 This instruction pushes the value in register 1 onto the stack.
 
-PSH .test
+    PSH .test
 
 This instruction pushes the address of the label “test” onto the stack.
 ### <a name="_toc112787878"></a>***POP***
@@ -1566,9 +1583,9 @@ POP requires 1 operand.
 
 |**Destination**|**Example**|
 | :-: | :-: |
-|Register|POP R1|
+|Register|<pre>POP R1</pre>|
 #### *Code Examples*
-POP R1
+    POP R1
 
 This instruction pops from the stack into register 1.
 ### <a name="_toc112787879"></a>***CAL***
@@ -1589,13 +1606,13 @@ CAL requires 1 operand.
 |**Source1**|**Example**|
 | :-: | :-: |
 |Immediate|CAL .test|
-|Register|CAL R1|
+|Register|<pre>CAL R1</pre>|
 #### *Code Examples*
-CAL .test
+    CAL .test
 
 This instruction pushes the address of the next instruction onto the stack then it branches to the instruction pointed to by the label “test”.
 
-CAL R1
+    CAL R1
 
 This instruction pushes the address of the next instruction onto the stack then it branches to the instruction pointed to by the value in register 1.
 ### <a name="_toc112787880"></a>***RET***
@@ -1610,7 +1627,7 @@ The RET instruction pops a value from the stack then it branches to that value.
 #### *Operands*
 RET requires 0 operands.
 #### *Code Examples*
-RET
+    RET
 
 This instruction pops a value from the stack then it branches to that value.
 ### <a name="_toc112787881"></a>***HLT***
@@ -1628,7 +1645,7 @@ The HLT instruction halts execution.
 #### *Operands*
 HLT requires 0 operands.
 #### *Code Examples*
-HLT
+    HLT
 
 This instruction halts the target CPU.
 ### <a name="_toc112787882"></a>***CPY***
@@ -1641,25 +1658,25 @@ CPY requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|RAM Address (Relative)|RAM Address (Relative)|CPY M1 M2|
-|RAM Address (Relative)|RAM Address (Literal)|CPY M1 1|
-|RAM Address (Relative)|Register (Pointer)|CPY M1 R2|
-|RAM Address (Literal)|RAM Address (Relative)|CPY 1 M2|
-|RAM Address (Literal)|RAM Address (Literal)|CPY 1 1|
-|RAM Address (Literal)|Register (Pointer)|CPY 1 R2|
-|Register|RAM Address (Relative)|CPY R1 M2|
-|Register|RAM Address (Literal)|CPY R1 1|
-|Register|Register (Pointer)|CPY R1 R2|
+|RAM Address (Relative)|RAM Address (Relative)|<pre>CPY M1 M2</pre>|
+|RAM Address (Relative)|RAM Address (Literal)|<pre>CPY M1 1</pre>|
+|RAM Address (Relative)|Register (Pointer)|<pre>CPY M1 R2</pre>|
+|RAM Address (Literal)|RAM Address (Relative)|<pre>CPY 1 M2</pre>|
+|RAM Address (Literal)|RAM Address (Literal)|<pre>CPY 1 1</pre>|
+|RAM Address (Literal)|Register (Pointer)|<pre>CPY 1 R2</pre>|
+|Register|RAM Address (Relative)|<pre>CPY R1 M2</pre>|
+|Register|RAM Address (Literal)|<pre>CPY R1 1</pre>|
+|Register|Register (Pointer)|<pre>CPY R1 R2</pre>|
 
 |![Tip icon]|*This instruction should be used when moving values around in the RAM.*<br>*This instruction allows for potentially shorter or faster translations than that of the equivalent LOD followed by a STR instruction.*|
 | - | - |
 
 #### *Code Examples*
-CPY M3 3
+    CPY M3 3
 
 This instruction copies the RAM value addressed by an immediate value of 3 and stores the result into memory location 3.
 
-CPY R2 R1
+    CPY R2 R1
 
 This instruction copies the RAM value addressed by the value in register 1, then stores it into the RAM value addressed by the value in register 2.
 ### <a name="_toc112787883"></a>***BRC***
@@ -1676,18 +1693,18 @@ BRC requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BRC .foo R2 R3|
-|Immediate|Register|Immediate|BRC .foo R2 1|
-|Immediate|Immediate|Register|BRC .foo 1 R3|
-|Register|Register|Register|BRC R1 R2 R3|
-|Register|Register|Immediate|BRC R1 R2 1|
-|Register|Immediate|Register|BRC R1 1 R3|
+|Immediate|Register|Register|<pre>BRC .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BRC .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BRC .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BRC R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BRC R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BRC R1 1 R3</pre>|
 #### *Code Examples*
-BRC .foo R1 5
+    BRC .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 added to the immediate value of 5 activates the carry flag.
 
-BRC R1 5 R2
+    BRC R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 added to the value in register 2 activates the carry flag.
 ### <a name="_toc112787884"></a>***BNC***
@@ -1704,18 +1721,18 @@ BNC requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|BNC .foo R2 R3|
-|Immediate|Register|Immediate|BNC .foo R2 1|
-|Immediate|Immediate|Register|BNC .foo 1 R3|
-|Register|Register|Register|BNC R1 R2 R3|
-|Register|Register|Immediate|BNC R1 R2 1|
-|Register|Immediate|Register|BNC R1 1 R3|
+|Immediate|Register|Register|<pre>BNC .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>BNC .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>BNC .foo 1 R3</pre>|
+|Register|Register|Register|<pre>BNC R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BNC R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BNC R1 1 R3</pre>|
 #### *Code Examples*
-BNC .foo R1 5
+    BNC .foo R1 5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 added to the immediate value of 5 does not activate the carry flag.
 
-BNC R1 5 R2
+    BNC R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 added to the value in register 2 does not activate the carry flag.
 ## <a name="_toc112787885"></a>**Complex Instructions**
@@ -1732,15 +1749,15 @@ MLT requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|MLT R1 R2 R3|
-|Register|Register|Immediate|MLT R1 R2 1|
-|Register|Immediate|Register|MLT R1 1 R3|
+|Register|Register|Register|<pre>MLT R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>MLT R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>MLT R1 1 R3</pre>|
 #### *Code Examples*
-MLT R3 3 R2
+    MLT R3 3 R2
 
 This instruction multiplies the immediate value of 3 with the value in register 2 and stores the result into register 3.
 
-MLT R1 R1 R2
+    MLT R1 R1 R2
 
 This instruction multiplies the value in register 1 with the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787887"></a>***DIV***
@@ -1760,15 +1777,15 @@ DIV requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|DIV R1 R2 R3|
-|Register|Register|Immediate|DIV R1 R2 1|
-|Register|Immediate|Register|DIV R1 1 R3|
+|Register|Register|Register|<pre>DIV R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>DIV R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>DIV R1 1 R3</pre>|
 #### *Code Examples*
-DIV R3 5 R2
+    DIV R3 5 R2
 
 This instruction divides the immediate value of 5 by the value in register 2 and stores the result into register 3.
 
-DIV R1 R1 R2
+    DIV R1 R1 R2
 
 This instruction divides the value in register 1 by the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787888"></a>***MOD***
@@ -1788,15 +1805,15 @@ MOD requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|MOD R1 R2 R3|
-|Register|Register|Immediate|MOD R1 R2 1|
-|Register|Immediate|Register|MOD R1 1 R3|
+|Register|Register|Register|<pre>MOD R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>MOD R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>MOD R1 1 R3</pre>|
 #### *Code Examples*
-MOD R3 5 R2
+    MOD R3 5 R2
 
 This instruction calculates the remainder left after the immediate value of 5 is divided by the value in register 2 and stores the result into register 3.
 
-MOD R1 R1 R2
+    MOD R1 R1 R2
 
 This instruction calculates the remainder left after the value in register 1 is divided by the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787889"></a>***BSR***
@@ -1819,15 +1836,15 @@ BSR requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|BSR R1 R2 R3|
-|Register|Register|Immediate|BSR R1 R2 1|
-|Register|Immediate|Register|BSR R1 1 R3|
+|Register|Register|Register|<pre>BSR R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BSR R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BSR R1 1 R3</pre>|
 #### *Code Examples*
-BSR R3 3 R2
+    BSR R3 3 R2
 
 This instruction right shifts the immediate value of 3 a number of times, this number is the value in register 2. Then it stores the result into register 3.
 
-BSR R1 R1 R2
+    BSR R1 R1 R2
 
 This instruction right shifts the value in register 1 a number of times, this number is the value in register 2. Then it stores the result into register 1.
 ### <a name="_toc112787890"></a>***BSL***
@@ -1847,15 +1864,15 @@ BSL requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|BSL R1 R2 R3|
-|Register|Register|Immediate|BSL R1 R2 1|
-|Register|Immediate|Register|BSL R1 1 R3|
+|Register|Register|Register|<pre>BSL R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BSL R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BSL R1 1 R3</pre>|
 #### *Code Examples*
-BSL R3 3 R2
+    BSL R3 3 R2
 
 This instruction left shifts the immediate value of 3 a number of times, this number is the value in register 2. Then it stores the result into register 3.
 
-BSL R1 R1 R2
+    BSL R1 R1 R2
 
 This instruction left shifts the value in register 1 a number of times, this number is the value in register 2. Then it stores the result into register 1.
 ### <a name="_toc112787891"></a>***SRS***
@@ -1880,14 +1897,14 @@ SRS requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|SRS R1 R2|
-|Register|Immediate|SRS R1 1|
+|Register|Register|<pre>SRS R1 R2</pre>|
+|Register|Immediate|<pre>SRS R1 1</pre>|
 #### *Code Examples*
-SRS R1 R1
+    SRS R1 R1
 
 This instruction does a signed right shift of the value in register 1, then it stores the result into register 1.
 
-SRS R3 3
+    SRS R3 3
 
 This instruction does a signed right shift of the immediate value of 3 and stores the result into register 3.
 ### <a name="_toc112787892"></a>***BSS***
@@ -1910,15 +1927,15 @@ BSS requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|BSS R1 R2 R3|
-|Register|Register|Immediate|BSS R1 R2 1|
-|Register|Immediate|Register|BSS R1 1 R3|
+|Register|Register|Register|<pre>BSS R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>BSS R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>BSS R1 1 R3</pre>|
 #### *Code Examples*
-BSS R3 3 R2
+    BSS R3 3 R2
 
 This instruction does a signed right shift of the immediate value of 3 a number of times, this number is the value in register 2. Then it stores the result into register 3.
 
-BSS R1 R1 R2
+    BSS R1 R1 R2
 
 This instruction does a signed right shift of the value in register 1 a number of times, this number is the value in register 2. Then it stores the result into register 1.
 ### <a name="_toc112787893"></a>***SETE***
@@ -1935,15 +1952,15 @@ SETE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETE R1 R2 R3|
-|Register|Register|Immediate|SETE R1 R2 1|
-|Register|Immediate|Register|SETE R1 1 R3|
+|Register|Register|Register|<pre>SETE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETE R1 1 R3</pre>|
 #### *Code Examples*
-SETE R2 R1 5
+    SETE R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is equal to the immediate value of 5, otherwise it will write 0 into register 2.
 
-SETE R1 R1 R2
+    SETE R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is equal to the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787894"></a>***SETNE***
@@ -1960,15 +1977,15 @@ SETNE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETNE R1 R2 R3|
-|Register|Register|Immediate|SETNE R1 R2 1|
-|Register|Immediate|Register|SETNE R1 1 R3|
+|Register|Register|Register|<pre>SETNE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETNE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETNE R1 1 R3</pre>|
 #### *Code Examples*
-SETNE R2 R1 5
+    SETNE R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is not equal to the immediate value of 5, otherwise it will write 0 into register 2.
 
-SETNE R1 R1 R2
+    SETNE R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is not equal to the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787895"></a>***SETG***
@@ -1988,15 +2005,15 @@ SETG requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETG R1 R2 R3|
-|Register|Register|Immediate|SETG R1 R2 1|
-|Register|Immediate|Register|SETG R1 1 R3|
+|Register|Register|Register|<pre>SETG R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETG R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETG R1 1 R3</pre>|
 #### *Code Examples*
-SETG R2 R1 5
+    SETG R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is greater than the immediate value of 5, otherwise it will write 0 into register 2.
 
-SETG R1 R1 R2
+    SETG R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is greater than the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787896"></a>***SETL***
@@ -2016,15 +2033,15 @@ SETL requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETL R1 R2 R3|
-|Register|Register|Immediate|SETL R1 R2 1|
-|Register|Immediate|Register|SETL R1 1 R3|
+|Register|Register|Register|<pre>SETL R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETL R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETL R1 1 R3</pre>|
 #### *Code Examples*
-SETL R2 R1 5
+    SETL R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is less than the immediate value of 5, otherwise it will write 0 into register 2.
 
-SETL R1 R1 R2
+    SETL R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is less than the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787897"></a>***SETGE***
@@ -2044,15 +2061,15 @@ SETGE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETGE R1 R2 R3|
-|Register|Register|Immediate|SETGE R1 R2 1|
-|Register|Immediate|Register|SETGE R1 1 R3|
+|Register|Register|Register|<pre>SETGE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETGE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETGE R1 1 R3</pre>|
 #### *Code Examples*
-SETGE R2 R1 5
+    SETGE R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is greater than or equal to the immediate value of 5, otherwise it will write 0 into register 2.
 
-SETGE R1 R1 R2
+    SETGE R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is greater than or equal to the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787898"></a>***SETLE***
@@ -2072,15 +2089,15 @@ SETLE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETLE R1 R2 R3|
-|Register|Register|Immediate|SETLE R1 R2 1|
-|Register|Immediate|Register|SETLE R1 1 R3|
+|Register|Register|Register|<pre>SETLE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETLE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETLE R1 1 R3</pre>|
 #### *Code Examples*
-SETLE R2 R1 5
+    SETLE R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is less than or equal to the immediate value of 5, otherwise it will write 0 into register 2.
 
-SETLE R1 R1 R2
+    SETLE R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is less than or equal to the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787899"></a>***SETC***
@@ -2100,15 +2117,15 @@ SETC requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETC R1 R2 R3|
-|Register|Register|Immediate|SETC R1 R2 1|
-|Register|Immediate|Register|SETC R1 1 R3|
+|Register|Register|Register|<pre>SETC R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETC R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETC R1 1 R3</pre>|
 #### *Code Examples*
-SETC R2 R1 5
+    SETC R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 added to the immediate value of 5 activates the carry flag, otherwise it will write 0 into register 2.
 
-SETC R1 R1 R2
+    SETC R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 added to the value in register 2 activates the carry flag, otherwise it will write 0 into register 1.
 ### <a name="_toc112787900"></a>***SETNC***
@@ -2128,15 +2145,15 @@ SETNC requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SETNC R1 R2 R3|
-|Register|Register|Immediate|SETNC R1 R2 1|
-|Register|Immediate|Register|SETNC R1 1 R3|
+|Register|Register|Register|<pre>SETNC R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SETNC R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SETNC R1 1 R3</pre>|
 #### *Code Examples*
-SETNC R2 R1 5
+    SETNC R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 added to the immediate value of 5 does not activate the carry flag, otherwise it will write 0 into register 2.
 
-SETNC R1 R1 R2
+    SETNC R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 added to the value in register 2 does not activate the carry flag, otherwise it will write 0 into register 1.
 ### <a name="_toc112787901"></a>***LLOD***
@@ -2149,16 +2166,16 @@ LLOD requires 3 operands.
 
 |**Destination**|**Source1 (Base)**|**Source2 (Offset)**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|LLOD R1 R2 R3|
-|Register|Register|Immediate|LLOD R1 R2 1|
-|Register|Immediate|Register|LLOD R1 1 R3|
-|Register|Immediate|Immediate|LLOD R1 .foo 2|
+|Register|Register|Register|<pre>LLOD R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>LLOD R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>LLOD R1 1 R3</pre>|
+|Register|Immediate|Immediate|<pre>LLOD R1 .foo 2</pre>|
 #### *Code Examples*
-LLOD R3 .foo 5
+    LLOD R3 .foo 5
 
 This instruction copies a value from the RAM at a specific address. This address is the address of the label “foo” added to the offset of an immediate value of 5. Then it stores the result into register 3.
 
-LLOD R1 R1 R2
+    LLOD R1 R1 R2
 
 This instruction copies a value from the RAM at a specific address. This address is the value in register 1 added to the value in register 2. Then it stores the result into register 1.
 ### <a name="_toc112787902"></a>***LSTR***
@@ -2171,20 +2188,20 @@ LSTR requires 3 operands.
 
 |**Destination (Base)**|**Source1 (Offset)**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|LSTR R1 R2 R3|
-|Register|Register|Immediate|LSTR R1 R2 1|
-|Register|Immediate|Register|LSTR R1 1 R3|
-|Register|Immediate|Immediate|LSTR R1 1 2|
-|Immediate|Register|Register|LSTR .foo R2 R3|
-|Immediate|Register|Immediate|LSTR .foo R2 1|
-|Immediate|Immediate|Register|LSTR .foo 2 R3|
-|Immediate|Immediate|Immediate|LSTR .foo 2 1|
+|Register|Register|Register|<pre>LSTR R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>LSTR R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>LSTR R1 1 R3</pre>|
+|Register|Immediate|Immediate|<pre>LSTR R1 1 2</pre>|
+|Immediate|Register|Register|<pre>LSTR .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>LSTR .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>LSTR .foo 2 R3</pre>|
+|Immediate|Immediate|Immediate|<pre>LSTR .foo 2 1</pre>|
 #### *Code Examples*
-LSTR .foo 5 R3
+    LSTR .foo 5 R3
 
 This instruction writes the value in register 3 into the RAM at a specific address. This address is the address of the label “foo” added to an immediate value of 5.
 
-LSTR R1 R2 R3
+    LSTR R1 R2 R3
 
 This instruction writes the value in register 3 into the RAM at a specific address. This address is the value in register 1 added to the value in register 3.
 ### <a name="_toc112787903"></a>***SDIV***
@@ -2201,15 +2218,15 @@ SDIV requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SDIV R1 R2 R3|
-|Register|Register|Immediate|SDIV R1 R2 1|
-|Register|Immediate|Register|SDIV R1 1 R3|
+|Register|Register|Register|<pre>SDIV R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SDIV R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SDIV R1 1 R3</pre>|
 #### *Code Examples*
-SDIV R3 -5 R2
+    SDIV R3 -5 R2
 
 This instruction divides the immediate value of -5 by the value in register 2 and stores the result into register 3.
 
-SDIV R1 R1 R2
+    SDIV R1 R1 R2
 
 This instruction divides the value in register 1 by the value in register 2, then it stores the result into register 1.
 ### <a name="_toc112787904"></a>***SBRL***
@@ -2222,18 +2239,18 @@ SBRL requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|SBRL .foo R2 R3|
-|Immediate|Register|Immediate|SBRL .foo R2 1|
-|Immediate|Immediate|Register|SBRL .foo 1 R3|
-|Register|Register|Register|SBRL R1 R2 R3|
-|Register|Register|Immediate|SBRL R1 R2 1|
-|Register|Immediate|Register|SBRL R1 1 R3|
+|Immediate|Register|Register|<pre>SBRL .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>SBRL .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>SBRL .foo 1 R3</pre>|
+|Register|Register|Register|<pre>SBRL R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SBRL R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SBRL R1 1 R3</pre>|
 #### *Code Examples*
-SBRL .foo R1 -5
+    SBRL .foo R1 -5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is less than the immediate value of -5.
 
-SBRL R1 5 R2
+    SBRL R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is less than the value in register 2.
 ### <a name="_toc112787905"></a>***SBRG***
@@ -2246,18 +2263,18 @@ SBRG requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|SBRG .foo R2 R3|
-|Immediate|Register|Immediate|SBRG .foo R2 1|
-|Immediate|Immediate|Register|SBRG .foo 1 R3|
-|Register|Register|Register|SBRG R1 R2 R3|
-|Register|Register|Immediate|SBRG R1 R2 1|
-|Register|Immediate|Register|SBRG R1 1 R3|
+|Immediate|Register|Register|<pre>SBRG .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>SBRG .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>SBRG .foo 1 R3</pre>|
+|Register|Register|Register|<pre>SBRG R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SBRG R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SBRG R1 1 R3</pre>|
 #### *Code Examples*
-SBRG .foo R1 -5
+    SBRG .foo R1 -5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is greater than the immediate value of -5.
 
-SBRG R1 5 R2
+    SBRG R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is greater than the value in register 2.
 ### <a name="_toc112787906"></a>***SBLE***
@@ -2270,18 +2287,18 @@ SBLE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|SBLE .foo R2 R3|
-|Immediate|Register|Immediate|SBLE .foo R2 1|
-|Immediate|Immediate|Register|SBLE .foo 1 R3|
-|Register|Register|Register|SBLE R1 R2 R3|
-|Register|Register|Immediate|SBLE R1 R2 1|
-|Register|Immediate|Register|SBLE R1 1 R3|
+|Immediate|Register|Register|<pre>SBLE .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>SBLE .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>SBLE .foo 1 R3</pre>|
+|Register|Register|Register|<pre>SBLE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SBLE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SBLE R1 1 R3</pre>|
 #### *Code Examples*
-SBLE .foo R1 -5
+    SBLE .foo R1 -5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is less than or equal to the immediate value of -5.
 
-SBLE R1 5 R2
+    SBLE R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is less than or equal to the value in register 2.
 ### <a name="_toc112787907"></a>***SBGE***
@@ -2294,18 +2311,18 @@ SBGE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Immediate|Register|Register|SBGE .foo R2 R3|
-|Immediate|Register|Immediate|SBGE .foo R2 1|
-|Immediate|Immediate|Register|SBGE .foo 1 R3|
-|Register|Register|Register|SBGE R1 R2 R3|
-|Register|Register|Immediate|SBGE R1 R2 1|
-|Register|Immediate|Register|SBGE R1 1 R3|
+|Immediate|Register|Register|<pre>SBGE .foo R2 R3</pre>|
+|Immediate|Register|Immediate|<pre>SBGE .foo R2 1</pre>|
+|Immediate|Immediate|Register|<pre>SBGE .foo 1 R3</pre>|
+|Register|Register|Register|<pre>SBGE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SBGE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SBGE R1 1 R3</pre>|
 #### *Code Examples*
-SBGE .foo R1 -5
+    SBGE .foo R1 -5
 
 This instruction branches to the instruction pointed to by the label “foo” if the value in register 1 is greater than or equal to the immediate value of -5.
 
-SBGE R1 5 R2
+    SBGE R1 5 R2
 
 This instruction branches to the instruction pointed to by the value in register 1 if the immediate value of 5 is greater than or equal to the value in register 2.
 ### <a name="_toc112787908"></a>***SSETL***
@@ -2322,15 +2339,15 @@ SSETL requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SSETL R1 R2 R3|
-|Register|Register|Immediate|SSETL R1 R2 1|
-|Register|Immediate|Register|SSETL R1 1 R3|
+|Register|Register|Register|<pre>SSETL R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SSETL R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SSETL R1 1 R3</pre>|
 #### *Code Examples*
-SSETL R2 R1 5
+    SSETL R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is less than the immediate value of 5, otherwise it will write 0 into register 2.
 
-SSETL R1 R1 R2
+    SSETL R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is less than the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787909"></a>***SSETG***
@@ -2347,15 +2364,15 @@ SSETG requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SSETG R1 R2 R3|
-|Register|Register|Immediate|SSETG R1 R2 1|
-|Register|Immediate|Register|SSETG R1 1 R3|
+|Register|Register|Register|<pre>SSETG R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SSETG R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SSETG R1 1 R3</pre>|
 #### *Code Examples*
-SSETG R2 R1 5
+    SSETG R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is greater than the immediate value of 5, otherwise it will write 0 into register 2.
 
-SSETG R1 R1 R2
+    SSETG R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is greater than the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787910"></a>***SSETLE***
@@ -2372,15 +2389,15 @@ SSETLE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SSETLE R1 R2 R3|
-|Register|Register|Immediate|SSETLE R1 R2 1|
-|Register|Immediate|Register|SSETLE R1 1 R3|
+|Register|Register|Register|<pre>SSETLE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SSETLE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SSETLE R1 1 R3</pre>|
 #### *Code Examples*
-SSETLE R2 R1 5
+    SSETLE R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is less than or equal to the immediate value of 5, otherwise it will write 0 into register 2.
 
-SSETLE R1 R1 R2
+    SSETLE R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is less than or equal to the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787911"></a>***SSETGE***
@@ -2397,15 +2414,15 @@ SSETGE requires 3 operands.
 
 |**Destination**|**Source1**|**Source2**|**Example**|
 | :-: | :-: | :-: | :-: |
-|Register|Register|Register|SSETGE R1 R2 R3|
-|Register|Register|Immediate|SSETGE R1 R2 1|
-|Register|Immediate|Register|SSETGE R1 1 R3|
+|Register|Register|Register|<pre>SSETGE R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SSETGE R1 R2 1</pre>|
+|Register|Immediate|Register|<pre>SSETGE R1 1 R3</pre>|
 #### *Code Examples*
-SSETGE R2 R1 5
+    SSETGE R2 R1 5
 
 This instruction will write all 1’s into register 2 if the value in register 1 is greater than or equal to the immediate value of 5, otherwise it will write 0 into register 2.
 
-SSETGE R1 R1 R2
+    SSETGE R1 R1 R2
 
 This instruction will write all 1’s into register 1 if the value in register 1 is greater than or equal to the value in register 2, otherwise it will write 0 into register 1.
 ### <a name="_toc112787912"></a>***ABS***
@@ -2418,14 +2435,14 @@ ABS requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Register|ABS R1 R2|
-|Register|Immediate|ABS R1 -5|
+|Register|Register|<pre>ABS R1 R2</pre>|
+|Register|Immediate|<pre>ABS R1 -5</pre>|
 #### *Code Examples*
-ABS R1 R2
+    ABS R1 R2
 
 This instruction calculates the absolute value of the number in register 2 and stores the result into register 1.
 
-ABS R3 -5
+    ABS R3 -5
 
 This instruction calculates the absolute value of the immediate value -5 and stores the result (5) into register 3.
 ## <a name="_toc112787913"></a>**I/O Instructions**
@@ -2449,13 +2466,13 @@ IN requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Register|Port|IN R1 %RNG|
+|Register|Port|<pre>IN R1 %RNG</pre>|
 #### *Code Examples*
-IN R1 %RNG
+    IN R1 %RNG
 
 This instruction reads from the port “RNG” (which is defined in the port documentation as a random number generator) and the result is written into register 1.
 
-IN R2 %7SEG
+    IN R2 %7SEG
 
 This instruction reads from the port “7SEG” (which is **not** defined in the port documentation so it should be defined somewhere by the programmer), and the result is written into register 2.
 ### <a name="_toc112787915"></a>***OUT***
@@ -2475,14 +2492,14 @@ OUT requires 2 operands.
 
 |**Destination**|**Source1**|**Example**|
 | :-: | :-: | :-: |
-|Port|Register|OUT %RNG R1|
-|Port|Immediate|OUT %RNG 5|
+|Port|Register|<pre>OUT %RNG R1</pre>|
+|Port|Immediate|<pre>OUT %RNG 5</pre>|
 #### *Code Examples*
-OUT %RNG R1
+    OUT %RNG R1
 
 This instruction reads the value in register 1 and writes it into the port “RNG” (which is defined in the port documentation as a random number generator).
 
-OUT %7SEG 5
+    OUT %7SEG 5
 
 This instruction takes the immediate value 5 and writes it into port “7SEG” (which is **not** defined in the port documentation so it should be defined somewhere by the programmer).
 # <a name="_toc112787916"></a>**INSTRUCTION TRANSLATIONS**
@@ -2508,48 +2525,48 @@ This section covers the translations for each instruction.
 |**Operand 1 \<A\>**|**Operand 2 \<B\>**|**Operand 3 \<C\>**|**Condition**|**Translation**|
 | :-: | :-: | :-: | :-: | :-: |
 |Register|Register|Register|Any|None|
-|Register|Register|Immediate|A temporary register is required|IMM \<tempREG\> \<C\><br>ADD \<A\> \<B\> \<tempREG\>|
-|Register|Immediate|Register|A temporary register is required|IMM \<tempREG\> \<B\><br>ADD \<A\> \<tempREG\> \<C\>|
-|Register|Immediate|Immediate|Two temporary registers are required|IMM \<tempREG1\> \<B\><br>IMM \<tempREG2\> \<C\><br>ADD \<A\> \<tempREG1\> \<tempREG2\>|
+|Register|Register|Immediate|A temporary register is required|<pre>IMM \<tempREG\> \<C\><br>ADD \<A\> \<B\> \<tempREG\></pre>|
+|Register|Immediate|Register|A temporary register is required|<pre>IMM \<tempREG\> \<B\><br>ADD \<A\> \<tempREG\> \<C\></pre>|
+|Register|Immediate|Immediate|Two temporary registers are required|<pre>IMM \<tempREG1\> \<B\><br>IMM \<tempREG2\> \<C\><br>ADD \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787919"></a>***RSH***
 
 |**Operand 1 \<A\>**|**Operand 2 \<B\>**|**Condition**|**Translation**|
 | :-: | :-: | :-: | :-: |
 |Register|Register|Any|None|
-|Register|Immediate|A temporary register is required|IMM \<tempREG\> \<B\><br>RSH \<A\> \<tempREG\>|
+|Register|Immediate|A temporary register is required|<pre>IMM \<tempREG\> \<B\><br>RSH \<A\> \<tempREG\></pre>|
 ### <a name="_toc112787920"></a>***LOD***
 
 |**Operand 1 \<A\>**|**Operand 2 \<B\>**|**Condition**|**Translation**|
 | :-: | :-: | :-: | :-: |
 |Register|Register|Any|None|
-|Register|Immediate|A temporary register is required|IMM \<tempREG\> \<B\><br>LOD \<A\> \<tempREG\>|
-|PC|Register|A temporary register is required|LOD \<tempREG\> \<B\><br>JMP \<tempREG\>|
-|PC|Immediate|A temporary register is required|LOD \<tempREG\> \<B\><br>JMP \<tempREG\>|
+|Register|Immediate|A temporary register is required|<pre>IMM \<tempREG\> \<B\><br>LOD \<A\> \<tempREG\></pre>|
+|PC|Register|A temporary register is required|<pre>LOD \<tempREG\> \<B\><br>JMP \<tempREG\></pre>|
+|PC|Immediate|A temporary register is required|<pre>LOD \<tempREG\> \<B\><br>JMP \<tempREG\></pre>|
 ### <a name="_toc112787921"></a>***STR***
 
 |**Operand 1 \<A\>**|**Operand 2 \<B\>**|**Condition**|**Translation**|
 | :-: | :-: | :-: | :-: |
 |Register|Register|Any|None|
-|Register|Immediate|A temporary register is required|IMM \<tempREG\> \<A\><br>STR \<tempREG\> \<B\>|
-|Immediate|Register|A temporary register is required|IMM \<tempREG\> \<B\><br>STR \<A\> \<tempREG\>|
-|Immediate|Immediate|Two temporary registers are required|IMM \<tempREG1\> \<A\><br>IMM \<tempREG2\> \<B\><br>STR \<tempREG1\> \<tempREG2\>|
+|Register|Immediate|A temporary register is required|<pre>IMM \<tempREG\> \<A\><br>STR \<tempREG\> \<B\></pre>|
+|Immediate|Register|A temporary register is required|<pre>IMM \<tempREG\> \<B\><br>STR \<A\> \<tempREG\></pre>|
+|Immediate|Immediate|Two temporary registers are required|<pre>IMM \<tempREG1\> \<A\><br>IMM \<tempREG2\> \<B\><br>STR \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787922"></a>***BGE***
 
 |**Operand 1 \<A\>**|**Operand 2 \<B\>**|**Operand 3 \<C\>**|**Condition**|**Translation**|
 | :-: | :-: | :-: | :-: | :-: |
 |Register|Register|Register|Any|None|
-|Register|Register|Immediate|A temporary register is required|IMM \<tempREG\> \<C\><br>BGE \<A\> \<B\> \<tempREG\>|
-|Register|Immediate|Register|A temporary register is required|IMM \<tempREG\> \<B\><br>BGE \<A\> \<tempREG\> \<C\>|
-|Immediate|Register|Register|A temporary register is required|IMM \<tempREG\> \<A\><br>BGE \<tempREG\> \<B\> \<C\>|
-|Immediate|Register|Immediate|Two temporary registers are required|IMM \<tempREG1\> \<A\><br>IMM \<tempREG2\> \<C\><br>BGE \<tempREG1\> \<B\> \<tempREG2\>|
-|Immediate|Immediate|Register|Two temporary registers are required|IMM \<tempREG1\> \<A\><br>IMM \<tempREG2\> \<B\><br>BGE \<tempREG1\> \<tempREG2\> \<C\>|
+|Register|Register|Immediate|A temporary register is required|<pre>IMM \<tempREG\> \<C\><br>BGE \<A\> \<B\> \<tempREG\></pre>|
+|Register|Immediate|Register|A temporary register is required|<pre>IMM \<tempREG\> \<B\><br>BGE \<A\> \<tempREG\> \<C\></pre>|
+|Immediate|Register|Register|A temporary register is required|<pre>IMM \<tempREG\> \<A\><br>BGE \<tempREG\> \<B\> \<C\></pre>|
+|Immediate|Register|Immediate|Two temporary registers are required|<pre>IMM \<tempREG1\> \<A\><br>IMM \<tempREG2\> \<C\><br>BGE \<tempREG1\> \<B\> \<tempREG2\></pre>|
+|Immediate|Immediate|Register|Two temporary registers are required|<pre>IMM \<tempREG1\> \<A\><br>IMM \<tempREG2\> \<B\><br>BGE \<tempREG1\> \<tempREG2\> \<C\></pre>|
 ### <a name="_toc112787923"></a>***NOR***
 
 |**Operand 1 \<A\>**|**Operand 2 \<B\>**|**Operand 3 \<C\>**|**Condition**|**Translation**|
 | :-: | :-: | :-: | :-: | :-: |
 |Register|Register|Register|Any|None|
-|Register|Register|Immediate|A temporary register is required|IMM \<tempREG\> \<C\><br>NOR \<A\> \<B\> \<tempREG\>|
-|Register|Immediate|Register|A temporary register is required|IMM \<tempREG\> \<B\><br>NOR \<A\> \<tempREG\> \<C\>|
+|Register|Register|Immediate|A temporary register is required|<pre>IMM \<tempREG\> \<C\><br>NOR \<A\> \<B\> \<tempREG\></pre>|
+|Register|Immediate|Register|A temporary register is required|<pre>IMM \<tempREG\> \<B\><br>NOR \<A\> \<tempREG\> \<C\></pre>|
 ### <a name="_toc112787924"></a>***SUB***
 
 |![Tip icon]|*If the Operand types are not specified, then the translation applies to all possible combinations of operand types.*|
@@ -2557,41 +2574,41 @@ This section covers the translations for each instruction.
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|\<B\> is the same as \<C\>|MOV \<A\> R0|
-|\<A\> is different to \<B\>|NOT \<A\> \<C\><br>ADD \<A\> \<A\> \<B\><br>INC \<A\> \<A\>|
-|\<A\> is different to \<C\>and\<C\> is a register|NOT \<C\> \<C\><br>ADD \<A\> \<B\> \<C\><br>INC \<A\> \<A\><br>NOT \<C\> \<C\>|
-|\<A\> is not R1|PSH R1<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R1|
-|\<A\> is not R2|PSH R2<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R2|
+|\<B\> is the same as \<C\>|<pre>MOV \<A\> R0</pre>|
+|\<A\> is different to \<B\>|<pre>NOT \<A\> \<C\><br>ADD \<A\> \<A\> \<B\><br>INC \<A\> \<A\></pre>|
+|\<A\> is different to \<C\>and\<C\> is a register|<pre>NOT \<C\> \<C\><br>ADD \<A\> \<B\> \<C\><br>INC \<A\> \<A\><br>NOT \<C\> \<C\></pre>|
+|\<A\> is not R1|<pre>PSH R1<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R1</pre>|
+|\<A\> is not R2|<pre>PSH R2<br>NOT R1 \<C\><br>ADD \<A\> \<B\> R1<br>INC \<A\> \<A\><br>POP R2</pre>|
 ### <a name="_toc112787925"></a>***JMP***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE \<A\> R0 R0|
+|Any|<pre>BGE \<A\> R0 R0</pre>|
 ### <a name="_toc112787926"></a>***MOV***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|ADD \<A\> \<B\> R0|
+|Any|<pre>ADD \<A\> \<B\> R0</pre>|
 ### <a name="_toc112787927"></a>***NOP***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|MOV R0 R0|
+|Any|<pre>MOV R0 R0</pre>|
 ### <a name="_toc112787928"></a>***IMM***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|ADD \<A\> \<B\> R0|
+|Any|<pre>ADD \<A\> \<B\> R0</pre>|
 ### <a name="_toc112787929"></a>***LSH***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|ADD \<A\> \<B\> \<B\>|
+|Any|<pre>ADD \<A\> \<B\> \<B\></pre>|
 ### <a name="_toc112787930"></a>***INC***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|ADD \<A\> \<B\> 1|
+|Any|<pre>ADD \<A\> \<B\> 1</pre>|
 ### <a name="_toc112787931"></a>***DEC***
 
 |**Condition**|**Translation**|
@@ -2605,181 +2622,181 @@ This section covers the translations for each instruction.
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|NOT \<A\> \<B\><br>INC \<A\> \<A\>|
+|Any|<pre>NOT \<A\> \<B\><br>INC \<A\> \<A\></pre>|
 ### <a name="_toc112787933"></a>***AND***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|\<B\> is the same as \<C\>|MOV \<C\> \<A\>|
-|\<A\> is different to \<C\><br>and<br>\<C\> is a register|NOT \<A\> \<B\><br>NOT \<C\> \<C\><br>NOR \<A\> \<A\> \<C\><br>NOT \<C\> \<C\>|
-|\<A\> is different to \<B\><br>and<br>\<B\> is a register|NOT \<B\> \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> \<B\><br>NOT \<B\> \<B\>|
-|\<A\> is different to R1 or R2|PSH R1<br>PSH R2<br>NOT R1 \<B\><br>NOT R2 \<C\><br>NOR \<A\> R1 R2<br>POP R2<br>POP R1|
-|\<A\> is different to R3 or R4|PSH R3<br>PSH R4<br>NOT R3 \<B\><br>NOT R4 \<C\><br>NOR \<A\> R3 R4<br>POP R4<br>POP R3|
+|\<B\> is the same as \<C\>|<pre>MOV \<C\> \<A\></pre>|
+|\<A\> is different to \<C\><br>and<br>\<C\> is a register|<pre>NOT \<A\> \<B\><br>NOT \<C\> \<C\><br>NOR \<A\> \<A\> \<C\><br>NOT \<C\> \<C\></pre>|
+|\<A\> is different to \<B\><br>and<br>\<B\> is a register|<pre>NOT \<B\> \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> \<B\><br>NOT \<B\> \<B\></pre>|
+|\<A\> is different to R1 or R2|<pre>PSH R1<br>PSH R2<br>NOT R1 \<B\><br>NOT R2 \<C\><br>NOR \<A\> R1 R2<br>POP R2<br>POP R1</pre>|
+|\<A\> is different to R3 or R4|<pre>PSH R3<br>PSH R4<br>NOT R3 \<B\><br>NOT R4 \<C\><br>NOR \<A\> R3 R4<br>POP R4<br>POP R3</pre>|
 ### <a name="_toc112787934"></a>***OR***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|NOR \<A\> \<B\> \<C\><br>NOT \<A\> \<A\>|
+|Any|<pre>NOR \<A\> \<B\> \<C\><br>NOT \<A\> \<A\></pre>|
 ### <a name="_toc112787935"></a>***NOT***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|NOR \<A\> \<B\> R0|
+|Any|<pre>NOR \<A\> \<B\> R0</pre>|
 ### <a name="_toc112787936"></a>***XNOR***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|\<B\> is the same as \<C\><br>and<br>X is equal to an immediate value which has all its bits active. (255 in 8 bit)|IMM \<A\> X|
-|\<A\> is different to R1|AND \<A\> \<B\> \<C\><br>PSH R1<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R1<br>POP R1<br>NOT \<A\> \<A\>|
-|\<A\> is different to R2|AND \<A\> \<B\> \<C\><br>PSH R2<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R2<br>POP R2<br>NOT \<A\> \<A\>|
+|\<B\> is the same as \<C\>|<pre>IMM \<A\> @MAX</pre>|
+|\<A\> is different to R1|<pre>AND \<A\> \<B\> \<C\><br>PSH R1<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R1<br>POP R1<br>NOT \<A\> \<A\></pre>|
+|\<A\> is different to R2|<pre>AND \<A\> \<B\> \<C\><br>PSH R2<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R2<br>POP R2<br>NOT \<A\> \<A\></pre>|
 ### <a name="_toc112787937"></a>***XOR***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|\<B\> is the same as \<C\>|MOV \<A\> R0|
-|\<A\> is different to R1|AND \<A\> \<B\> \<C\><br>PSH R1<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R1<br>POP R1|
-|\<A\> is different to R2|AND \<A\> \<B\> \<C\><br>PSH R2<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R2<br>POP R2|
+|\<B\> is the same as \<C\>|<pre>MOV \<A\> R0</pre>|
+|\<A\> is different to R1|<pre>AND \<A\> \<B\> \<C\><br>PSH R1<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R1<br>POP R1</pre>|
+|\<A\> is different to R2|<pre>AND \<A\> \<B\> \<C\><br>PSH R2<br>NOR R1 \<B\> \<C\><br>NOR \<A\> \<A\> R2<br>POP R2</pre>|
 ### <a name="_toc112787938"></a>***NAND***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|\<B\> is the same as \<C\>|NOT \<A\> \<B\>|
-|\<A\> is different to \<C\><br>and<br>\<C\> is a register|NOT \<A\> \<B\><br>NOT \<C\> \<C\><br>NOR \<A\> \<A\> \<C\><br>NOT \<C\> \<C\><br>NOT \<A\> \<A\>|
-|\<A\> is different to \<B\><br>and<br>\<B\> is a register|NOT \<B\> \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> \<B\><br>NOT \<B\> \<B\><br>NOT \<A\> \<A\>|
-|\<A\> is different to R1|PSH R1<br>NOT R1 \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> R1<br>POP R1<br>NOT \<A\> \<A\>|
-|\<A\> is different to R2|PSH R2<br>NOT R1 \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> R2<br>POP R2<br>NOT \<A\> \<A\>|
+|\<B\> is the same as \<C\>|<pre>NOT \<A\> \<B\></pre>|
+|\<A\> is different to \<C\><br>and<br>\<C\> is a register|<pre>NOT \<A\> \<B\><br>NOT \<C\> \<C\><br>NOR \<A\> \<A\> \<C\><br>NOT \<C\> \<C\><br>NOT \<A\> \<A\></pre>|
+|\<A\> is different to \<B\><br>and<br>\<B\> is a register|<pre>NOT \<B\> \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> \<B\><br>NOT \<B\> \<B\><br>NOT \<A\> \<A\></pre>|
+|\<A\> is different to R1|<pre>PSH R1<br>NOT R1 \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> R1<br>POP R1<br>NOT \<A\> \<A\></pre>|
+|\<A\> is different to R2|<pre>PSH R2<br>NOT R1 \<B\><br>NOT \<A\> \<C\><br>NOR \<A\> \<A\> R2<br>POP R2<br>NOT \<A\> \<A\></pre>|
 ### <a name="_toc112787939"></a>***BRL***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE ~+2 \<B\> \<C\><br>JMP \<A\>|
+|Any|<pre>BGE ~+2 \<B\> \<C\><br>JMP \<A\></pre>|
 ### <a name="_toc112787940"></a>***BRG***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE ~+2 \<C\> \<B\><br>JMP \<A\>|
+|Any|<pre>BGE ~+2 \<C\> \<B\><br>JMP \<A\></pre>|
 ### <a name="_toc112787941"></a>***BRE***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE ~+2 \<B\> \<C\><br>JMP ~+4<br>BGE ~+2 \<C\> \<B\><br>JMP ~+2<br>JMP \<A\>|
+|Any|<pre>BGE ~+2 \<B\> \<C\><br>JMP ~+4<br>BGE ~+2 \<C\> \<B\><br>JMP ~+2<br>JMP \<A\></pre>|
 ### <a name="_toc112787942"></a>***BNE***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE ~+2 \<B\> \<C\><br>JMP +2<br>BGE ~+2 \<C\> \<B\><br>JMP \<A\>|
+|Any|<pre>BGE ~+2 \<B\> \<C\><br>JMP +2<br>BGE ~+2 \<C\> \<B\><br>JMP \<A\></pre>|
 ### <a name="_toc112787943"></a>***BOD***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|PSH R1<br>AND R1 \<B\> 1<br>BGE ~+2 R1 1<br>JMP ~+3<br>POP R1<br>JMP \<A\>|
+|Any|<pre>PSH R1<br>AND R1 \<B\> 1<br>BGE ~+2 R1 1<br>JMP ~+3<br>POP R1<br>JMP \<A\></pre>|
 ### <a name="_toc112787944"></a>***BEV***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|PSH R1<br>AND R1 \<B\> 1<br>BGE ~+2 R1 1<br>JMP \<A\><br>POP R1|
+|Any|<pre>PSH R1<br>AND R1 \<B\> 1<br>BGE ~+2 R1 1<br>JMP \<A\><br>POP R1</pre>|
 ### <a name="_toc112787945"></a>***BLE***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE \<A\> \<C\> \<B\>|
+|Any|<pre>BGE \<A\> \<C\> \<B\></pre>|
 ### <a name="_toc112787946"></a>***BRZ***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE ~+2 \<B\> 1<br>JMP \<A\>|
+|Any|<pre>BGE ~+2 \<B\> 1<br>JMP \<A\></pre>|
 ### <a name="_toc112787947"></a>***BNZ***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|BGE \<A\> \<B\> 1|
+|Any|<pre>BGE \<A\> \<B\> 1</pre>|
 ### <a name="_toc112787948"></a>***BRN***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|X is equal to an immediate value which has only the uppermost bit active. (128 in 8 bit)|BGE \<A\> \<B\> X|
+|Any|<pre>BGE \<A\> \<B\> @MSB</pre>|
 ### <a name="_toc112787949"></a>***BRP***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|X is equal to an immediate value which has only the uppermost bit active. (128 in 8 bit)|BGE ~+2 \<B\> X<br>JMP \<A\>|
+|Any|<pre>BGE ~+2 \<B\> @MSB<br>JMP \<A\></pre>|
 ### <a name="_toc112787950"></a>***PSH***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|DEC SP SP<br>STR SP \<A\>|
+|Any|<pre>DEC SP SP<br>STR SP \<A\></pre>|
 ### <a name="_toc112787951"></a>***POP***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|LOD \<A\> SP<br>INC SP SP|
+|Any|<pre>LOD \<A\> SP<br>INC SP SP</pre>|
 ### <a name="_toc112787952"></a>***CAL***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|PSH ~+2<br>JMP \<A\>|
+|Any|<pre>PSH ~+2<br>JMP \<A\></pre>|
 ### <a name="_toc112787953"></a>***RET***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|A temporary register is required|POP \<tempREG\><br>JMP \<tempREG\>|
-|A temporary RAM location is required|PSH R1<br>INC SP SP<br>LOD R1 SP<br>STR \<tempRAM\> R1<br>DEC SP SP<br>POP R1<br>INC SP SP<br>LOD PC \<tempRAM\>|
-|Program must be support DW values|PSH R1<br>INC SP SP<br>LOD R1 SP<br>STR ~+5 R1<br>DEC SP SP<br>POP R1<br>INC SP SP<br>LOD PC ~+1<br>DW 0|
+|A temporary register is required|<pre>POP \<tempREG\><br>JMP \<tempREG\></pre>|
+|A temporary RAM location is required|<pre>PSH R1<br>INC SP SP<br>LOD R1 SP<br>STR \<tempRAM\> R1<br>DEC SP SP<br>POP R1<br>INC SP SP<br>LOD PC \<tempRAM\></pre>|
+|Program must be support DW values|<pre>PSH R1<br>INC SP SP<br>LOD R1 SP<br>STR ~+5 R1<br>DEC SP SP<br>POP R1<br>INC SP SP<br>LOD PC ~+1<br>DW 0</pre>|
 ### <a name="_toc112787954"></a>***HLT***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|JMP ~+0|
+|Any|<pre>JMP ~+0</pre>|
 ### <a name="_toc112787955"></a>***CPY***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|A temporary register is required|LOD \<tempREG\> \<B\><br>STR \<A\> \<tempREG\>|
-|\<A\> is different to R1|PSH R1<br>LOD R1 \<B\><br>STR \<A\> R1<br>POP R1|
-|\<A\> is different to R2|PSH R2<br>LOD R2 \<B\><br>STR \<A\> R2<br>POP R2|
+|A temporary register is required|<pre>LOD \<tempREG\> \<B\><br>STR \<A\> \<tempREG\></pre>|
+|\<A\> is different to R1|<pre>PSH R1<br>LOD R1 \<B\><br>STR \<A\> R1<br>POP R1</pre>|
+|\<A\> is different to R2|<pre>PSH R2<br>LOD R2 \<B\><br>STR \<A\> R2<br>POP R2</pre>|
 ### <a name="_toc112787956"></a>***BRC***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|A temporary register is required|ADD \<tempREG\> \<B\> \<C\><br>BRL \<A\> \<tempREG\> \<B\><br>BRL \<A\> \<tempREG\> \<C\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1|PSH R1<br>ADD R1 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R1 \<B\><br>BRL ~+2 R1 \<C\><br>STR \<tempRAM\> ~+3<br>POP R1<br>LOD PC \<tempRAM\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2|PSH R2<br>ADD R2 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R2 \<B\><br>BRL ~+2 R2 \<C\><br>STR \<tempRAM\> ~+3<br>POP R2<br>LOD PC \<tempRAM\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3|PSH R3<br>ADD R3 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R3 \<B\><br>BRL ~+2 R3 \<C\><br>STR \<tempRAM\> ~+3<br>POP R3<br>LOD PC \<tempRAM\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4|PSH R4<br>ADD R4 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R4 \<B\><br>BRL ~+2 R4 \<C\><br>STR \<tempRAM\> ~+3<br>POP R4<br>LOD PC \<tempRAM\>|
+|A temporary register is required|<pre>ADD \<tempREG\> \<B\> \<C\><br>BRL \<A\> \<tempREG\> \<B\><br>BRL \<A\> \<tempREG\> \<C\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1|<pre>PSH R1<br>ADD R1 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R1 \<B\><br>BRL ~+2 R1 \<C\><br>STR \<tempRAM\> ~+3<br>POP R1<br>LOD PC \<tempRAM\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2|<pre>PSH R2<br>ADD R2 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R2 \<B\><br>BRL ~+2 R2 \<C\><br>STR \<tempRAM\> ~+3<br>POP R2<br>LOD PC \<tempRAM\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3|<pre>PSH R3<br>ADD R3 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R3 \<B\><br>BRL ~+2 R3 \<C\><br>STR \<tempRAM\> ~+3<br>POP R3<br>LOD PC \<tempRAM\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4|<pre>PSH R4<br>ADD R4 \<B\> \<C\><br>STR \<tempRAM\> \<A\><br>BRL ~+3 R4 \<B\><br>BRL ~+2 R4 \<C\><br>STR \<tempRAM\> ~+3<br>POP R4<br>LOD PC \<tempRAM\></pre>|
 ### <a name="_toc112787957"></a>***BNC***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|A temporary register is required|LOD \<tempREG\> \<B\><br>STR \<A\> \<tempREG\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1|PSH R1<br>ADD R1 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R1 \<B\><br>BRL ~+2 R1 \<C\><br>STR \<tempRAM\> \<A\><br>POP R1<br>LOD PC \<tempRAM\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2|PSH R2<br>ADD R2 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R2 \<B\><br>BRL ~+2 R2 \<C\><br>STR \<tempRAM\> \<A\><br>POP R2<br>LOD PC \<tempRAM\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3|PSH R3<br>ADD R3 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R3 \<B\><br>BRL ~+2 R3 \<C\><br>STR \<tempRAM\> \<A\><br>POP R3<br>LOD PC \<tempRAM\>|
-|A temporary RAM location is required<br>and<br>\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4|PSH R4<br>ADD R4 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R4 \<B\><br>BRL ~+2 R4 \<C\><br>STR \<tempRAM\> \<A\><br>POP R4<br>LOD PC \<tempRAM\>|
+|A temporary register is required|<pre>LOD \<tempREG\> \<B\><br>STR \<A\> \<tempREG\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1|<pre>PSH R1<br>ADD R1 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R1 \<B\><br>BRL ~+2 R1 \<C\><br>STR \<tempRAM\> \<A\><br>POP R1<br>LOD PC \<tempRAM\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2|<pre>PSH R2<br>ADD R2 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R2 \<B\><br>BRL ~+2 R2 \<C\><br>STR \<tempRAM\> \<A\><br>POP R2<br>LOD PC \<tempRAM\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3|<pre>PSH R3<br>ADD R3 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R3 \<B\><br>BRL ~+2 R3 \<C\><br>STR \<tempRAM\> \<A\><br>POP R3<br>LOD PC \<tempRAM\></pre>|
+|A temporary RAM location is required<br>and<br>\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4|<pre>PSH R4<br>ADD R4 \<B\> \<C\><br>STR \<tempRAM\> ~+6<br>BRL ~+3 R4 \<B\><br>BRL ~+2 R4 \<C\><br>STR \<tempRAM\> \<A\><br>POP R4<br>LOD PC \<tempRAM\></pre>|
 ## <a name="_toc112787958"></a>**Complex Instruction Translations**
 ### <a name="_toc112787959"></a>***MLT***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to R1and\<A\> is different to R2|Shift and Add|PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R2<br>ADD \<A\> \<A\> R1<br>RSH R2 R2<br>LSH R1 R1<br>BNZ ~-4 R2<br>POP R2<br>POP R1|
-|\<A\> is different to R3 and\<A\> is different to R4|Shift and Add|PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R4<br>ADD \<A\> \<A\> R3<br>RSH R4 R4<br>LSH R3 R3<br>BNZ ~-4 R4<br>POP R4<br>POP R3|
-|\<A\> is different to R1 and\<A\> is different to R2|Repeated Addition|PSH R1<br>PSH R2<br>MOV R1 \<C\><br>MOV R2 \<B\><br>MOV \<A\> R0<br>BRZ ~+4 \<C\><br>DEC R1 R1<br>ADD \<A\> \<A\> R2<br>BNZ ~-2 R1<br>POP R2<br>POP R1|
-|\<A\> is different to R3and\<A\> is different to R4|Repeated Addition|PSH R3<br>PSH R4<br>MOV R3 \<C\><br>MOV R4 \<B\><br>MOV \<A\> R0 <br>BRZ ~+4 \<C\><br>DEC R3 R3<br>ADD \<A\> \<A\> R4<br>BNZ ~-2 R3<br>POP R4<br>POP R3|
+|\<A\> is different to R1and\<A\> is different to R2|Shift and Add|<pre>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R2<br>ADD \<A\> \<A\> R1<br>RSH R2 R2<br>LSH R1 R1<br>BNZ ~-4 R2<br>POP R2<br>POP R1</pre>|
+|\<A\> is different to R3 and\<A\> is different to R4|Shift and Add|<pre>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>BEV ~+2 R4<br>ADD \<A\> \<A\> R3<br>RSH R4 R4<br>LSH R3 R3<br>BNZ ~-4 R4<br>POP R4<br>POP R3</pre>|
+|\<A\> is different to R1 and\<A\> is different to R2|Repeated Addition|<pre>PSH R1<br>PSH R2<br>MOV R1 \<C\><br>MOV R2 \<B\><br>MOV \<A\> R0<br>BRZ ~+4 \<C\><br>DEC R1 R1<br>ADD \<A\> \<A\> R2<br>BNZ ~-2 R1<br>POP R2<br>POP R1</pre>|
+|\<A\> is different to R3and\<A\> is different to R4|Repeated Addition|<pre>PSH R3<br>PSH R4<br>MOV R3 \<C\><br>MOV R4 \<B\><br>MOV \<A\> R0 <br>BRZ ~+4 \<C\><br>DEC R3 R3<br>ADD \<A\> \<A\> R4<br>BNZ ~-2 R3<br>POP R4<br>POP R3</pre>|
 ### <a name="_toc112787960"></a>***DIV***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to R1and\<A\> is different to \<C\>|Repeated Subtraction|BRL ~+9 \<B\> \<C\><br>PSH R1<br>MOV R1 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 \<C\><br>BGE ~-2 R1 \<C\><br>POP R1<br>JMP ~+2<br>MOV \<A\> R0|
-|\<A\> is different to R2and\<A\> is different to \<C\>|Repeated Subtraction|BRL ~+9 \<B\> \<C\><br>PSH R2<br>MOV R2 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R2 R2 \<C\><br>BGE ~-2 R2 \<C\><br>POP R2<br>JMP ~+2<br>MOV \<A\> R0|
-|\<A\> is different to R1and\<A\> is different to R2|Repeated Subtraction|BRL ~+13 \<B\> \<C\><br>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 R2<br>BGE ~-2 R1 R2<br>POP R2<br>POP R1<br>JMP ~+2<br>MOV \<A\> R0|
-|\<A\> is different to R3and\<A\> is different to R4|Repeated Subtraction|BRL ~+13 \<B\> \<C\><br>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R3 R3 R4<br>BGE ~-2 R3 R4<br>POP R4<br>POP R3<br>JMP ~+2<br>MOV \<A\> R0|
+|\<A\> is different to R1and\<A\> is different to \<C\>|Repeated Subtraction|<pre>BRL ~+9 \<B\> \<C\><br>PSH R1<br>MOV R1 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 \<C\><br>BGE ~-2 R1 \<C\><br>POP R1<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R2and\<A\> is different to \<C\>|Repeated Subtraction|<pre>BRL ~+9 \<B\> \<C\><br>PSH R2<br>MOV R2 \<B\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R2 R2 \<C\><br>BGE ~-2 R2 \<C\><br>POP R2<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R1and\<A\> is different to R2|Repeated Subtraction|<pre>BRL ~+13 \<B\> \<C\><br>PSH R1<br>PSH R2<br>MOV R1 \<B\><br>MOV R2 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R1 R1 R2<br>BGE ~-2 R1 R2<br>POP R2<br>POP R1<br>JMP ~+2<br>MOV \<A\> R0</pre>|
+|\<A\> is different to R3and\<A\> is different to R4|Repeated Subtraction|<pre>BRL ~+13 \<B\> \<C\><br>PSH R3<br>PSH R4<br>MOV R3 \<B\><br>MOV R4 \<C\><br>MOV \<A\> R0<br>INC \<A\> \<A\><br>SUB R3 R3 R4<br>BGE ~-2 R3 R4<br>POP R4<br>POP R3<br>JMP ~+2<br>MOV \<A\> R0</pre>|
 ### <a name="_toc112787961"></a>***MOD***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to \<C\>|Repeated Subtraction|MOV \<A\> \<B\><br>BRL ~+3 \<A\> \<C\><br>SUB \<A\> \<A\> \<C\><br>JMP ~-2|
-|\<A\> is different to R1<br>and<br>\<B\> is different to R1|Repeated Subtraction|PSH R1<br>MOV R1 \<C\><br>MOV \<A\> \<B\><br>BRL ~+3 \<B\> R1<br>SUB \<A\> \<A\> R1<br>JMP ~-2<br>POP R1|
-|\<A\> is different to R2<br>and<br>\<B\> is different to R2|Repeated Subtraction|PSH R2<br>MOV R2 \<C\><br>MOV \<A\> \<B\><br>BRL ~+3 \<A\> R2<br>SUB \<A\> \<A\> R2<br>JMP ~-2<br>POP R2|
-|\<A\> is different to R3<br>and<br>\<B\> is different to R3|Repeated Subtraction|PSH R3<br>MOV R3 \<C\><br>MOV \<A\> \<B\><br>BRL ~+3 \<A\> R3<br>SUB \<A\> \<A\> R3<br>JMP ~-2<br>POP R3|
+|\<A\> is different to \<C\>|Repeated Subtraction|<pre>MOV \<A\> \<B\><br>BRL ~+3 \<A\> \<C\><br>SUB \<A\> \<A\> \<C\><br>JMP ~-2</pre>|
+|\<A\> is different to R1<br>and<br>\<B\> is different to R1|Repeated Subtraction|<pre>PSH R1<br>MOV R1 \<C\><br>MOV \<A\> \<B\><br>BRL ~+3 \<B\> R1<br>SUB \<A\> \<A\> R1<br>JMP ~-2<br>POP R1</pre>|
+|\<A\> is different to R2<br>and<br>\<B\> is different to R2|Repeated Subtraction|<pre>PSH R2<br>MOV R2 \<C\><br>MOV \<A\> \<B\><br>BRL ~+3 \<A\> R2<br>SUB \<A\> \<A\> R2<br>JMP ~-2<br>POP R2</pre>|
+|\<A\> is different to R3<br>and<br>\<B\> is different to R3|Repeated Subtraction|<pre>PSH R3<br>MOV R3 \<C\><br>MOV \<A\> \<B\><br>BRL ~+3 \<A\> R3<br>SUB \<A\> \<A\> R3<br>JMP ~-2<br>POP R3</pre>|
 ### <a name="_toc112787962"></a>***BSR***
 
 |**Condition**|**Extra Information**|**Translation**|
@@ -2791,132 +2808,132 @@ This section covers the translations for each instruction.
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to R1<br>and<br>\<B\> is different to R1||PSH R1<br>MOV R1 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+~4 R1<br>LSH \<A\> \<A\><br>DEC R1 R1<br>JMP ~-3<br>POP R1|
-|\<A\> is different to R2<br>and<br>\<B\> is different to R2||PSH R2<br>MOV R2 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R2<br>LSH \<A\> \<A\><br>DEC R2 R2<br>JMP ~-3<br>POP R2|
-|\<A\> is different to R3<br>and<br>\<B\> is different to R3||PSH R3<br>MOV R3 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R3<br>LSH \<A\> \<A\><br>DEC R3 R3<br>JMP ~-3<br>POP R3|
+|\<A\> is different to R1<br>and<br>\<B\> is different to R1||<pre>PSH R1<br>MOV R1 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+~4 R1<br>LSH \<A\> \<A\><br>DEC R1 R1<br>JMP ~-3<br>POP R1</pre>|
+|\<A\> is different to R2<br>and<br>\<B\> is different to R2||<pre>PSH R2<br>MOV R2 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R2<br>LSH \<A\> \<A\><br>DEC R2 R2<br>JMP ~-3<br>POP R2</pre>|
+|\<A\> is different to R3<br>and<br>\<B\> is different to R3||<pre>PSH R3<br>MOV R3 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R3<br>LSH \<A\> \<A\><br>DEC R3 R3<br>JMP ~-3<br>POP R3</pre>|
 ### <a name="_toc112787964"></a>***SRS***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|X is equal to an immediate value which has only the uppermost bit active.||BRN ~+3 \<B\><br>RSH \<A\> \<B\><br>JMP ~+3<br>RSH \<A\> \<B\><br>ADD \<A\> \<A\> X|
+|Any||<pre>BRN ~+3 \<B\><br>RSH \<A\> \<B\><br>JMP ~+3<br>RSH \<A\> \<B\><br>ADD \<A\> \<A\> @MSB</pre>|
 ### <a name="_toc112787965"></a>***BSS***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|\<A\> is different to R1<br>and<br>\<B\> is different to R1||PSH R1<br>MOV R1 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R1<br>SRS \<A\> \<A\><br>DEC R1 R1<br>JMP ~-3<br>POP R1|
-|\<A\> is different to R2<br>and<br>\<B\> is different to R2||PSH R2<br>MOV R2 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R2<br>SRS \<A\> \<A\><br>DEC R2 R2<br>JMP ~-3<br>POP R2|
-|\<A\> is different to R3<br>and<br>\<B\> is different to R3||PSH R3<br>MOV R3 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R3<br>SRS \<A\> \<A\><br>DEC R3 R3<br>JMP ~-3<br>POP R3|
+|\<A\> is different to R1<br>and<br>\<B\> is different to R1||<pre>PSH R1<br>MOV R1 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R1<br>SRS \<A\> \<A\><br>DEC R1 R1<br>JMP ~-3<br>POP R1</pre>|
+|\<A\> is different to R2<br>and<br>\<B\> is different to R2||<pre>PSH R2<br>MOV R2 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R2<br>SRS \<A\> \<A\><br>DEC R2 R2<br>JMP ~-3<br>POP R2</pre>|
+|\<A\> is different to R3<br>and<br>\<B\> is different to R3||<pre>PSH R3<br>MOV R3 \<C\><br>MOV \<A\> \<B\><br>BRZ ~+4 R3<br>SRS \<A\> \<A\><br>DEC R3 R3<br>JMP ~-3<br>POP R3</pre>|
 ### <a name="_toc112787966"></a>***SETE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||BRE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> 1|
+|Any||<pre>BRE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> -1</pre>|
 ### <a name="_toc112787967"></a>***SETNE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||BNE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> 1|
+|Any||<pre>BNE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> -1</pre>|
 ### <a name="_toc112787968"></a>***SETG***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||BRG ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> 1|
+|Any||<pre>BRG ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> -1</pre>|
 ### <a name="_toc112787969"></a>***SETL***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||BRL ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> 1|
+|Any||<pre>BRL ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> -1</pre>|
 ### <a name="_toc112787970"></a>***SETGE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||BGE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> 1|
+|Any||<pre>BGE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> -1</pre>|
 ### <a name="_toc112787971"></a>***SETLE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||BLE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> 1|
+|Any||<pre>BLE ~+3 \<B\> \<C\><br>MOV \<A\> R0<br>JMP ~+2<br>IMM \<A\> -1</pre>|
 ### <a name="_toc112787972"></a>***SETC***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|A temporary register is required||MOV \<tempREG\> \<B\><br>BRG +2 \<B\> \<C\><br>MOV \<tempREG\> \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> \<tempREG\>|
-|\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1||PSH R1<br>MOV R1 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R1 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R1<br>POP R1|
-|\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2||PSH R2<br>MOV R2 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R2 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R2<br>POP R2|
-|\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3||PSH R3<br>MOV R3 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R3 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R3<br>POP R3|
-|\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4||PSH R4<br>MOV R4 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R4 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R4<br>POP R4|
+|A temporary register is required||<pre>MOV \<tempREG\> \<B\><br>BRG +2 \<B\> \<C\><br>MOV \<tempREG\> \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> \<tempREG\></pre>|
+|\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1||<pre>PSH R1<br>MOV R1 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R1 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R1<br>POP R1</pre>|
+|\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2||<pre>PSH R2<br>MOV R2 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R2 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R2<br>POP R2</pre>|
+|\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3||<pre>PSH R3<br>MOV R3 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R3 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R3<br>POP R3</pre>|
+|\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4||<pre>PSH R4<br>MOV R4 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R4 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETL \<A\> \<A\> R4<br>POP R4</pre>|
 ### <a name="_toc112787973"></a>***SETNC***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|A temporary register is required||MOV \<tempREG\> \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV \<tempREG\> \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> \<tempREG\>|
-|\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1||PSH R1<br>MOV R1 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R1 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R1<br>POP R1|
-|\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2||PSH R2<br>MOV R2 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R2 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R2<br>POP R2|
-|\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3||PSH R3<br>MOV R3 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R3 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R3<br>POP R3|
-|\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4||PSH R4<br>MOV R4 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R4 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R4<br>POP R4|
+|A temporary register is required||<pre>MOV \<tempREG\> \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV \<tempREG\> \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> \<tempREG\></pre>|
+|\<A\> is different to R1<br>and<br>\<B\> is different to R1<br>and<br>\<C\> is different to R1||<pre>PSH R1<br>MOV R1 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R1 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R1<br>POP R1</pre>|
+|\<A\> is different to R2<br>and<br>\<B\> is different to R2<br>and<br>\<C\> is different to R2||<pre>PSH R2<br>MOV R2 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R2 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R2<br>POP R2</pre>|
+|\<A\> is different to R3<br>and<br>\<B\> is different to R3<br>and<br>\<C\> is different to R3||<pre>PSH R3<br>MOV R3 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R3 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R3<br>POP R3</pre>|
+|\<A\> is different to R4<br>and<br>\<B\> is different to R4<br>and<br>\<C\> is different to R4||<pre>PSH R4<br>MOV R4 \<B\><br>BRG ~+2 \<B\> \<C\><br>MOV R4 \<C\><br>ADD \<A\> \<B\> \<C\><br>SETGE \<A\> \<A\> R4<br>POP R4</pre>|
 
 ### <a name="_toc112787974"></a>***LLOD***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Any||ADD \<A\> \<B\> \<C\><br>LOD \<A\> \<A\>|
+|Any||<pre>ADD \<A\> \<B\> \<C\><br>LOD \<A\> \<A\></pre>|
 ### <a name="_toc112787975"></a>***LSTR***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|A temporary register is required||ADD \<tempREG\> \<A\> \<B\><br>STR \<C\> \<tempREG\>|
-|\<C\> is different to R1||PSH R1<br>ADD R1 \<A\> \<B\><br>STR \<C\> R1<br>POP R1|
-|\<C\> is different to R2||PSH R2<br>ADD R1 \<A\> \<B\><br>STR \<C\> R2<br>POP R2|
+|A temporary register is required||<pre>ADD \<tempREG\> \<A\> \<B\><br>STR \<C\> \<tempREG\></pre>|
+|\<C\> is different to R1||<pre>PSH R1<br>ADD R1 \<A\> \<B\><br>STR \<C\> R1<br>POP R1</pre>|
+|\<C\> is different to R2||<pre>PSH R2<br>ADD R1 \<A\> \<B\><br>STR \<C\> R2<br>POP R2</pre>|
 ### <a name="_toc112787976"></a>***SDIV***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Three temporary registers are required||IMM \<tempREG1\> 0<br>MOV \<tempREG2\> \<B\><br>BRP ~+3 \<B\><br>NEG \<tempREG2\> \<B\><br>IMM \<tempREG1\> @MSB<br>MOV \<tempREG3\> \<C\><br>BRP ~+3 \<C\><br>NEG \<tempREG3\> \<C\><br>ADD \<tempREG1\> \<tempREG1\> @MSB<br>DIV \<A\> \<tempREG2\> \<tempREG3\><br>BRP ~+2 \<A\><br>NEG \<A\> \<A\>|
+|Three temporary registers are required||<pre>IMM \<tempREG1\> 0<br>MOV \<tempREG2\> \<B\><br>BRP ~+3 \<B\><br>NEG \<tempREG2\> \<B\><br>IMM \<tempREG1\> @MSB<br>MOV \<tempREG3\> \<C\><br>BRP ~+3 \<C\><br>NEG \<tempREG3\> \<C\><br>ADD \<tempREG1\> \<tempREG1\> @MSB<br>DIV \<A\> \<tempREG2\> \<tempREG3\><br>BRP ~+2 \<A\><br>NEG \<A\> \<A\></pre>|
 ### <a name="_toc112787977"></a>***SBRL***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>BRL \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>BRL \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787978"></a>***SBRG***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>BRG \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>BRG \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787979"></a>***SBLE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SBLE \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SBLE \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787980"></a>***SBGE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SBGE \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SBGE \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787981"></a>***SSETL***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETL \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETL \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787982"></a>***SSETG***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETG \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETG \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787983"></a>***SSETLE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETLE \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETLE \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787984"></a>***SSETGE***
 
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Two temporary registers are required||MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETGE \<A\> \<tempREG1\> \<tempREG2\>|
+|Two temporary registers are required||<pre>MOV \<tempREG1\> \<B\><br>BRP ~+2 \<B\><br>ADD \<tempREG1\> \<B\> @MSB<br>MOV \<tempREG2\> \<C\><br>BRP ~+2 \<C\><br>ADD \<tempREG2\> \<C\> @MSB<br>SETGE \<A\> \<tempREG1\> \<tempREG2\></pre>|
 ### <a name="_toc112787985"></a>***ABS***
 
 |**Condition**|**Translation**|
 | :-: | :-: |
-|Any|MOV \<A\> \<B\><br>BRP ~+2 \<A\><br>NEG \<A\> \<A\>|
+|Any|<pre>MOV \<A\> \<B\><br>BRP ~+2 \<A\><br>NEG \<A\> \<A\></pre>|
 # <a name="_toc112787986"></a>**PORTS**
 There are 64 official ports.
 
@@ -2930,7 +2947,7 @@ Ports can be written to or read from using the I/O instructions as appropriate.
 |![Tip icon]|*Note that the programmer can make up any ports and these do not have to follow the official documentation.*<br>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine if it is not too complex.*|
 | - | - |
 
-<table><tr><th colspan="1" valign="bottom">\<B\>Type</b></th><th colspan="1" valign="bottom">\<B\>Port Number</b></th><th colspan="1" valign="bottom">\<B\>Alias (Port Name)</b></th><th colspan="1" valign="bottom">\<B\>Full Name</b></th><th colspan="1" valign="bottom">\<B\>Input Notes/Usage</b></th><th colspan="1" valign="bottom">\<B\>Output Notes/Usage</b></th><th colspan="1" valign="bottom">\<B\>Valid Inputs</b></th></tr>
+<table><tr><th colspan="1" valign="bottom"><B>Type</b></th><th colspan="1" valign="bottom"><B>Port Number</b></th><th colspan="1" valign="bottom"><B>Alias (Port Name)</b></th><th colspan="1" valign="bottom"><B>Full Name</b></th><th colspan="1" valign="bottom"><B>Input Notes/Usage</b></th><th colspan="1" valign="bottom"><B>Output Notes/Usage</b></th><th colspan="1" valign="bottom"><B>Valid Inputs</b></th></tr>
 <tr><td colspan="1" rowspan="8">General</td><td colspan="1">0</td><td colspan="1">%CPUBUS</td><td colspan="1">CPU Bus</td><td colspan="1"></td><td colspan="1"></td><td colspan="1">Number</td></tr>
 <tr><td colspan="1">1</td><td colspan="1">%TEXT</td><td colspan="1">Text IO</td><td colspan="1">Generic text input</td><td colspan="1">Generic text output</td><td colspan="1">Number, Character</td></tr>
 <tr><td colspan="1">2</td><td colspan="1">%NUMB</td><td colspan="1">Numeric IO</td><td colspan="1">Generic number input</td><td colspan="1">Generic number output</td><td colspan="1">Number</td></tr>
@@ -2996,6 +3013,7 @@ Ports can be written to or read from using the I/O instructions as appropriate.
 <tr><td colspan="1">62</td><td colspan="1">%UD15</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1">63</td><td colspan="1">%UD16</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 </table>
+
 # <a name="_toc112787987"></a>**CODE FAULTS**
 
 |![Tip icon]|*This section contains most common faults and the most likely causes as well as possible solutions.*|
@@ -3028,9 +3046,9 @@ These are faults which can be detected before running the code.
 | :-: | :-: |
 |Invalid instruction name.|Rewrite the instruction in question, making sure that the name is spelt exactly as given in the Instruction section.|
 |Invalid operand name.|Rewrite the instruction in question, making sure that the operands have the correct prefix if required. These are specified in the Prefix section.|
-|Comment that has not be marked as a comment.|Add // or /\* and \*/ as appropriate to the comment.|
+|Comment that has not be marked as a comment.|Add `//` or `/*` and `*/` as appropriate to the comment.|
 |Invalid header name.|Rewrite the header in question, making sure that the name is spelt exactly as given in the Header section.|
-|Label without prefix.|Add the prefix . on to the label in question.|
+|Label without prefix.|Add the prefix `.` on to the label in question.|
 ### <a name="_toc112787992"></a>***Unsupported Number of Registers***
 
 |**Potential Cause**|**Potential Fix**|
@@ -3159,27 +3177,18 @@ Lastly, on a 4 bit CPU if the only the Core and a couple of the Basic instructio
 
 # <a name="_toc112788004"></a>**EXAMPLE PROGRAMS**
 ## <a name="_toc112788005"></a>**Simple Fibonacci**
-BITS == 8
+    BITS 8
+    MINREG 2
+    MINHEAP 0
+    MINSTACK 0
+    RUN ROM
 
-MINREG 2
-
-MINHEAP 0
-
-MINSTACK 0
-
-RUN ROM
-
-IMM R1 0
-
-IMM R2 1
-
-.loop
-
-`    `ADD R1 R1 R2
-
-`    `ADD R2 R1 R2
-
-`    `JMP .loop
+    IMM R1 0
+    IMM R2 1
+    .loop
+        ADD R1 R1 R2
+        ADD R2 R1 R2
+        JMP .loop
 
 |![Tip icon]|*This program has no escape condition so it will keep going forever.*|
 | - | - |
@@ -3188,77 +3197,47 @@ IMM R2 1
 | - | - |
 
 ## <a name="_toc112788006"></a>**FizzBuzz**
-BITS == 8
+    BITS == 8
+    MINREG 4
+    MINHEAP 0
+    MINSTACK 0
+    RUN ROM
 
-MINREG 4
+    .setup
+        IMM R1 0        // current value = 0
+        IMM R2 3        // fizz counter = 3
+        IMM R3 5        // buzz counter = 5
 
-MINHEAP 0
+    .loop
+        OUT %TEXT '\n'   // draw a new line character to the char display
+        INC R1 R1
+        IMM R4 0        // R4 is used to tell if fizz activated
+        DEC R2 R2
+        BRZ .fizz R2    // branch to .fizz if fizz counter == 0
 
-MINSTACK 0
+    .return
+        DEC R3 R3
+        BRZ .buzz R3    // branch to .buzz if buzz counter == 0
+        BNZ .loop R4    // branch to .loop if R4 != 0
+        OUT %TEXT R1    // draw current value to the char display
+        JMP .loop
 
-RUN ROM
+    .fizz
+        IMM R4 1        // R4 = 1
+        OUT %TEXT 'F'   // draw "FIZZ" on the char display
+        OUT %TEXT 'I'
+        OUT %TEXT 'Z'
+        OUT %TEXT 'Z'
+        IMM R2 3        // fizz counter = 3
+        JMP .return
 
-.setup
-
-`    `IMM R1 0        // current value = 0
-
-`    `IMM R2 3        // fizz counter = 3
-
-`    `IMM R3 5        // buzz counter = 5
-
-.loop
-
-`    `OUT %TEXT '\n'   // draw a new line character to the char display
-
-`    `INC R1 R1
-
-`    `IMM R4 0        // R4 is used to tell if fizz activated
-
-`    `DEC R2 R2
-
-`    `BRZ .fizz R2    // branch to .fizz if fizz counter == 0
-
-.return
-
-`    `DEC R3 R3
-
-`    `BRZ .buzz R3    // branch to .buzz if buzz counter == 0
-
-`    `BNZ .loop R4    // branch to .loop if R4 != 0
-
-`    `OUT %TEXT R1    // draw current value to the char display
-
-`    `JMP .loop
-
-.fizz
-
-`    `IMM R4 1        // R4 = 1
-
-`    `OUT %TEXT 'F'   // draw "FIZZ" on the char display
-
-`    `OUT %TEXT 'I'
-
-`    `OUT %TEXT 'Z'
-
-`    `OUT %TEXT 'Z'
-
-`    `IMM R2 3        // fizz counter = 3
-
-`    `JMP .return
-
-.buzz
-
-`    `OUT %TEXT 'B'   // draw "BUZZ" on the char display
-
-`    `OUT %TEXT 'U'
-
-`    `OUT %TEXT 'Z'
-
-`    `OUT %TEXT 'Z'
-
-`    `IMM R3 5        // buzz counter = 5
-
-`    `JMP .loop
+    .buzz
+        OUT %TEXT 'B'   // draw "BUZZ" on the char display
+        OUT %TEXT 'U'
+        OUT %TEXT 'Z'
+        OUT %TEXT 'Z'
+        IMM R3 5        // buzz counter = 5
+        JMP .loop
 
 |![Tip icon]|*This program starts at 1 and it increments this value once per loop. It prints out “FIZZ” if the value is divisible by 3, “BUZZ” if the value is divisible by 5, “FIZZBUZZ” if the value is divisible by both 3 and 5 or the original value if not divisible by 3 or 5.*|
 | - | - |
@@ -3267,87 +3246,48 @@ RUN ROM
 | - | - |
 
 ## <a name="_toc112788007"></a>**Bubble Sort**
-BITS == 8
+    BITS == 8
+    MINREG 5
+    MINHEAP 5
+    MINSTACK 0
+    RUN ROM
 
-MINREG 5
-
-MINHEAP 5
-
-MINSTACK 0
-
-RUN ROM
-
-.setup
-
-`    `MOV R2 R0                      // R2 = list pointer
-
-.rng
-
-`        `IN R1 %RNG                 // R1 = random number
-
-`        `STR R2 R1
-
-`        `INC R2 R2
-
-`        `OUT %TEXT '\n'
-
-`        `OUT %TEXT R1
-
-`        `BNE .rng R2 5              // stop when 5 numbers have been generated
-
-.main
-
-`    `MOV R5 R0                      // R5 = switch check
-
-`    `DEC R3 R0                      // R3 = low pointer
-
-`    `MOV R4 R0                      // R4 = high pointer
-
-.loop
-
-`        `INC R3 R3                  // R3 += 1
-
-`        `INC R4 R4                  // R4 += 1
-
-`        `LOD R1 R3                  // R1 = low value
-
-`        `LOD R2 R4                  // R2 = high value
-
-`        `BRL .switch R2 R1          // go to .switch if high less than low
-
-`        `BNE .loop R4 4             // branch to .loop if not at end of list
-
-`        `BRE .main R5 1             // loop again if any switches occurred
-
-.out
-
-`        `MOV R1 R0                  // R1 = pointer for printing outputs
-
-.outLoop
-
-`            `LOD R2 R1
-
-`            `OUT %TEXT '\n'
-
-`            `OUT %TEXT R2
-
-`            `INC R1 R1
-
-`            `BNE .outLoop R1 5      // loop until all 5 values are printed
-
-`        `HLT
-
-.switch
-
-`        `IMM R5 1                   // set switch check
-
-`        `STR R3 R2
-
-`        `STR R4 R1
-
-`        `BNE .loop R4 4             // branch to .loop if not at end of list
-
-`        `JMP .main                  // loop again
+    .setup
+        MOV R2 R0                      // R2 = list pointer
+    .rng
+        IN R1 %RNG                 // R1 = random number
+        STR R2 R1
+        INC R2 R2
+        OUT %TEXT '\n'
+        OUT %TEXT R1
+        BNE .rng R2 5              // stop when 5 numbers have been generated
+    .main
+        MOV R5 R0                      // R5 = switch check
+        DEC R3 R0                      // R3 = low pointer
+        MOV R4 R0                      // R4 = high pointer
+    .loop
+        INC R3 R3                  // R3 += 1
+        INC R4 R4                  // R4 += 1
+        LOD R1 R3                  // R1 = low value
+        LOD R2 R4                  // R2 = high value
+        BRL .switch R2 R1          // go to .switch if high less than low
+        BNE .loop R4 4             // branch to .loop if not at end of list
+        BRE .main R5 1             // loop again if any switches occurred
+    .out
+        MOV R1 R0                  // R1 = pointer for printing outputs
+        .outLoop
+            LOD R2 R1
+            OUT %TEXT '\n'
+            OUT %TEXT R2
+            INC R1 R1
+            BNE .outLoop R1 5      // loop until all 5 values are printed
+        HLT
+    .switch
+        IMM R5 1                   // set switch check
+        STR R3 R2
+        STR R4 R1
+        BNE .loop R4 4             // branch to .loop if not at end of list
+        JMP .main                  // loop again
 
 |![Tip icon]|*This program generates a list of 5 random numbers and prints them. Then it sorts the numbers using a bubble sort algorithm, afterwards it prints the sorted list.*|
 | - | - |
@@ -3372,7 +3312,5 @@ URCL would not have been possible without all of the URCL community contributing
 ||Tape / TapeDispenser69|- Made a URCL emulator in scratch- Tried to make an OS- Whined about the existence of Flagless URCL|
 ||Bram / |- Created URCX Emulator- Created the URCX discord bot|
 ||RedCMP / RedCMD|- Created a URCL highlight extension for VSCode|
-
-1
 
 [Tip icon]: Aspose.Words.5ebee7e7-a737-4c78-8154-76c760e3d5e0.003.png
