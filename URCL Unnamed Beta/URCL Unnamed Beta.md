@@ -3299,18 +3299,18 @@ URCL would not have been possible without all of the URCL community contributing
 
 |**Name (If they wish to give it)**|**Discord Username / Minecraft Username**|**Contributions**|
 | :-: | :-: | :-: |
-|Ben Aitken|Mod Punchtree / ModPunchtree|- One of the original founders of URCL- Created the Flagless fork of URCL- Managed the Google Sheet documentation for both Main URCL and Flagless- Ran URCL on both the MPU6 and MPU7- Hosted polls- Made several emulators- Made a B to URCL compiler- Made a generic URCL code optimiser- Made a Discord bot so the emulator and compiler are more easily accessible- Created and maintained this formal URCL documentation|
-||Haku / |- Created a tool to translate URCL into target CPU’s assembly- Created a URCL emulator|
-||Kuggo / Kuggo|- One of the original founders of URCL- Began working on math and string libraries- Hosted a poll|
-||Lucida Dragon / |- Created FlapStacks and URCL.NET- Created a URCL highlight extension for VSCode- Created a Discord bot|
-||Big Gay Lady / IAmLesbian|- One of the original founders of URCL- Managed the URCL discord- Hosted polls- Created the URCL logo|
-||Verlio\_H / |- One of the original founders of URCL- Created URCL OS- Made the current ports documentation- Created the complex numbers library|
-||Tuke / |- Created URCL OS- Made the current ports documentation- Created a compiler|
+|Ben Aitken|Mod Punchtree / ModPunchtree|- One of the original founders of URCL<br>- Created the Flagless fork of URCL<br>- Managed the Google Sheet documentation for both Main URCL and Flagless<br>- Ran URCL on both the MPU6 and MPU7<br>- Hosted polls<br>- Made several emulators<br>- Made a B to URCL compiler<br>- Made a generic URCL code optimiser<br>- Made a Discord bot so the emulator and compiler are more easily accessible<br>- Created and maintained this formal URCL documentation|
+||Haku / |- Created a tool to translate URCL into target CPU’s assembly<br>- Created a URCL emulator|
+||Kuggo / Kuggo|- One of the original founders of URCL<br>- Began working on math and string libraries<br>- Hosted a poll|
+||Lucida Dragon / |- Created FlapStacks and URCL.NET<br>- Created a URCL highlight extension for VSCode<br>- Created a Discord bot|
+||Big Gay Lady / IAmLesbian|- One of the original founders of URCL<br>- Managed the URCL discord<br>- Hosted polls<br>- Created the URCL logo|
+||Verlio\_H / |- One of the original founders of URCL<br>- Created URCL OS<br>- Made the current ports documentation<br>- Created the complex numbers library|
+||Tuke / |- Created URCL OS<br>- Made the current ports documentation<br>- Created a compiler|
 ||sammyuri / sammyuri|- Ran URCL on several of their CPUs|
 ||GLS / GamingLiamStudios|- Tried to make a C to URCL compiler|
 ||Qwerasd / |- Made a URCL emulator|
-||Tape / TapeDispenser69|- Made a URCL emulator in scratch- Tried to make an OS- Whined about the existence of Flagless URCL|
-||Bram / |- Created URCX Emulator- Created the URCX discord bot|
+||Tape / TapeDispenser69|- Made a URCL emulator in scratch<br>- Tried to make an OS<br>- Whined about the existence of Flagless URCL|
+||Bram / |- Created URCX Emulator<br>- Created the URCX discord bot|
 ||RedCMP / RedCMD|- Created a URCL highlight extension for VSCode|
 
 [Tip icon]: Aspose.Words.5ebee7e7-a737-4c78-8154-76c760e3d5e0.003.png
