@@ -131,6 +131,8 @@ URCL is a simple universal intermediate language. It is designed to be as simila
         * [SSETGE](#ssetge)
         * [ABS](#abs)
         * [MEMCPY](#memcpy)
+        * [UMLT](#umlt)
+        * [SUMLT](#sumlt)
     * [Untranslatable Instructions](#untranslatable-instructions)
         * [IN](#in)
         * [OUT](#out)
@@ -210,6 +212,8 @@ URCL is a simple universal intermediate language. It is designed to be as simila
         * [SSETGE](#ssetge-1)
         * [ABS](#abs-1)
         * [MEMCPY](#memcpy-1)
+        * [UMLT](#umlt-1)
+        * [SUMLT](#sumlt-1)
 * [Ports](#ports-1)
 * [Code Faults](#code-faults)
     * [Pre-Runtime Faults](#pre-runtime-faults)
@@ -1921,6 +1925,10 @@ There are 17 complex instructions.
 Multiply
 #### *Description*
 The MLT instruction multiplies two values together, then it stores the result in a register.
+
+|![Tip icon]|*MLT returns the result truncated to the same number of bits as the word length (i.e. the value of the BITS header).<br>In a BITS 8 program, multiplying two values results in a 16 bit value.<br>So MLT returns the lower 8 bits of the 16 bit result.*|
+| - | - |
+
 #### *Operands*
 MLT requires 3 operands.
 
@@ -2683,8 +2691,71 @@ This instruction will copy an array of data that is 5 words long from address M0
 
 This instruction will copy an array of data that has a length of the value in register 3, from the address in register 2 to the address in register 1.
 
+### ***UMLT***
+#### *Full Name*
+Upper Multiplication
+#### *Description*
+The UMLT instruction multiplies 2 unsigned words together and return the upper part of the answer.
 
+|![Tip icon]|*Multiplication of two base 2 numbers results in a value that occupies up to double the number of bits to represent.<br>This instruction returns the upper half of that answer instead of the lower half which is what MLT does.*|
+| - | - |
 
+|![Tip icon]|*In a BITS 8 program, multiplying two values results in a 16 bit value.<br>UMLT returns the upper 8 bits of the 16 bit result.*|
+| - | - |
+
+|![Tip icon]|*Note that this is unsigned.*|
+| - | - |
+
+#### *Operands*
+UMLT requires 3 operands.
+
+|**Destination**|**Source1**|**Source2**|**Example**|
+| :-: | :-: | :-: | :-: |
+|Register|Register|Register|<pre>UMLT R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>UMLT R1 R2 5</pre>|
+|Register|Immediate|Register|<pre>UMLT R1 6 R3</pre>|
+
+#### *Code Examples*
+    UMLT R1 R2 R3
+
+This instruction multiplies the value in register 2 with the value in register 3, then writes the upper half of the answer into register 1.
+
+    UMLT R1 R2 5
+
+This instruction multiplies the value in register 2 with the immediate value 5, then writes the upper half of the answer into register 1.
+
+### ***SUMLT***
+#### *Full Name*
+Signed Upper Multiplication
+#### *Description*
+The SUMLT instruction multiplies 2 signed words together and return the upper part of the answer.
+
+|![Tip icon]|*Multiplication of two base 2 numbers results in a value that occupies up to double the number of bits to represent.<br>This instruction returns the upper half of that answer instead of the lower half which is what MLT does.*|
+| - | - |
+
+|![Tip icon]|*In a BITS 8 program, multiplying two values results in a 16 bit value.<br>SUMLT returns the upper 8 bits of the 16 bit result.*|
+| - | - |
+
+|![Tip icon]|*Note that this is signed.*|
+| - | - |
+
+#### *Operands*
+SUMLT requires 3 operands.
+
+|**Destination**|**Source1**|**Source2**|**Example**|
+| :-: | :-: | :-: | :-: |
+|Register|Register|Register|<pre>SUMLT R1 R2 R3</pre>|
+|Register|Register|Immediate|<pre>SUMLT R1 R2 5</pre>|
+|Register|Immediate|Register|<pre>SUMLT R1 6 R3</pre>|
+
+#### *Code Examples*
+    SUMLT R1 R2 R3
+
+This instruction multiplies the signed value in register 2 with the signed value in register 3, then writes the upper half of the answer into register 1.
+
+    SUMLT R1 R2 5
+
+This instruction multiplies the signed value in register 2 with the signed immediate value 5, then writes the upper half of the answer into register 1.
 
 ## **Untranslatable Instructions**
 These instructions cannot be translated into other instructions and must be directly translated in order to be ran on the target CPU.
@@ -2694,7 +2765,7 @@ These include instructions that do not have translations yet, the I/O instructio
 #### *Full Name*
 In
 #### *Description*
-The IN instruction reads the value on a particular port and writes it into a register.
+The IN instruction reads from a particular port and may write the result any number of registers.
 
 |![Tip icon]|*Specific ports are defined in the Ports section.*|
 | - | - |
@@ -2703,25 +2774,27 @@ The IN instruction reads the value on a particular port and writes it into a reg
 | - | - |
 
 #### *Operands*
-IN requires 2 operands.
+IN requires can 1 or more operands which is entirely dependent on the port being used.
 
-|**Destination**|**Source1**|**Example**|
-| :-: | :-: | :-: |
-|Register|Port|<pre>IN R1 %RNG</pre>|
+|**Destination1**|**Destination2**|**Source1**|**Example**|
+| :-: | :-: | :-: | :-: |
+|Register|Port|N/a|<pre>IN R1 %RNG</pre>|
+|Register|Register|Port|<pre>IN R1 R2 %MOUSE_COORD</pre>|
 
 #### *Code Examples*
     IN R1 %RNG
 
 This instruction reads from the port “RNG” (which is defined in the port documentation as a random number generator) and the result is written into register 1.
 
-    IN R2 %7SEG
+    IN R1 R2 %MOUSE_COORD
 
-This instruction reads from the port “7SEG” (which is **not** defined in the port documentation so it should be defined somewhere by the programmer), and the result is written into register 2.
+This instruction reads from the port “MOUSE_COORD” (which is **not** defined in the port documentation so it should be defined somewhere by the programmer), and the result is written into both register 1 and register 2.
+
 ### ***OUT***
 #### *Full Name*
 Out
 #### *Description*
-The OUT instruction reads a value and outputs the result into a specific port.
+The OUT instruction may read any number of values from registers or immediate values, then outputs that to a specific port.
 
 |![Tip icon]|*Specific ports are defined in the Ports section.*|
 | - | - |
@@ -2730,21 +2803,22 @@ The OUT instruction reads a value and outputs the result into a specific port.
 | - | - |
 
 #### *Operands*
-OUT requires 2 operands.
+OUT requires can 1 or more operands which is entirely dependent on the port being used.
 
-|**Destination**|**Source1**|**Example**|
-| :-: | :-: | :-: |
-|Port|Register|<pre>OUT %RNG R1</pre>|
-|Port|Immediate|<pre>OUT %RNG 5</pre>|
+|**Destination**|**Source1**|**Source2**|**Example**|
+| :-: | :-: | :-: | :-: |
+|Port|Register|N/a|<pre>OUT %RNG R1</pre>|
+|Port|Immediate|N/a|<pre>OUT %RNG 5</pre>|
+|Port|Register|Register|<pre>OUT %PIXEL R1 R2 R3</pre>|
 
 #### *Code Examples*
     OUT %RNG R1
 
 This instruction reads the value in register 1 and writes it into the port “RNG” (which is defined in the port documentation as a random number generator).
 
-    OUT %7SEG 5
+    OUT %PIXEL R1 R2 R3
 
-This instruction takes the immediate value 5 and writes it into port “7SEG” (which is **not** defined in the port documentation so it should be defined somewhere by the programmer).
+This instruction reads the values in register 1, 2 and 3, then it writes them into port “PIXEL”.
 
 ### ***ITOF***
 #### *Full Name*
@@ -3430,6 +3504,16 @@ This section covers the translations for each instruction.
 | :-: | :-: | :-: |
 |Four temporary registers are required||<pre>BRZ ~+10 \<C\><br>MOV \<tempREG1\> \<A\><br>MOV \<tempREG2\> \<B\><br>MOV \<tempREG3\> \<C\><br>LOD \<tempREG4\> \<tempREG2\><br>STR \<tempREG1\> \<tempREG4\><br>INC \<tempREG1\> \<tempREG1\><br>INC \<tempREG2\> \<tempREG2\><br>DEC \<tempREG3\> \<tempREG3\><br>BNZ ~-5 \<tempREG3\></pre>|
 
+### ***UMLT***
+|**Condition**|**Extra Information**|**Translation**|
+| :-: | :-: | :-: |
+|Three temporary registers are required|Shift and Add|<pre>MOV \<tempREG1\> \<B\><br>MOV \<tempREG2\> \<C\><br>MOV \<A\> R0<br>MOV \<tempREG3\> R0<br>BEV ~+4 \<tempREG2\><br>BNC ~+2 \<tempREG3\> \<tempREG1\><br>INC \<A\> \<A\><br>ADD \<tempREG3\> \<tempREG3\> \<tempREG1\><br>RSH \<tempREG2\> \<tempREG2\><br>LSH \<tempREG1\> \<tempREG1\><br>BNZ ~-6 \<tempREG2\></pre>|
+
+### ***SUMLT***
+|**Condition**|**Extra Information**|**Translation**|
+| :-: | :-: | :-: |
+|Four temporary registers are required|Shift and Add|<pre>XOR \<tempREG4\> \<B\> \<C\><br>ABS \<tempREG1\> \<B\><br>ABS \<tempREG2\> \<C\><br>MOV \<A\> R0<br>MOV \<tempREG3\> R0<br>BEV ~+4 \<tempREG2\><br>BNC ~+2 \<tempREG3\> \<tempREG1\><br>INC \<A\> \<A\><br>ADD \<tempREG3\> \<tempREG3\> \<tempREG1\><br>RSH \<tempREG2\> \<tempREG2\><br>LSH \<tempREG1\> \<tempREG1\><br>BNZ ~-6 \<tempREG2\><br>BRP ~+2 \<tempREG4\><br>NEG \<A\> \<A\></pre>|
+
 # **PORTS**
 There are 64 official ports.
 
@@ -3443,71 +3527,72 @@ Ports can be written to or read from using the I/O instructions as appropriate.
 |![Tip icon]|*Note that the programmer can make up any ports and these do not have to follow the official documentation.*<br>*In this case the programmer should define what is meant by each port if it is not obvious. A simple comment in the code is usually fine if it is not too complex.*|
 | - | - |
 
-<table><tr><th colspan="1" valign="bottom"><B>Type</b></th><th colspan="1" valign="bottom"><B>Port Number</b></th><th colspan="1" valign="bottom"><B>Alias (Port Name)</b></th><th colspan="1" valign="bottom"><B>Full Name</b></th><th colspan="1" valign="bottom"><B>Input Notes/Usage</b></th><th colspan="1" valign="bottom"><B>Output Notes/Usage</b></th><th colspan="1" valign="bottom"><B>Valid Inputs</b></th></tr>
-<tr><td colspan="1" rowspan="8">General</td><td colspan="1">0</td><td colspan="1">%CPUBUS</td><td colspan="1">CPU Bus</td><td colspan="1"></td><td colspan="1"></td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">1</td><td colspan="1">%TEXT</td><td colspan="1">Text IO</td><td colspan="1">Generic text input</td><td colspan="1">Generic text output</td><td colspan="1">Number, Character</td></tr>
-<tr><td colspan="1">2</td><td colspan="1">%NUMB</td><td colspan="1">Numeric IO</td><td colspan="1">Generic number input</td><td colspan="1">Generic number output</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">3</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">4</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">5</td><td colspan="1">%SUPPORTED</td><td colspan="1">Port Supported</td><td colspan="1">Returns 0 if the port does not exist</td><td colspan="1">Sets value to return if it does exist, this can be handled by a compiler if the CPU does not support it</td><td colspan="1">Number, Port Alias</td></tr>
-<tr><td colspan="1">6</td><td colspan="1">%SPECIAL</td><td colspan="1">Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
-<tr><td colspan="1">7</td><td colspan="1">%PROFILE</td><td colspan="1">Profile</td><td colspan="1">Tells current Profile</td><td colspan="1">Sets Profile</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1" rowspan="8">Graphics</td><td colspan="1">8</td><td colspan="1">%X</td><td colspan="1">Display X</td><td colspan="1">Tells display width</td><td colspan="1">Sets X Vertex</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">9</td><td colspan="1">%Y</td><td colspan="1">Display Y</td><td colspan="1">Tells display height</td><td colspan="1">Sets Y Vertex</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">10</td><td colspan="1">%COLOR or %COLOUR</td><td colspan="1">Colour</td><td colspan="1">Reads colour at %X, %Y into a register (from the currently writeable part of the screen)</td><td colspan="1">Draws a pixel of the specified colour at %X, %Y (on the currently writeable part of the screen)</td><td colspan="1">Colour</td></tr>
-<tr><td colspan="1">11</td><td colspan="1">%BUFFER</td><td colspan="1">Display Buffer</td><td colspan="1">Reads buffer state</td><td colspan="1">0 copies buffer to display, and disables it,1 enables writing to the buffer and locks the screen from being updated2 disables, then reenables the buffer which updates the screen to the buffer, but the buffer remains enabled</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">12</td><td colspan="1">%FREEZE</td><td colspan="1">Freeze</td><td colspan="1">Freezes screen</td><td colspan="1">Freezes the visible part of the screen.Reading and writing to the screen still works but does not visually update the screen.</td><td colspan="1">Any</td></tr>
-<tr><td colspan="1">13</td><td colspan="1">%UNFREEZE</td><td colspan="1">Unfreeze</td><td colspan="1">Unfreezes screen</td><td colspan="1">Unfreezes the visible part of the screen.The visual screen now shows what the screen contains.</td><td colspan="1">Any</td></tr>
-<tr><td colspan="1">14</td><td colspan="1">%CLEAR</td><td colspan="1">Clear</td><td colspan="1">Clears screen</td><td colspan="1">Clears the screen.This does not unfreeze the screen if it is frozen.</td><td colspan="1">Any</td></tr>
-<tr><td colspan="1">15</td><td colspan="1">%GSPECIAL</td><td colspan="1">Graphics Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
-<tr><td colspan="1" rowspan="8">Text</td><td colspan="1">16</td><td colspan="1">%ASCII8</td><td colspan="1">8-Bit ASCII</td><td colspan="1">Takes in an 8-Bit Ascii character</td><td colspan="1">Displays an 8-bit ascii character</td><td colspan="1">Number, Character</td></tr>
-<tr><td colspan="1">17</td><td colspan="1">%CHAR5</td><td colspan="1">5-Bit Char</td><td colspan="1">Takes in a 5-bit character</td><td colspan="1">Displays a 5 bit character</td><td colspan="1">Number, Character</td></tr>
-<tr><td colspan="1">18</td><td colspan="1">%CHAR6</td><td colspan="1">6-Bit Char</td><td colspan="1">Takes in a 6-bit character</td><td colspan="1">Displays a 6 bit character</td><td colspan="1">Number, Character</td></tr>
-<tr><td colspan="1">19</td><td colspan="1">%ASCII7</td><td colspan="1">7-Bit ASCII</td><td colspan="1">Takes in a 7-Bit ASCII character</td><td colspan="1">Displays a 7-bit ascii character</td><td colspan="1">Number, Character</td></tr>
-<tr><td colspan="1">20</td><td colspan="1">%UTF8</td><td colspan="1">UTF-8</td><td colspan="1">Takes in a UTF-8 character (1-4 bytes)</td><td colspan="1">Displays a UTF-8 character</td><td colspan="1">Number, Character</td></tr>
-<tr><td colspan="1">21</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">22</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">23</td><td colspan="1">%TSPECIAL</td><td colspan="1">Text Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
-<tr><td colspan="1" rowspan="8">Numbers</td><td colspan="1">24</td><td colspan="1">%INT</td><td colspan="1">Signed Integer</td><td colspan="1">Takes in a signed integer</td><td colspan="1">Displays a signed integer</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">25</td><td colspan="1">%UINT</td><td colspan="1">Unsigned Integer</td><td colspan="1">Takes in an unsigned integer</td><td colspan="1">Displays an unsigned integer</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">26</td><td colspan="1">%BIN</td><td colspan="1">Binary</td><td colspan="1">Takes in a binary number</td><td colspan="1">Displays a binary number</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">27</td><td colspan="1">%HEX</td><td colspan="1">Hexadecimal</td><td colspan="1">Takes in a hexadecimal number</td><td colspan="1">Displays a hexadecimal number</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">28</td><td colspan="1">%FLOAT</td><td colspan="1">Floating Point Number</td><td colspan="1">Takes in a floating-point number</td><td colspan="1">Displays a floating-point number</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">29</td><td colspan="1">%FIXED</td><td colspan="1">Fixed Point Number</td><td colspan="1">Takes in a fixed-point number</td><td colspan="1">Displays a fixed-point number</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">30</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">31</td><td colspan="1">%N-SPECIAL</td><td colspan="1">Numbers Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
-<tr><td colspan="1" rowspan="8">Storage</td><td colspan="1">32</td><td colspan="1">%ADDR</td><td colspan="1">Address</td><td colspan="1">Tells address</td><td colspan="1">Sets address</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">33</td><td colspan="1">%BUS</td><td colspan="1">Bus</td><td colspan="1">Reads the data at the address</td><td colspan="1">Writes data to that address</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">34</td><td colspan="1">%PAGE</td><td colspan="1">Page</td><td colspan="1">Reads the page number</td><td colspan="1">Sets the page number</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">35</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">36</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">37</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">38</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">39</td><td colspan="1">%SSPECIAL</td><td colspan="1">Storage Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
-<tr><td colspan="1" rowspan="8">Miscellaneous</td><td colspan="1">40</td><td colspan="1">%RNG</td><td colspan="1">RNG Device</td><td colspan="1">Reads a random number</td><td colspan="1">Sets a seed or device specific</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">41</td><td colspan="1">%NOTE</td><td colspan="1">Note</td><td colspan="1">Reads sound device pitch</td><td colspan="1">Sets sound device pitch</td><td colspan="1">Number, Note</td></tr>
-<tr><td colspan="1">42</td><td colspan="1">%INSTR</td><td colspan="1">Instrument</td><td colspan="1">Reads sound device instrument</td><td colspan="1">Sets sound device instrument</td><td colspan="1">Number, Instrument</td></tr>
-<tr><td colspan="1">43</td><td colspan="1">%NLEG</td><td colspan="1">Note length</td><td colspan="1">Device specific</td><td colspan="1">Sets sound device note length and plays that note (in tenths?)</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">44</td><td colspan="1">%WAIT</td><td colspan="1">Wait</td><td colspan="1">Returns 1 after the wait period</td><td colspan="1">Sets wait period (in tenths of seconds)</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">45</td><td colspan="1">%NADDR</td><td colspan="1">Network Address</td><td colspan="1">Reads the current address</td><td colspan="1">Sets the network address</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">46</td><td colspan="1">%DATA</td><td colspan="1">Network Data</td><td colspan="1">Reads network data</td><td colspan="1">Sends network data</td><td colspan="1">Number</td></tr>
-<tr><td colspan="1">47</td><td colspan="1">%MSPECIAL</td><td colspan="1">Miscellaneous Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
-<tr><td colspan="1" rowspan="16">User defined</td><td colspan="1">48</td><td colspan="1">%UD1</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">49</td><td colspan="1">%UD2</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">50</td><td colspan="1">%UD3</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">51</td><td colspan="1">%UD4</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">52</td><td colspan="1">%UD5</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">53</td><td colspan="1">%UD6</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">54</td><td colspan="1">%UD7</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">55</td><td colspan="1">%UD8</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">56</td><td colspan="1">%UD9</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">57</td><td colspan="1">%UD10</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">58</td><td colspan="1">%UD11</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">59</td><td colspan="1">%UD12</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">60</td><td colspan="1">%UD13</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">61</td><td colspan="1">%UD14</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">62</td><td colspan="1">%UD15</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-<tr><td colspan="1">63</td><td colspan="1">%UD16</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<table><tr><th colspan="1" valign="bottom"><B>Type</b></th><th colspan="1" valign="bottom"><B>Number of Inputs/Outputs</b></th><th colspan="1" valign="bottom"><B>Alias (Port Name)</b></th><th colspan="1" valign="bottom"><B>Full Name</b></th><th colspan="1" valign="bottom"><B>Input Notes/Usage</b></th><th colspan="1" valign="bottom"><B>Output Notes/Usage</b></th><th colspan="1" valign="bottom"><B>Valid Inputs</b></th></tr>
+<tr><td colspan="1" rowspan="6">General</td><td colspan="1">1/1</td><td colspan="1">%CPUBUS</td><td colspan="1">CPU Bus</td><td colspan="1"></td><td colspan="1"></td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%TEXT</td><td colspan="1">Text IO</td><td colspan="1">Generic text input</td><td colspan="1">Generic text output</td><td colspan="1">Number, Character</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%NUMB</td><td colspan="1">Numeric IO</td><td colspan="1">Generic number input</td><td colspan="1">Generic number output</td><td colspan="1">Number</td></tr>
+
+<tr><td colspan="1">1/1</td><td colspan="1">%SPECIAL</td><td colspan="1">Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%PROFILE</td><td colspan="1">Profile</td><td colspan="1">Tells current Profile</td><td colspan="1">Sets Profile</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%COLORMODE</td><td colspan="1">Colour mode</td><td colspan="1">Returns the current colour mode</td><td colspan="1">Sets the colour mode (beware this is specific to the target CPU)</td><td colspan="1">Colour Mode</td></tr>
+
+<tr><td colspan="1" rowspan="9">Graphics</td><td colspan="1">1/1</td><td colspan="1">%X</td><td colspan="1">Display X</td><td colspan="1">Tells display width</td><td colspan="1">Sets X Vertex</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%Y</td><td colspan="1">Display Y</td><td colspan="1">Tells display height</td><td colspan="1">Sets Y Vertex</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%COLOR or %COLOUR</td><td colspan="1">Colour</td><td colspan="1">Reads colour at %X, %Y into a register (from the currently writeable part of the screen)</td><td colspan="1">Draws a pixel of the specified colour at %X, %Y (on the currently writeable part of the screen)</td><td colspan="1">Colour</td></tr>
+<tr><td colspan="1">3/0</td><td colspan="1">%PIXEL</td><td colspan="1">Draw Pixel</td><td colspan="1">N/a</td><td colspan="1">Draws a pixel on screen. The first input is the X coord, the second input is the Y coord, and the final input is the colour of the pixel to be drawn.</td><td colspan="1">Number, Number, Colour</td></tr>
+<tr><td colspan="1">5/0</td><td colspan="1">%LINE</td><td colspan="1">Draw Pixel</td><td colspan="1">N/a</td><td colspan="1">Draws a line on screen. The two inputs are the first (X, Y) coord, the next two inputs are the second (X, Y) coord, and the final input is the colour of the line to be drawn.</td><td colspan="1">Number, Number, Number, Number, Colour</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%FREEZE</td><td colspan="1">Freeze</td><td colspan="1">N/a</td><td colspan="1">Freezes the visible part of the screen. Reading and writing to the screen still works but does not visually update the screen.</td><td colspan="1">Any</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UNFREEZE</td><td colspan="1">Unfreeze</td><td colspan="1">N/a</td><td colspan="1">Unfreezes the visible part of the screen.The visual screen now shows what the screen contains.</td><td colspan="1">Any</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%CLEAR</td><td colspan="1">Clear</td><td colspan="1">N/a</td><td colspan="1">Clears the screen.This does not unfreeze the screen if it is frozen.</td><td colspan="1">Any</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%GSPECIAL</td><td colspan="1">Graphics Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
+<tr><td colspan="1" rowspan="8">Text</td><td colspan="1">1/1</td><td colspan="1">%ASCII8</td><td colspan="1">8-Bit ASCII</td><td colspan="1">Takes in an 8-Bit Ascii character</td><td colspan="1">Displays an 8-bit ascii character</td><td colspan="1">Number, Character</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%CHAR5</td><td colspan="1">5-Bit Char</td><td colspan="1">Takes in a 5-bit character</td><td colspan="1">Displays a 5 bit character</td><td colspan="1">Number, Character</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%CHAR6</td><td colspan="1">6-Bit Char</td><td colspan="1">Takes in a 6-bit character</td><td colspan="1">Displays a 6 bit character</td><td colspan="1">Number, Character</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%ASCII7</td><td colspan="1">7-Bit ASCII</td><td colspan="1">Takes in a 7-Bit ASCII character</td><td colspan="1">Displays a 7-bit ascii character</td><td colspan="1">Number, Character</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UTF8</td><td colspan="1">UTF-8</td><td colspan="1">Takes in a UTF-8 character (1-4 bytes)</td><td colspan="1">Displays a UTF-8 character</td><td colspan="1">Number, Character</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%TSPECIAL</td><td colspan="1">Text Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
+<tr><td colspan="1" rowspan="8">Numbers</td><td colspan="1">1/1</td><td colspan="1">%INT</td><td colspan="1">Signed Integer</td><td colspan="1">Takes in a signed integer</td><td colspan="1">Displays a signed integer</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UINT</td><td colspan="1">Unsigned Integer</td><td colspan="1">Takes in an unsigned integer</td><td colspan="1">Displays an unsigned integer</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%BIN</td><td colspan="1">Binary</td><td colspan="1">Takes in a binary number</td><td colspan="1">Displays a binary number</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%HEX</td><td colspan="1">Hexadecimal</td><td colspan="1">Takes in a hexadecimal number</td><td colspan="1">Displays a hexadecimal number</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%FLOAT</td><td colspan="1">Floating Point Number</td><td colspan="1">Takes in a floating-point number</td><td colspan="1">Displays a floating-point number</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%FIXED</td><td colspan="1">Fixed Point Number</td><td colspan="1">Takes in a fixed-point number</td><td colspan="1">Displays a fixed-point number</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%N-SPECIAL</td><td colspan="1">Numbers Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
+<tr><td colspan="1" rowspan="8">Storage</td><td colspan="1">1/1</td><td colspan="1">%ADDR</td><td colspan="1">Address</td><td colspan="1">Tells address</td><td colspan="1">Sets address</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%BUS</td><td colspan="1">Bus</td><td colspan="1">Reads the data at the address</td><td colspan="1">Writes data to that address</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%PAGE</td><td colspan="1">Page</td><td colspan="1">Reads the page number</td><td colspan="1">Sets the page number</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1"></td><td colspan="1">Reserved</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%SSPECIAL</td><td colspan="1">Storage Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
+<tr><td colspan="1" rowspan="8">Miscellaneous</td><td colspan="1">1/1</td><td colspan="1">%RNG</td><td colspan="1">RNG Device</td><td colspan="1">Reads a random number</td><td colspan="1">Sets a seed or device specific</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%NOTE</td><td colspan="1">Note</td><td colspan="1">Reads sound device pitch</td><td colspan="1">Sets sound device pitch</td><td colspan="1">Number, Note</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%INSTR</td><td colspan="1">Instrument</td><td colspan="1">Reads sound device instrument</td><td colspan="1">Sets sound device instrument</td><td colspan="1">Number, Instrument</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%NLEG</td><td colspan="1">Note length</td><td colspan="1">Device specific</td><td colspan="1">Sets sound device note length and plays that note (in tenths?)</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%WAIT</td><td colspan="1">Wait</td><td colspan="1">Returns 1 after the wait period</td><td colspan="1">Sets wait period (in tenths of seconds)</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%NADDR</td><td colspan="1">Network Address</td><td colspan="1">Reads the current address</td><td colspan="1">Sets the network address</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%DATA</td><td colspan="1">Network Data</td><td colspan="1">Reads network data</td><td colspan="1">Sends network data</td><td colspan="1">Number</td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%MSPECIAL</td><td colspan="1">Miscellaneous Special</td><td colspan="1">User Defined</td><td colspan="1">User Defined</td><td colspan="1"></td></tr>
+<tr><td colspan="1" rowspan="16">User defined</td><td colspan="1">1/1</td><td colspan="1">%UD1</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD2</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD3</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD4</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD5</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD6</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD7</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD8</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD9</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD10</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD11</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD12</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD13</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD14</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD15</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1">1/1</td><td colspan="1">%UD16</td><td colspan="1">User Defined</td><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 </table>
 
 # **CODE FAULTS**
