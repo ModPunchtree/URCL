@@ -3,7 +3,7 @@
 # **URCL UNNAMED BETA**
 **OFFICIAL DOCUMENTATION**
 
-**Written by Ben Aitken (Mod Punchtree) – 17<sup>th</sup> Nov 2023**
+**Written by Ben Aitken (Mod Punchtree) – 18<sup>th</sup> Nov 2023**
 
 # **ABSTRACT**
 |![Tip icon]|*URCL stands for: Universal Reduced Computer Language*|
@@ -725,10 +725,10 @@ All Complex instructions can be translated to Basic instructions and all Basic i
 
 Note that all instructions are unsigned, unless otherwise stated.
 ## **Core Instructions**
-|![Tip icon]|*A CPU must be able to translate all these instructions to be 100% compatible with URCL*|
+|![Tip icon]|*A CPU must be able to translate all these instructions to be compatible with URCL.*|
 | - | - |
 
-There are 7 Core instructions.
+There are 11 Core instructions.
 ### ***ADD (Core)***
 #### *Full Name*
 Add
@@ -942,6 +942,8 @@ This instruction pops a value from the call stack then it branches to that addre
 
 ## **Basic Instructions**
 These are relatively simple instructions that can be translated into core instructions if needed.
+
+There are 40 basic instructions.
 
 ### ***ADD (Basic)***
 #### *Full Name*
@@ -1919,7 +1921,7 @@ This instruction branches to the instruction pointed to by the value in register
 ## **Complex Instructions**
 These are instructions which are typically more difficult to translate directly to a target CPU’s assembly. These instructions can be translated into equivalent Basic and Core instructions if they cannot be directly translated.
 
-There are 17 complex instructions.
+There are 30 complex instructions.
 ### ***MLT***
 #### *Full Name*
 Multiply
@@ -3507,12 +3509,12 @@ This section covers the translations for each instruction.
 ### ***UMLT***
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Three temporary registers are required|Shift and Add|<pre>MOV \<tempREG1\> \<B\><br>MOV \<tempREG2\> \<C\><br>MOV \<A\> R0<br>MOV \<tempREG3\> R0<br>BEV ~+4 \<tempREG2\><br>BNC ~+2 \<tempREG3\> \<tempREG1\><br>INC \<A\> \<A\><br>ADD \<tempREG3\> \<tempREG3\> \<tempREG1\><br>RSH \<tempREG2\> \<tempREG2\><br>LSH \<tempREG1\> \<tempREG1\><br>BNZ ~-6 \<tempREG2\></pre>|
+|Four temporary registers are required|Shift and Add|<pre>MOV \<tempREG1\> \<B\><br>MOV \<tempREG2\> \<C\><br>MOV \<A\> R0<br>MOV \<tempREG3\> R0<br>MOV \<tempREG4\> R0<br>BEV ~+5 \<tempREG2\><br>BNC ~+2 \<tempREG3\> \<tempREG1\><br>ADD \<A\> \<A\> 1<br>ADD \<tempREG3\> \<tempREG3\> \<tempREG1\><br>ADD \<A\> \<A\> \<tempREG4\><br>RSH \<tempREG2\> \<tempREG2\><br>LSH \<tempREG4\> \<tempREG4\><br>BRP ~+2 \<tempREG1\><br>INC \<tempREG4\> \<tempREG4\><br>LSH \<tempREG1\> \<tempREG1\><br>BNZ ~-10 \<tempREG2\></pre>|
 
 ### ***SUMLT***
 |**Condition**|**Extra Information**|**Translation**|
 | :-: | :-: | :-: |
-|Four temporary registers are required|Shift and Add|<pre>XOR \<tempREG4\> \<B\> \<C\><br>ABS \<tempREG1\> \<B\><br>ABS \<tempREG2\> \<C\><br>MOV \<A\> R0<br>MOV \<tempREG3\> R0<br>BEV ~+4 \<tempREG2\><br>BNC ~+2 \<tempREG3\> \<tempREG1\><br>INC \<A\> \<A\><br>ADD \<tempREG3\> \<tempREG3\> \<tempREG1\><br>RSH \<tempREG2\> \<tempREG2\><br>LSH \<tempREG1\> \<tempREG1\><br>BNZ ~-6 \<tempREG2\><br>BRP ~+2 \<tempREG4\><br>NEG \<A\> \<A\></pre>|
+|Five temporary registers are required|Shift and Add|<pre>MOV \<tempREG5\> R0<br>MOV \<tempREG2\> R0<br>MOV \<tempREG4\> R0<br>MOV \<tempREG1\> \<B\><br>BRP ~2 \<B\><br>NOT \<tempREG2\> \<tempREG2\><br>MOV \<tempREG3\> \<C\><br>BRP ~2 \<C\><br>NOT \<tempREG4\> \<tempREG4\><br>MOV \<A\> R0<br>BEV ~5 \<tempREG1\><br>BNC ~2 \<tempREG5\> \<tempREG3\><br>ADD \<A\> \<A\> 1<br>ADD \<tempREG5\> \<tempREG5\> \<tempREG3\><br>ADD \<A\> \<A\> \<tempREG4\><br>RSH \<tempREG1\> \<tempREG1\><br>BEV ~2 \<tempREG2\><br>ADD \<tempREG1\> \<tempREG1\> @MSB<br>RSH \<tempREG2\> \<tempREG2\><br>LSH \<tempREG4\> \<tempREG4\><br>BRP ~2 \<tempREG3\><br>INC \<tempREG4\> \<tempREG4\><br>LSH \<tempREG3\> \<tempREG3\><br>BNZ ~-13 \<tempREG1\><br>BNZ ~-14 \<tempREG2\></pre>|
 
 # **PORTS**
 There are 64 official ports.
