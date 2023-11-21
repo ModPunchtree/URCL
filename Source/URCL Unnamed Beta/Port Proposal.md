@@ -34,44 +34,47 @@ Ideally programs should use generic ports where possible as this potentially ena
 |9|%ASCII7|ASCII 7 bit|Text|
 |10|%ASCII8|ASCII 8 bit|Text|
 |11|%UTF8|UTF-8|Text|
-|12|%KEYBOARD|Keyboard|User Input|
-|13|%GAMEPAD|Gamepad|User Input|
-|14|%MOUSE_X|Mouse X|User Input|
-|15|%MOUSE_Y|Mouse Y|User Input|
-|16|%MOUSE_POS|Mouse Position|User Input|
-|17|%MOUSE_DX|Mouse Delta X|User Input|
-|18|%MOUSE_DY|Mouse Delta Y|User Input|
-|19|%MOUSE_SPEED|Mouse Speed|User Input|
-|20|%MOUSE_BUTTONS|Mouse Buttons|User Input|
-|21|%X|X|Graphical|
-|22|%Y|Y|Graphical|
-|23|%COORD|Coordinate|Graphical|
-|24|%COLOR|Colour|Graphical|
-|25|%WIDTH|Width|Graphical|
-|26|%HEIGHT|Height|Graphical|
-|27|%FILL|Fill|Graphical|
-|28|%CLEAR|Clear|Graphical|
-|29|%FREEZE|Freeze|Graphical|
-|30|%UNFREEZE|Unfreeze|Graphical|
-|31|%BUFFER|Buffer|Graphical|
-|32|%PIXEL|Pixel|Graphical|
-|33|%LINE|Line|Graphical|
-|34|%BOX|Box|Graphical|
-|35|%NOTE|Note|Audio|
-|36|%INSTR|Instruction|Audio|
-|37|%NLEG|Note Length|Audio|
-|38|%RUNTIME|Runtime|Temporal|
-|39|%WAIT|Wait|Temporal|
-|40|%FRAMETIME|Frame Time|Temporal|
-|41|%ADDR|Address|Storage|
-|42|%BUS|Bus|Storage|
-|43|%PAGE|Page|Storage|
-|44|%COLORMODE|Colour Mode|Environmental|
-|45|%SUPPORTED|Supported|Environmental|
-|46|%CLOCKSPEED|Clock Speed|Environmental|
-|47|%PROFILE|Profile|Specialised|
-|48|%NADDR|Network Address|Specialised|
-|49|%NDATA|Network Data|Specialised|
+|12|%TEXT_COLOR|Text Colour|Text|
+|13|%TEXT_BACKCOLOR|Text Background Colour|Text|
+|14|%KEYBOARD|Keyboard|User Input|
+|15|%GAMEPAD|Gamepad|User Input|
+|16|%MOUSE_X|Mouse X|User Input|
+|17|%MOUSE_Y|Mouse Y|User Input|
+|18|%MOUSE_POS|Mouse Position|User Input|
+|19|%MOUSE_DX|Mouse Delta X|User Input|
+|20|%MOUSE_DY|Mouse Delta Y|User Input|
+|21|%MOUSE_SPEED|Mouse Speed|User Input|
+|22|%MOUSE_BUTTONS|Mouse Buttons|User Input|
+|23|%X|X|Graphical|
+|24|%Y|Y|Graphical|
+|25|%COORD|Coordinate|Graphical|
+|26|%COLOR|Colour|Graphical|
+|27|%WIDTH|Width|Graphical|
+|28|%HEIGHT|Height|Graphical|
+|29|%FILL|Fill|Graphical|
+|30|%CLEAR|Clear|Graphical|
+|31|%FREEZE|Freeze|Graphical|
+|32|%UNFREEZE|Unfreeze|Graphical|
+|33|%BUFFER|Buffer|Graphical|
+|34|%PIXEL|Pixel|Graphical|
+|35|%LINE|Line|Graphical|
+|36|%BOX|Box|Graphical|
+|37|%NOTE|Note|Audio|
+|38|%INSTR|Instrument|Audio|
+|39|%NLEG|Note Length|Audio|
+|40|%VOL|Volume|Audio|
+|41|%RUNTIME|Runtime|Temporal|
+|42|%WAIT|Wait|Temporal|
+|43|%FRAMETIME|Frame Time|Temporal|
+|44|%ADDR|Address|Storage|
+|45|%BUS|Bus|Storage|
+|46|%PAGE|Page|Storage|
+|47|%COLORMODE|Colour Mode|Environmental|
+|48|%SUPPORTED|Supported|Environmental|
+|49|%CLOCKSPEED|Clock Speed|Environmental|
+|50|%PROFILE|Profile|Specialised|
+|51|%NADDR|Network Address|Specialised|
+|52|%NDATA|Network Data|Specialised|
 
 ## Generic
 These are ports that are purposely ambiguously defined. This enables target CPUs to implement these ports in whatever way is optimal for them.
@@ -135,12 +138,16 @@ These ports are specialised versions of the %TEXT port. They specify what type o
 |IN|Register|%ASCII7|Inputs an external ASCII 7 bit character into a register.|
 |IN|Register|%ASCII8|Inputs an external ASCII 8 bit character into a register.|
 |IN|Register|%UTF8|Inputs an external UTF-8 character into a register.|
+|IN|Register|%TEXT_COLOR|Reads the currently set text colour into a register.|
+|IN|Register|%TEXT_BACKCOLOR|Reads the currently set text background colour into a register.|
 
 |**Instruction**|**Operand1**|**Operand2**|**Function**|
 | :-: | :-: | :-: | :-: |
 |OUT|%ASCII7|Register or<br>Immediate|Outputs a ASCII 7 bit character.|
 |OUT|%ASCII8|Register or<br>Immediate|Outputs a ASCII 8 bit character.|
 |OUT|%UTF8|Register or<br>Immediate|Outputs a UTF-8 character.|
+|OUT|%TEXT_COLOR|Register or<br>Immediate|Sets the text colour.|
+|OUT|%TEXT_BACKCOLOR|Register or<br>Immediate|Sets the text background colour.|
 
 ## User Input
 These are ports which are aimed at reading the user input in real time.
@@ -223,12 +230,14 @@ These ports are used for playing simple audio tones. If a target CPU supports mo
 |IN|Register|%NOTE|Inputs the value most recently outputted to the %NOTE port into a register.|
 |IN|Register|%INSTR|Inputs the value most recently outputted to the %INSTR port into a register.|
 |IN|Register|%NLEG|Inputs the value most recently outputted to the %NLEG port into a register.|
+|IN|Register|%VOL|Reads the current volume level into a register.|
 
 |**Instruction**|**Operand1**|**Operand2**|**Function**|
 | :-: | :-: | :-: | :-: |
 |OUT|%NOTE|Register or<br>Immediate|Sets the pitch.|
 |OUT|%INSTR|Register or<br>Immediate|Sets the instrument.|
 |OUT|%NLEG|Register or<br>Immediate|Plays a sound for the length specified by operand 2.|
+|OUT|%VOL|Register or<br>Immediate|Sets the volume.|
 
 ## Temporal
 These ports interact with time or the speed of the target CPU.
