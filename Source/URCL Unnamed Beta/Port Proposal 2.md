@@ -194,7 +194,7 @@ These ports interact with time or the speed of the target CPU.
 |   **Port**   |     **Operand1**     |                              **Function**                              |
 |:------------:|:--------------------:|:----------------------------------------------------------------------:|
 |  IN%RUNTIME  |       Register       | Inputs the time the URCL program has been running for into a register. |
-|   OUT%WAIT   | Register / Immediate |            Sets the wait period to the value of operand 1.             |
+|   OUT%WAIT   | Register / Immediate |  Sets the wait period to the value of operand 1, and starts the timer.  |
 |   IN%WAIT    |       Register       |  Waits until the wait period is done, then writes 1 into a register.   |
 | IN%FRAMETIME |       Register       |   Inputs the time since the screen was last updated into a register.   |
 
