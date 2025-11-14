@@ -388,11 +388,13 @@ The following table contains all the defined immediate values:
 
 |**Defined Immediate Value**|**Full Name**|**Value**|
 | :-: | :-: | :-: |
-|`@BITS`|Bits|Equal to the value of the BITS header|
+|`@BITS`|Bits|Equal to the number of bits the target CPU has|
+|`@MINBITS`|Minimum Bits|Equal to the lowest possible value of the BITS header|
+|`@REGS`|Registers|Equal to the number of registers the target CPU has|
 |`@MINREG`|Minimum registers|Equal to the value of the MINREG header|
+|`@HEAP`|Heap|Equal to the maximum size of the heap (where the stack is empty, and the heap occupies all available space in the RAM)Note this is specific to the target CPU instead of the URCL program|
 |`@MINHEAP`|Minimum heap|Equal to the value of the MINHEAP header|
 |`@MINSTACK`|Minimum stack|Equal to the value of the MINSTACK header|
-|`@HEAP`|Heap|Equal to the maximum size of the heap (where the stack is empty, and the heap occupies all available space in the RAM)Note this is specific to the target CPU instead of the URCL program|
 |`@MSB`|Most significant bit|Equal to a binary value with only the most significant bit active (128 in an 8 bit program)|
 |`@SMSB`|Signed most significant bit|Equal to a binary value with only the second most significant bit active (64 in an 8 bit program)|
 |`@MAX`|Maximum|Equal to a binary value with all bits active (255 in an 8 bit program)|
