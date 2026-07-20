@@ -615,7 +615,7 @@ Once defined, labels can be used in the code as source operands. They act the sa
 | - | - |
 
 ## **Memory Map**
-![URCL memory map for the working RAM.](Memory_Map.png)
+![URCL memory map for the working RAM.](src/Memory_Map.png)
 
 - Normal memory values should be prepended with `M` or `#`.
 - Normal memory values do not use an absolute RAM address, instead they are relative to the start of the Heap.
